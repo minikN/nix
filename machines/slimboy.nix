@@ -11,6 +11,12 @@
       ./modules/common.nix
     ];
 
+  # Nix flakes
+  nix.package = pkgs.nixFlakes;
+  nix.extraOptions = ''
+    experimental-features = nix-command flakes
+  '';
+
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -36,11 +42,6 @@
     extraGroups = [ "wheel" "networking" "video" ]; 
   };
   users.users.db.isNormalUser = true;
-
-  home-manager.users.db = { pkgs, ... }: {
-    home.stateVersion = "23.05";
-    home.packages = [ pkgs.emacs ];
-  };
 
   # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [

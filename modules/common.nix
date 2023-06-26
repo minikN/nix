@@ -1,7 +1,7 @@
-{ config, pkgs, ... }:
+{ config, pkgs, home, ... }:
 
 {
-  imports = [ <home-manager/nixos> ];
+  #imports = [ <home-manager/nixos> ];
 
   services.dbus.enable = true;
   xdg.portal = {
@@ -21,6 +21,10 @@
 
     wayland.windowManager.sway = {
       enable = true;
+      xwayland = true;
+      config = {
+        floating.border = 10;
+      };
       systemd.enable = true;
       wrapperFeatures = {
         base = true;
