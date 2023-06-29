@@ -1,13 +1,36 @@
+##
+## `slimboy' configuration
+##
+
 { inputs, globals, ... }:
 
 with inputs;
 
 nixpkgs.lib.nixosSystem {
+
+  ## Setting system architecture.
   system = "x86_64-linux";
+
+  ## Modules
+  ##
+  ## It takes an array of modules.
   modules = [
+
+    ## Passing our recursive list will set the variables it contains
+    ## config-wide as long as we declare them as options using `mkOption'.
     globals
+
+    ## This module will return a `home-manager' object that can be used
+    ## in other modules (including this one).
     home-manager.nixosModules.home-manager
-    ../modules/common.nix
+    
+    ## System specific
+    ##
+    ## Inline function that returns the module continaing configuration
+    ## specific to this machine. In order to make it a function we need
+    ## to wrap it in ().
+    ## TODO: Exclude all settings that are not system specific into
+    ## their own modules.
     ({ lib, config, pkgs, ... }: {
       ## networking
       networking.hostName = "slimboy";
@@ -58,7 +81,14 @@ nixpkgs.lib.nixosSystem {
         extraGroups = [ "wheel" "networking" "video" ]; 
         isNormalUser = true;
       };
-     # users.users.${config.user}.isNormalUser = true;
     })
+    
+    ## Host agnostic modules
+    ##
+    ## A list of file paths containing modules that should be used
+    ## on this machine. They are not specific to this machine and
+    ## can be used on other machines too as long as it fits their
+    ## purpose.
+    ../modules/common.nix
   ];
 }
