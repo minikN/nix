@@ -7,6 +7,11 @@
 { config, lib, pkgs, ... }:
 
 {
+  imports = [
+    ./gpg.nix
+    ./shell/zsh.nix
+  ];
+  
   ## Global options
   ##
   ## These can be used throughout the configuration. If a value
@@ -55,7 +60,18 @@
     home-manager.useUserPackages = true;
 
     ## Setting the `stateVersion' for both home-manager and system.
-    home-manager.users.${config.user}.home.stateVersion = "${config.stateVersion}";
+    home-manager.users.${config.user} = {
+      
+      ## Enabling xdg directories
+      xdg.enable = true;
+      #xdg.dataHome = "${config.homePath}/.local/share";
+      #xdg.dataHome = "${config.xdg.dataHome}/.local/share";
+      
+      ## Setting state version for home-manager
+      home.stateVersion = "${config.stateVersion}";
+    };
+
+    ## Setting state version for system
     system.stateVersion = "${config.stateVersion}";
   };
 }
