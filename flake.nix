@@ -7,12 +7,13 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = {nixpkgs, ...}@inputs:
+  outputs = { nixpkgs, ... }@inputs:
   let
 
     globals = rec {
       user = "db";
       fullName = "Demis Balbach";
+      stateVersion = "23.05";
     };
 
     supportedSystems = [ "x86_64-linux" ];
@@ -21,7 +22,7 @@
   in rec {
     
     nixosConfigurations = {
-      slimboy = import ./machines/slimboy.nix { inherit inputs globals; };
+      slimboy = import ./machines/slimboy.nix { inherit inputs globals nixpkgs; };
     };
 
     homeConfigurations = {

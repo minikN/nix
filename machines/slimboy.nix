@@ -7,10 +7,13 @@ nixpkgs.lib.nixosSystem {
   modules = [
     globals
     home-manager.nixosModules.home-manager
-    {
+    ../modules/common.nix
+    ({ lib, config, pkgs, ... }: {
       ## networking
       networking.hostName = "slimboy";
-      networking.useDHCP = true;
+      networking.useDHCP = false;
+      networking.interfaces.enp0s20f0u1.useDHCP = true; # Ethernet dongle
+      networking.interfaces.wlp0s20f3.useDHCP = true; # WiFi
       networking.networkmanager.enable = true;
 
       ## kernel
@@ -53,8 +56,9 @@ nixpkgs.lib.nixosSystem {
 
       users.users.${config.user} = {
         extraGroups = [ "wheel" "networking" "video" ]; 
+        isNormalUser = true;
       };
-      users.users.${config.user}.isNormalUser = true;
-    }
+     # users.users.${config.user}.isNormalUser = true;
+    })
   ];
 }

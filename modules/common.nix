@@ -1,42 +1,38 @@
-{ config, pkgs, home, ... }:
+{ config, lib, pkgs, ... }:
 
 {
-  #imports = [ <home-manager/nixos> ];
-
-  services.dbus.enable = true;
-  xdg.portal = {
-    enable = true;
-    wlr.enable = true;
-    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-  };
-
-  hardware = {
-    opengl.enable = true;
-    opengl.driSupport = true;
-  };
-
-  home-manager.users.db = { pkgs, ... }: {
-    home.stateVersion = "23.05";
-    home.packages = [ pkgs.emacs pkgs.htop ];
-
-    wayland.windowManager.sway = {
-      enable = true;
-      xwayland = true;
-      config = {
-        floating.border = 10;
-      };
-      systemd.enable = true;
-      wrapperFeatures = {
-        base = true;
-        gtk = true;
-      };
-      extraSessionCommands = "
-	export SDL_VIDEODRIVER=wayland
-        export QT_QPA_PLATFORM=wayland
-        export QT_WAYLAND_DISABLE_WINDOWDECORATIONS=1
-        export _JAVA_AWT_WM_NOPARENTING=1
-      ";
+  options = {
+    user = lib.mkOption {
+      type = lib.types.str;
+      description = "Primary user of the system";
     };
+
+    fullName = lib.mkOption {
+      type = lib.types.str;
+      description = "Full name of the user";
+    };
+    
+    stateVersion = lib.mkOption {
+      type = lib.types.str;
+      description = "State version of nixos and home-manager";
+    };
+  };
+
+  config = {
+    nix = {
+      extraOptions = ''
+        experimental-features = nix-command flakes
+        warn-dirty = false
+      '';
+    };
+
+    environment.systemPackages = with pkgs; [ git vim wget curl ];
+
+    home-manager.useGlobalPkgs = true;
+    home-manager.useUserPackages = true;
+    home-manager.users.${config.user}.home.stateVersion = "${config.stateVersion}";
+  
+    system.stateVersion = "${config.stateVersion}";
   };
 }
 
