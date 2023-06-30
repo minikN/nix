@@ -1,41 +1,39 @@
 {
-  description = "A very basic flake";
+  description = "My NixOS configuration";
 
+  ## Inputs
+  ##
+  ## Using latest commits for both nixpkgs and home-manager
+  ## to make NixOS rolling release.
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    home-manager.url = "github:nix-community/home-manager";
+    home-manager.url = "github:nix-community/home-manager/master";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = inputs@{ nixpkgs, home-manager, ... }:
+  outputs = { nixpkgs, ... }@inputs:
   let
-    system = "x86_64-linux";
-    
-    pkgs = import nixpkgs {
-      inherit system;
-      config = { allowUnfree = true; };
-    };
-    
-    mkMachine = machineConfig: user: modules: homeModules: inputs.nixpkgs.lib.nixosSystem {
-      inherit system;
-      modules = [
-        machineConfig
-        #(./. + "/users/${user}")
-        home-manager.nixosModules.home-manager {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-	  home-manager.users.db.imports = homeModules;
-        }
-      ] ++ modules;
+
+    ## Global variables used throughout the configuration
+    globals = rec {
+      user = "db";
+      fullName = "Demis Balbach";
+      stateVersion = "23.05";
     };
 
-  in {
+    supportedSystems = [ "x86_64-linux" ];
+    forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
+
+  in rec {
+    
+    ## System configurations
     nixosConfigurations = {
-      slimboy = mkMachine
-        ./machines/slimboy.nix
-        null
-        []
-        [];
+      slimboy = import ./machines/slimboy.nix { inherit inputs globals nixpkgs; };
+    };
+
+    ## Home configurations
+    homeConfigurations = {
+      slimboy = nixosConfigurations.slimboy.config.home-manager.users.${globals.user}.home;
     };
   };
 }

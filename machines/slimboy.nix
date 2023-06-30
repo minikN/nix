@@ -1,62 +1,94 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running `nixos-help`).
+##
+## `slimboy' configuration
+##
 
-{ config, pkgs, ... }:
+{ inputs, globals, ... }:
 
-{
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ../modules/common.nix
-    ];
+with inputs;
 
-  # Nix flakes
-  nix.package = pkgs.nixFlakes;
-  nix.extraOptions = ''
-    experimental-features = nix-command flakes
-  '';
+nixpkgs.lib.nixosSystem {
 
-  # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  ## Setting system architecture.
+  system = "x86_64-linux";
 
-  networking.hostName = "slimboy"; # Define your hostname.
-  # Pick only one of the below networking options.
-  networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  # networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+  ## Modules
+  ##
+  ## It takes an array of modules.
+  modules = [
 
-  # Set your time zone.
-  time.timeZone = "Europe/Berlin";
+    ## Passing our recursive list will set the variables it contains
+    ## config-wide as long as we declare them as options using `mkOption'.
+    globals
 
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-  console = {
-    font = "Lat2-Terminus16";
-    keyMap = "de";
-  };
+    ## This module will return a `home-manager' object that can be used
+    ## in other modules (including this one).
+    home-manager.nixosModules.home-manager
+    
+    ## System specific
+    ##
+    ## Inline function that returns the module continaing configuration
+    ## specific to this machine. In order to make it a function we need
+    ## to wrap it in ().
+    ## TODO: Exclude all settings that are not system specific into
+    ## their own modules.
+    ({ lib, config, pkgs, ... }: {
+      ## networking
+      networking.hostName = "slimboy";
+      networking.useDHCP = false;
+      networking.interfaces.enp0s20f0u1.useDHCP = true; # Ethernet dongle
+      networking.interfaces.wlp0s20f3.useDHCP = true; # WiFi
+      networking.networkmanager.enable = true;
 
+      ## kernel
+      boot.loader.systemd-boot.enable = true;
+      boot.loader.efi.canTouchEfiVariables = true;
+      
+      boot.initrd.kernelModules = [ "vmd" ];
+      boot.initrd.availableKernelModules = [ "xhci_pci" "thunderbolt" "vmd" "nvme" "usb_storage" "sd_mod" ];
+      
+      boot.kernelModules = [ "kvm-intel" ];
+      boot.kernelPackages = pkgs.linuxPackagesFor pkgs.linux_latest;
+      
+      hardware.enableRedistributableFirmware = true;
+      hardware.cpu.intel.updateMicrocode = true;
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.db = {
-    extraGroups = [ "wheel" "networking" "video" ]; 
-  };
-  users.users.db.isNormalUser = true;
+      ## File systems
+      fileSystems."/" = {
+        device = "/dev/disk/by-label/SYSTEM";
+        fsType = "btrfs";
+      };
 
-  # List packages installed in system profile. To search, run:
-  environment.systemPackages = with pkgs; [
-    git wget
+      fileSystems."/boot" = {
+        device = "/dev/disk/by-label/BOOT";
+        fsType = "vfat";
+      };
+
+      swapDevices = [
+        { device = "/dev/disk/by-label/SWAP"; }
+      ];
+
+      # Set your time zone.
+      time.timeZone = "Europe/Berlin";
+
+      # Select internationalisation properties.
+      i18n.defaultLocale = "en_US.UTF-8";
+      console = {
+        font = "Lat2-Terminus16";
+        keyMap = "de";
+      };
+
+      users.users.${config.user} = {
+        extraGroups = [ "wheel" "networking" "video" ]; 
+        isNormalUser = true;
+      };
+    })
+    
+    ## Host agnostic modules
+    ##
+    ## A list of file paths containing modules that should be used
+    ## on this machine. They are not specific to this machine and
+    ## can be used on other machines too as long as it fits their
+    ## purpose.
+    ../modules/common
   ];
-
-  security.polkit.enable = true;
-
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It's perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "23.05"; # Did you read the comment?
-
 }
-
