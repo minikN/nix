@@ -27,6 +27,12 @@
       type = lib.types.str;
       description = "Full name of the user";
     };
+
+    primaryMail = lib.mkOption {
+      type = lib.types.str;
+      description = "primary email";
+      default = "db@minikn.xyz";
+    };
     
     stateVersion = lib.mkOption {
       type = lib.types.str;
@@ -64,9 +70,7 @@
       
       ## Enabling xdg directories
       xdg.enable = true;
-      #xdg.dataHome = "${config.homePath}/.local/share";
-      #xdg.dataHome = "${config.xdg.dataHome}/.local/share";
-      
+
       ## Setting state version for home-manager
       home.stateVersion = "${config.stateVersion}";
     };
