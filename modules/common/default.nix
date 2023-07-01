@@ -112,6 +112,13 @@
           then "${pkgs.foot}/bin/foot"
           else "${pkgs.gnome.gnome-terminal}/bin/gnome-terminal";
       };
+
+
+      shell = lib.mkOption {
+        type = lib.types.str;
+        default = "bash";
+        description = "Shell used on the system";
+      };
     };
   };
 
