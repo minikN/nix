@@ -12,6 +12,14 @@
     ./gpg.nix
     ./shell/zsh.nix
 
+    # WM / GUI
+    ./wm/sway.nix
+    ./wm/cursor.nix
+
+    ## services
+    ./services
+    ./services/xdg.nix
+
     ## system
     ./system/boot.nix
     ./system/filesystem.nix
@@ -58,6 +66,12 @@
         type = lib.types.str;
         description = "Window manager used throughout the system";
       };
+
+      wayland = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+        description = "Whether wayland is used on the system";
+      };
     };
   };
 
@@ -74,6 +88,13 @@
         experimental-features = nix-command flakes
         warn-dirty = false
       '';
+    };
+
+    ## OpenGL support
+    hardware.opengl = {
+      enable = true;
+      driSupport = true;
+      driSupport32Bit = true;
     };
 
     ## Timezone and locales
@@ -95,9 +116,6 @@
     ## Setting the `stateVersion' for both home-manager and system.
     home-manager.users.${config.user} = {
       
-      ## Enabling xdg directories
-      xdg.enable = true;
-
       ## Setting state version for home-manager
       home.stateVersion = "${config.stateVersion}";
     };
