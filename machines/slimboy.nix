@@ -40,9 +40,6 @@ nixpkgs.lib.nixosSystem {
       networking.networkmanager.enable = true;
 
       ## kernel
-      #boot.loader.systemd-boot.enable = true;
-      #boot.loader.efi.canTouchEfiVariables = true;
-      
       boot.initrd.kernelModules = [ "vmd" ];
       boot.initrd.availableKernelModules = [ "xhci_pci" "thunderbolt" "vmd" "nvme" "usb_storage" "sd_mod" ];
       
@@ -51,21 +48,6 @@ nixpkgs.lib.nixosSystem {
       
       hardware.enableRedistributableFirmware = true;
       hardware.cpu.intel.updateMicrocode = true;
-
-      ## File systems
-      fileSystems."/" = {
-        device = "/dev/disk/by-label/SYSTEM";
-        fsType = "btrfs";
-      };
-
-      fileSystems."/boot" = {
-        device = "/dev/disk/by-label/BOOT";
-        fsType = "vfat";
-      };
-
-      swapDevices = [
-        { device = "/dev/disk/by-label/SWAP"; }
-      ];
 
       # Set your time zone.
       time.timeZone = "Europe/Berlin";

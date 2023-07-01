@@ -12,7 +12,9 @@
     ./gpg.nix
     ./shell/zsh.nix
 
+    ## system
     ./system/boot.nix
+    ./system/filesystem.nix
   ];
   
   ## Global options
