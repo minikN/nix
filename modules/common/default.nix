@@ -133,6 +133,9 @@
     time.timeZone = "Europe/Berlin";
     i18n.defaultLocale = "en_US.UTF-8";
 
+    ## Allow unfree packages
+    nixpkgs.config.allowUnfree = true;
+
     ## Global packages
     ##
     ## Packages should be managed with home-manager whereever
