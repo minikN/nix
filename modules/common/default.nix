@@ -15,6 +15,7 @@
     ## system
     ./system/boot.nix
     ./system/filesystem.nix
+    ./system/networking.nix
   ];
   
   ## Global options

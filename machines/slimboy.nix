@@ -34,10 +34,8 @@ nixpkgs.lib.nixosSystem {
     ({ lib, config, pkgs, ... }: {
       ## networking
       networking.hostName = "slimboy";
-      networking.useDHCP = false;
       networking.interfaces.enp0s20f0u1.useDHCP = true; # Ethernet dongle
       networking.interfaces.wlp0s20f3.useDHCP = true; # WiFi
-      networking.networkmanager.enable = true;
 
       ## kernel
       boot.initrd.kernelModules = [ "vmd" ];
@@ -60,7 +58,7 @@ nixpkgs.lib.nixosSystem {
       };
 
       users.users.${config.user} = {
-        extraGroups = [ "wheel" "networking" "video" ]; 
+        extraGroups = [ "wheel" "video" ]; 
         isNormalUser = true;
       };
     })
