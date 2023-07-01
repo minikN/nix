@@ -25,6 +25,13 @@
         export QT_WAYLAND_DISABLE_WINDOWDECORATIONS=1
         export _JAVA_AWT_WM_NOPARENTING=1
       '';
+ 
+      config = {
+        fonts = {
+          names = [ config.os.fonts.mono ];
+        };
+        terminal = config.os.terminal;
+      };
     };
   };
 }

@@ -15,6 +15,7 @@
     # WM / GUI
     ./wm/sway.nix
     ./wm/cursor.nix
+    ./terminal/alacritty.nix
 
     ## services
     ./services
@@ -24,6 +25,7 @@
     ./system/boot.nix
     ./system/filesystem.nix
     ./system/networking.nix
+    ./system/fonts.nix
   ];
   
   ## Global options
@@ -71,6 +73,13 @@
         type = lib.types.bool;
         default = false;
         description = "Whether wayland is used on the system";
+      };
+
+      terminal = lib.mkOption {
+        type = lib.types.path;
+        default = if config.os.wayland
+          then "${pkgs.foot}/bin/foot"
+          else "${pkgs.gnome.gnome-terminal}/bin/gnome-terminal";
       };
     };
   };
