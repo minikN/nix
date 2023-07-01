@@ -49,11 +49,11 @@ nixpkgs.lib.nixosSystem {
       hardware.cpu.intel.updateMicrocode = true;
 
       ## Setting keymap to `de' for this machine.
-      kbLayout = "de";
+      os.layout = "de";
 
       console = {
         font = "Lat2-Terminus16";
-        keyMap = config.kbLayout;
+        keyMap = config.os.layout;
       };
 
       users.users.${config.user} = {

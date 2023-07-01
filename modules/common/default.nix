@@ -40,15 +40,24 @@
       default = "db@minikn.xyz";
     };
 
-    kbLayout = lib.mkOption {
-      type = lib.types.str;
-      description = "Primary keyboard layout";
-      default = "us";
-    };
-    
     stateVersion = lib.mkOption {
       type = lib.types.str;
       description = "State version of nixos and home-manager";
+    };
+
+    ## Namespacing some options so they don't interfere with
+    ## other nix options.
+    os = {
+      layout = lib.mkOption {
+        type = lib.types.str;
+        description = "Primary keyboard layout";
+        default = "us";
+      };
+
+      wm = lib.mkOption {
+        type = lib.types.str;
+        description = "Window manager used throughout the system";
+      };
     };
   };
 
