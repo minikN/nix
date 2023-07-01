@@ -36,8 +36,14 @@
 
     primaryMail = lib.mkOption {
       type = lib.types.str;
-      description = "primary email";
+      description = "Primary email";
       default = "db@minikn.xyz";
+    };
+
+    kbLayout = lib.mkOption {
+      type = lib.types.str;
+      description = "Primary keyboard layout";
+      default = "us";
     };
     
     stateVersion = lib.mkOption {
@@ -60,6 +66,12 @@
         warn-dirty = false
       '';
     };
+
+    ## Timezone and locales
+    ##
+    ## I don't travel
+    time.timeZone = "Europe/Berlin";
+    i18n.defaultLocale = "en_US.UTF-8";
 
     ## Global packages
     ##

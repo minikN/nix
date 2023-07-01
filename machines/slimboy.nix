@@ -26,11 +26,9 @@ nixpkgs.lib.nixosSystem {
     
     ## System specific
     ##
-    ## Inline function that returns the module continaing configuration
-    ## specific to this machine. In order to make it a function we need
-    ## to wrap it in ().
-    ## TODO: Exclude all settings that are not system specific into
-    ## their own modules.
+    ## Closure that returns the module containing configuration specific
+    ## to this machine. In order to make it a function we need to wrap it
+    ## in ().
     ({ lib, config, pkgs, ... }: {
       ## networking
       networking.hostName = "slimboy";
@@ -39,7 +37,10 @@ nixpkgs.lib.nixosSystem {
 
       ## kernel
       boot.initrd.kernelModules = [ "vmd" ];
-      boot.initrd.availableKernelModules = [ "xhci_pci" "thunderbolt" "vmd" "nvme" "usb_storage" "sd_mod" ];
+      boot.initrd.availableKernelModules = [
+        "xhci_pci" "thunderbolt" "vmd"
+        "nvme" "usb_storage" "sd_mod"
+      ];
       
       boot.kernelModules = [ "kvm-intel" ];
       boot.kernelPackages = pkgs.linuxPackagesFor pkgs.linux_latest;
@@ -47,14 +48,12 @@ nixpkgs.lib.nixosSystem {
       hardware.enableRedistributableFirmware = true;
       hardware.cpu.intel.updateMicrocode = true;
 
-      # Set your time zone.
-      time.timeZone = "Europe/Berlin";
+      ## Setting keymap to `de' for this machine.
+      kbLayout = "de";
 
-      # Select internationalisation properties.
-      i18n.defaultLocale = "en_US.UTF-8";
       console = {
         font = "Lat2-Terminus16";
-        keyMap = "de";
+        keyMap = config.kbLayout;
       };
 
       users.users.${config.user} = {
@@ -65,10 +64,9 @@ nixpkgs.lib.nixosSystem {
     
     ## Host agnostic modules
     ##
-    ## A list of file paths containing modules that should be used
-    ## on this machine. They are not specific to this machine and
-    ## can be used on other machines too as long as it fits their
-    ## purpose.
+    ## A list of file paths containing modules that should be used on this
+    ## machine. They are not specific to this machine and can be used on
+    ## other machines too as long as it fits their purpose.
     ../modules/common
   ];
 }
