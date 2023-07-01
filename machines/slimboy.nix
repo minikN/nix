@@ -70,11 +70,11 @@ nixpkgs.lib.nixosSystem {
       hardware.cpu.intel.updateMicrocode = true;
 
       ## Setting keymap to `de' for this machine.
-      os.layout = "de";
+      os.keyboard.layout = "de";
 
       console = {
         font = "Lat2-Terminus16";
-        keyMap = config.os.layout;
+        keyMap = config.os.keyboard.layout;
       };
 
       users.users.${config.user} = {

@@ -48,9 +48,21 @@
       '';
  
       config = {
+
+        ## Keyboard
+        input = {
+          "*" = {
+            xkb_layout = config.os.keyboard.layout;
+            xkb_options = config.os.keyboard.options;
+          };
+        };
+
+        ## Fonts
         fonts = {
           names = [ config.os.fonts.mono ];
         };
+
+        ## Terminal
         terminal = config.os.terminal;
       };
     };

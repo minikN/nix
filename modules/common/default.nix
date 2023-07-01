@@ -79,10 +79,20 @@
     ## Namespacing some options so they don't interfere with
     ## other nix options.
     os = {
-      layout = lib.mkOption {
-        type = lib.types.str;
-        description = "Primary keyboard layout";
-        default = "us";
+      keyboard = {
+        layout = lib.mkOption {
+          type = lib.types.str;
+          description = "Primary keyboard layout";
+          default = "us";
+        };
+
+        options = lib.mkOption {
+          type = lib.types.commas;
+          description = "Keyboard options";
+          default = ''
+            ctrl:nocaps
+          '';
+        };
       };
 
       wm = lib.mkOption {
