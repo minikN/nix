@@ -40,8 +40,8 @@ nixpkgs.lib.nixosSystem {
       networking.networkmanager.enable = true;
 
       ## kernel
-      boot.loader.systemd-boot.enable = true;
-      boot.loader.efi.canTouchEfiVariables = true;
+      #boot.loader.systemd-boot.enable = true;
+      #boot.loader.efi.canTouchEfiVariables = true;
       
       boot.initrd.kernelModules = [ "vmd" ];
       boot.initrd.availableKernelModules = [ "xhci_pci" "thunderbolt" "vmd" "nvme" "usb_storage" "sd_mod" ];

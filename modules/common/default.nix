@@ -11,6 +11,8 @@
     ./git.nix
     ./gpg.nix
     ./shell/zsh.nix
+
+    ./system/boot.nix
   ];
   
   ## Global options
