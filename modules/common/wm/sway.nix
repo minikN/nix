@@ -32,8 +32,20 @@
 
   ## Sway
   home-manager.users.${config.user} = {
+
+   ## TODO: Move to own module 
+   programs.rofi = {
+      enable = true;
+      package = pkgs.rofi-wayland;
+    };
+
     wayland.windowManager.sway = {
       enable = true;
+
+      ## Enable XWayland
+      xwayland = true;
+      
+      ## Properly expose env to DBus
       systemd.enable = true;
       wrapperFeatures = {
         base = true;
@@ -48,6 +60,12 @@
       '';
  
       config = {
+
+        ## Set modifier
+        modifier = "Mod4";
+
+	## use `--to-code' in keybindings
+        bindkeysToCode = true;
 
         ## Keyboard
         input = {
@@ -64,6 +82,27 @@
 
         ## Terminal
         terminal = config.os.terminal;
+
+        ## Appearance
+        floating.border = 0;
+        window.border = 0;
+	window.titlebar = false;
+	gaps.inner = 8;
+
+	## Launcher
+	menu = "${pkgs.rofi-wayland}/bin/rofi -show drun";
+
+	## Keybindings
+        keybindings = let
+	  mod = config.home-manager.users.${config.user}.wayland.windowManager.sway.config.modifier;
+	  menu = config.home-manager.users.${config.user}.wayland.windowManager.sway.config.menu;
+        in lib.mkOptionDefault {
+	  "${mod}+Shift+r" = "reload";
+          "${mod}+Shift+q" = "kill";
+          "${mod}+Shift+f" = "fullscreen";
+          "${mod}+Ctrl+Space" = "focus mode_toggle";
+	  "${mod}+Shift+d" = "exec ${menu}";
+	};
       };
     };
   };
