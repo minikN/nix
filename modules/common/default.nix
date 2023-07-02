@@ -44,6 +44,7 @@
     ./services
     ./services/xdg.nix
     ./services/pipewire.nix
+    ./services/bluetooth.nix
 
     ## system
     ./system/boot.nix
@@ -210,18 +211,30 @@
     ##
     ## Packages should be managed with home-manager whereever
     ## possible. Only use a set of barebones applications here.
-    environment.systemPackages = with pkgs; [ git vim wget curl ];
+    environment.systemPackages = with pkgs; [ git vim wget curl gnome3.adwaita-icon-theme hicolor-icon-theme ];
 
     ## Home manager settings
     home-manager.useGlobalPkgs = true;
     home-manager.useUserPackages = true;
 
+    programs.dconf.enable = true;
+
     ## Setting the `stateVersion' for both home-manager and system.
     home-manager.users.${config.user} = {
-      
+
+    gtk = {
+      enable = true;
+      theme.name = "Adwaita";
+      theme.package = pkgs.gnome.gnome-themes-extra;
+      iconTheme.name = "Adwaita";
+      iconTheme.package = pkgs.gnome3.adwaita-icon-theme;
+    };
+
+     home.packages = [pkgs.gnome3.adwaita-icon-theme pkgs.hicolor-icon-theme pkgs.dconf ]; 
       ## Setting state version for home-manager
       home.stateVersion = "${config.stateVersion}";
     };
+
 
     ## Setting state version for system
     system.stateVersion = "${config.stateVersion}";
