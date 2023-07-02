@@ -34,6 +34,24 @@
       alsa.enable = true;
       pulse.enable = true;
     };
+
+    home-manager.users.${config.user} = {
+    
+      ## Enabling PulseAudio system tray
+      services.pasystray.enable = true;
+      
+      ## Configure pavu to be floating
+      wayland.windowManager.sway.config.window = {
+        commands = lib.mkIf (config.os.wm == "sway") [
+          {
+            command = "floating enable, border pixel 2";
+            criteria = {
+              app_id = "pavucontrol";
+            };
+          }
+        ];
+      };
+    };
   };
 }
 

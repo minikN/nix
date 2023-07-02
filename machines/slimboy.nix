@@ -72,6 +72,9 @@ nixpkgs.lib.nixosSystem {
       os.output.primary.name = "eDP-1";
       os.output.primary.hidpi = true;
 
+      ## Declaring this machine to be a laptop
+      os.machine.isLaptop = true;
+
       ## Setting keymap to `de' for this machine.
       os.keyboard.layout = "de";
 
