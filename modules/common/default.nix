@@ -133,6 +133,14 @@
         description = "Shell used on the system";
       };
 
+      machine = {
+        isLaptop = lib.mkOption {
+          type = lib.types.bool;
+          description = "Whether the machine is a laptop";
+          default = false;
+        };
+      };
+
       ## Machine-specific outputs
       output = {
         primary = {
@@ -219,6 +227,8 @@
 
     ## Setting the `stateVersion' for both home-manager and system.
     home-manager.users.${config.user} = {
+
+      home.packages = [ pkgs.ungoogled-chromium ];
 
       ## Setting state version for home-manager
       home.stateVersion = "${config.stateVersion}";

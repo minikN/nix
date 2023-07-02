@@ -100,7 +100,7 @@
                 "7" = []; 
             };
           };
-          "battery" = {
+          "battery" = lib.mkIf (config.os.machine.isLaptop) {
             format = "{icon}";
             format-charging = "󱐋 {icon}";
             tooltip-format = "Current capacity: {capacity}%\n{timeTo}";
