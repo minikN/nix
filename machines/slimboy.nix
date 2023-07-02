@@ -53,7 +53,6 @@ nixpkgs.lib.nixosSystem {
     ({ lib, config, pkgs, ... }: {
       ## networking
       networking.hostName = "slimboy";
-      #networking.interfaces.enp0s20f0u1.useDHCP = true; # Ethernet dongle
       networking.interfaces.wlp0s20f3.useDHCP = true; # WiFi
 
       ## kernel
