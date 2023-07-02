@@ -77,7 +77,7 @@
           ## Primary
           "${config.os.output.primary.name}" = {
             scale = if config.os.output.primary.hidpi
-              then "2"
+              then "1.5"
               else "1";
           };
         };

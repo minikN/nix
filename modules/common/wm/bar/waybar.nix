@@ -27,6 +27,13 @@
 
 {
   config = {
+    nixpkgs.overlays = [
+      (self: super: {
+        waybar = super.waybar.overrideAttrs (oldAttrs: {
+            mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
+        });
+      })
+    ];
 
     os.bar = "${pkgs.waybar}/bin/waybar";
 
@@ -34,9 +41,111 @@
     home-manager.users.${config.user} = {
     programs.waybar = {
       enable = true;
+
+      ## SystemD integration
       systemd.enable = true;
       systemd.target = "sway-session.target";
       
+      ## Settings
+      settings = {
+        primary = {
+          layer = "top";
+          position = "top";
+          name = "primary";
+          output = [ "${config.os.output.primary.name}" ];
+          modules-left = [
+            (
+              if config.os.wm == "sway"
+              then "sway/workspaces"
+              else "wlr/workspaces"
+            )
+          ];
+          modules-center = ["${config.os.wm}/window"];
+          modules-right = [
+            "disk#system"
+            "cpu"
+            "memory"
+            "temperature"
+            "battery"
+            "tray"
+            "clock"
+          ];
+          "sway/workspaces" = lib.mkIf (config.os.wm == "sway") {
+            format = "{icon}";
+            on-click = "activate";
+            all-outputs = true;
+            disable-scroll = true;
+            sort-by-number = true;
+            format-icons = {
+              "1" = "";
+              "2" = "󱄅";
+              "3" = "";
+              "4" = "󰃯";
+              "5" = "󰫔";
+              "6" = "󱋊";
+              "7" = "󰺶";
+              "9" = "\\uf008";
+              "10" = "\\uf07c";
+              "urgent" = "\\uf06a";
+              "focused" = "\\uf192";
+              "default" = "\\uf111";
+            };
+            persistent_workspaces = {
+                "1" = []; 
+                "2" = []; 
+                "3" = []; 
+                "4" = []; 
+                "5" = []; 
+                "6" = []; 
+                "7" = []; 
+            };
+          };
+          "battery" = {
+            format = "{icon}";
+            format-charging = "󱐋 {icon}";
+            tooltip-format = "Current capacity: {capacity}%\n{timeTo}";
+            states = {
+              empty = 5;
+              low = 15;
+              half-low = 40;
+              half = 60;
+              high = 85;
+              full = 100;
+            };
+            format-icons = [ "" "" "" "" "" "" ];
+          };
+          clock = {
+            tooltip-format = "<big>{:%B %Y}</big>\n<tt><small>{calendar}</small></tt>";
+            format = "{:%H:%M}";
+            interval = 60;
+          };
+           temperature = {
+            critical-threshold = 80;
+            format-critical = "<span color=\"#ab4642\">{temperatureC}°C </span>";
+            format = " {temperatureC}°C";
+            format-icons = [ "" "" "" "" "" ];
+            interval = 10;
+          };
+          memory = {
+            interval = 10;
+            format = "󰍛 {}%";
+            tooltip-format = "{used:0.1f}G / {total:0.1f}G";
+          };
+          cpu = {
+            interval = 2;
+            format = "󰻠 {usage}%";
+            max-length = 10;
+          };
+          "disk\#system" = {
+            interval = 30;
+            format = "󰋊 {percentage_used}%";
+            tooltip-format = "{path}: {used} / {total}";
+            path = "/";
+          };
+        };
+      };
+
+      ## Styles  
       style = ''
         /*
         *
