@@ -36,6 +36,7 @@
     # WM / GUI
     ./wm/sway.nix
     ./wm/cursor.nix
+    ./wm/launcher/rofi.nix
     ./terminal/alacritty.nix
 
     ## services
@@ -98,6 +99,11 @@
       wm = lib.mkOption {
         type = lib.types.str;
         description = "Window manager used throughout the system";
+      };
+
+      launcher = lib.mkOption {
+        type = lib.types.path;
+        description = "The launcher used throughout the system";
       };
 
       wayland = lib.mkOption {

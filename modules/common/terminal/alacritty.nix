@@ -66,7 +66,7 @@
 
         ## Font
         font = {
-	  size = 11;
+	  	size = config.os.fonts.mono.size;
 
           offset.x = 0; ## letter spacing
           offset.y = 0; ## line spacing
@@ -74,13 +74,13 @@
           glyph_offset.x = 0;
           glyph_offset.y = 0;
 
-          normal.family = config.os.fonts.mono;
+          normal.family = config.os.fonts.mono.name;
           normal.style = "Regular";
 
-          bold.family = config.os.fonts.mono;
+          bold.family = config.os.fonts.mono.name;
           bold.style = "Bold";
 
-          italic.family = config.os.fonts.mono;
+          italic.family = config.os.fonts.mono.name;
           italic.style = "Italic"; 
         };
 

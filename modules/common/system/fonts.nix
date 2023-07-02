@@ -28,10 +28,18 @@
 {
   options = {
     os.fonts = {
-      mono = lib.mkOption {
-        type = lib.types.str;
-        description = "Default monospaced font";
-        default = "Iosevka NFM";
+      mono = {
+        name = lib.mkOption {
+          type = lib.types.str;
+          description = "Default monospaced font";
+          default = "Iosevka NFM";
+        };
+        
+        size = lib.mkOption {
+          type = lib.types.int;
+          description = "Default font size";
+          default = 12;
+        };
       };
     };
   };

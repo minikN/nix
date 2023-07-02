@@ -32,12 +32,8 @@
 
   ## Sway
   home-manager.users.${config.user} = {
-
-   ## TODO: Move to own module 
-   programs.rofi = {
-      enable = true;
-      package = pkgs.rofi-wayland;
-    };
+    ## TODO: Move to own module 
+    programs.vscode.enable = true;
 
     wayland.windowManager.sway = {
       enable = true;
@@ -64,7 +60,7 @@
         ## Set modifier
         modifier = "Mod4";
 
-	## use `--to-code' in keybindings
+	      ## use `--to-code' in keybindings
         bindkeysToCode = true;
 
         ## Keyboard
@@ -85,9 +81,10 @@
               else "1";
           };
         };
+
         ## Fonts
         fonts = {
-          names = [ config.os.fonts.mono ];
+          names = [ config.os.fonts.mono.name ];
         };
 
         ## Terminal
@@ -96,23 +93,23 @@
         ## Appearance
         floating.border = 0;
         window.border = 0;
-	window.titlebar = false;
-	gaps.inner = 8;
+	      window.titlebar = false;
+	      gaps.inner = 8;
 
-	## Launcher
-	menu = "${pkgs.rofi-wayland}/bin/rofi -show drun";
+	      ## Launcher
+	      menu = config.os.launcher;
 
-	## Keybindings
+	      ## Keybindings
         keybindings = let
-	  mod = config.home-manager.users.${config.user}.wayland.windowManager.sway.config.modifier;
-	  menu = config.home-manager.users.${config.user}.wayland.windowManager.sway.config.menu;
+	      mod = config.home-manager.users.${config.user}.wayland.windowManager.sway.config.modifier;
+	      menu = config.home-manager.users.${config.user}.wayland.windowManager.sway.config.menu;
         in lib.mkOptionDefault {
-	  "${mod}+Shift+r" = "reload";
+	        "${mod}+Shift+r" = "reload";
           "${mod}+Shift+q" = "kill";
           "${mod}+Shift+f" = "fullscreen";
           "${mod}+Ctrl+Space" = "focus mode_toggle";
-	  "${mod}+Shift+d" = "exec ${menu}";
-	};
+	        "${mod}+Shift+d" = "exec ${menu}";
+	      };
       };
     };
   };
