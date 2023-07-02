@@ -95,5 +95,7 @@ nixpkgs.lib.nixosSystem {
     ## machine. They are not specific to this machine and can be used on
     ## other machines too as long as it fits their purpose.
     ../modules/common
+
+    ../modules/hardware/backlight.nix
   ];
 }
