@@ -139,6 +139,12 @@
           description = "Whether the machine is a laptop";
           default = false;
         };
+
+        temperaturePath = lib.mkOption {
+          type = lib.types.path;
+          description = "Machine specific path to the core temp class";
+          default = "/sys/class/hwmon/hwmon4/temp1_input";
+        };
       };
 
       ## Machine-specific outputs

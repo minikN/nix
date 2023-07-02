@@ -38,8 +38,7 @@
     os.bar = "${pkgs.waybar}/bin/waybar";
 
     ## Configuration
-    home-manager.users.${config.user} = {
-    programs.waybar = {
+    home-manager.users.${config.user}.programs.waybar = {
       enable = true;
 
       ## SystemD integration
@@ -121,6 +120,7 @@
           };
            temperature = {
             critical-threshold = 80;
+            hwmon-path = config.os.machine.temperaturePath;
             format-critical = "<span color=\"#ab4642\">{temperatureC}°C </span>";
             format = " {temperatureC}°C";
             format-icons = [ "" "" "" "" "" ];
@@ -279,7 +279,6 @@
         }
       '';
     };
-  };
   };
 }
 
