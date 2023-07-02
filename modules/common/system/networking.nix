@@ -42,6 +42,19 @@
   ## Enabling appropriate groups
   users.users.${config.user} = {
     extraGroups = [ "networkmanager" ]; 
-    isNormalUser = true;
   };
+
+    ## Configuring nm app windows to be floating
+    home-manager.users.${config.user} = {
+      wayland.windowManager.sway.config.window = {
+        commands = lib.mkIf (config.os.wm == "sway") [
+          {
+            command = "floating enable, border pixel 2";
+            criteria = {
+              app_id = "nm-.*";
+            };
+          }
+        ];
+      };
+    };
 }

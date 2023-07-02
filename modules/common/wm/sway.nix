@@ -91,9 +91,10 @@
         terminal = config.os.terminal;
 
         ## Appearance
-        floating.border = 0;
+        floating.border = 1;
         window.border = 0;
 	      window.titlebar = false;
+        floating.titlebar = false;
 	      gaps.inner = 8;
 
 	      ## Launcher

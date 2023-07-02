@@ -36,18 +36,13 @@
     home-manager.users.${config.user} = {
       services.blueman-applet.enable = true;
 
+      ## Configure blueman windows to be floating
       wayland.windowManager.sway.config.window = {
         commands = lib.mkIf (config.os.wm == "sway") [
           {
-            command = "floating enable";
+            command = "floating enable, border pixel 2";
             criteria = {
-              app_id = ".blueman-manager-wrapped";
-            };
-          }
-          {
-            command = "floating enable";
-            criteria = {
-              app_id = ".blueman-services-wrapped";
+              app_id = "\.blueman.*";
             };
           }
         ];
