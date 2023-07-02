@@ -43,13 +43,13 @@
         enable = true;
         package = rofiPkg;
         theme = "Arc";
-        font = "${config.os.fonts.mono.name} ${builtins.toString config.os.fonts.mono.size}";
+        font = "${config.os.fonts.mono.light} ${builtins.toString config.os.fonts.mono.size}";
       
         extraConfig = {
           show-actions = true;
           show-icons = true;
 
-          ## Keybindings
+          ## Keybindingst
           kb-element-next = "";
           kb-row-select = "Tab,Control+i";
           kb-secondary-paste = "Control+y";

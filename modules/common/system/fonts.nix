@@ -29,11 +29,18 @@
   options = {
     os.fonts = {
       mono = {
-        name = lib.mkOption {
+        regular = lib.mkOption {
           type = lib.types.str;
           description = "Default monospaced font";
           default = "Iosevka NFM";
         };
+
+        light = lib.mkOption {
+          type = lib.types.str;
+          description = "Default monospaced font";
+          default = "${config.os.fonts.mono.regular} Light";
+        };
+        
         
         size = lib.mkOption {
           type = lib.types.int;

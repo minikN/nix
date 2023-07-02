@@ -74,13 +74,13 @@
           glyph_offset.x = 0;
           glyph_offset.y = 0;
 
-          normal.family = config.os.fonts.mono.name;
+          normal.family = config.os.fonts.mono.regular;
           normal.style = "Regular";
 
-          bold.family = config.os.fonts.mono.name;
+          bold.family = config.os.fonts.mono.regular;
           bold.style = "Bold";
 
-          italic.family = config.os.fonts.mono.name;
+          italic.family = config.os.fonts.mono.regular;
           italic.style = "Italic"; 
         };
 

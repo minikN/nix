@@ -84,7 +84,7 @@
 
         ## Fonts
         fonts = {
-          names = [ config.os.fonts.mono.name ];
+          names = [ config.os.fonts.mono.regular ];
         };
 
         ## Terminal
