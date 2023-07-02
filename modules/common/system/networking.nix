@@ -32,6 +32,12 @@
 
   ## Enable network manager
   networking.networkmanager.enable = true;
+
+  ## Enabling nm in tray
+  programs.nm-applet = {
+    enable = true;
+    indicator = true;
+  };
   
   ## Enabling appropriate groups
   users.users.${config.user} = {
