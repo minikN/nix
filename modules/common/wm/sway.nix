@@ -91,7 +91,7 @@
         terminal = config.os.terminal;
 
         ## Appearance
-        floating.border = 1;
+        floating.border = 2;
         window.border = 0;
 	      window.titlebar = false;
         floating.titlebar = false;
@@ -100,10 +100,7 @@
 	      ## Launcher
 	      menu = config.os.launcher;
 
-        ## Bar
-        #bars = [{
-        #  command = "${config.os.bar}";
-        #}];
+        ## We'll start the bar through waybar
         bars = [];
 
 	      ## Keybindings
