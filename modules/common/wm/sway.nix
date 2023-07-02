@@ -99,6 +99,12 @@
 	      ## Launcher
 	      menu = config.os.launcher;
 
+        ## Bar
+        #bars = [{
+        #  command = "${config.os.bar}";
+        #}];
+        bars = [];
+
 	      ## Keybindings
         keybindings = let
 	      mod = config.home-manager.users.${config.user}.wayland.windowManager.sway.config.modifier;

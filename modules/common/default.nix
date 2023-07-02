@@ -37,11 +37,13 @@
     ./wm/sway.nix
     ./wm/cursor.nix
     ./wm/launcher/rofi.nix
+    ./wm/bar/waybar.nix
     ./terminal/alacritty.nix
 
     ## services
     ./services
     ./services/xdg.nix
+    ./services/pipewire.nix
 
     ## system
     ./system/boot.nix
@@ -104,6 +106,11 @@
       launcher = lib.mkOption {
         type = lib.types.path;
         description = "The launcher used throughout the system";
+      };
+
+      bar = lib.mkOption {
+        type = lib.types.path;
+        description = "The bar used throughout the system";
       };
 
       wayland = lib.mkOption {

@@ -82,7 +82,7 @@ nixpkgs.lib.nixosSystem {
       };
 
       users.users.${config.user} = {
-        extraGroups = [ "wheel" "video" ]; 
+        extraGroups = [ "wheel" "video" "input" ]; 
         isNormalUser = true;
       };
     })
