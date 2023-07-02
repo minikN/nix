@@ -53,7 +53,7 @@ nixpkgs.lib.nixosSystem {
     ({ lib, config, pkgs, ... }: {
       ## networking
       networking.hostName = "slimboy";
-      networking.interfaces.enp0s20f0u1.useDHCP = true; # Ethernet dongle
+      #networking.interfaces.enp0s20f0u1.useDHCP = true; # Ethernet dongle
       networking.interfaces.wlp0s20f3.useDHCP = true; # WiFi
 
       ## kernel
@@ -70,7 +70,7 @@ nixpkgs.lib.nixosSystem {
       hardware.cpu.intel.updateMicrocode = true;
 
       ## Display settings
-      os.output.primary.name = "Chimei Innolux Corporation 0x1411 Unknown";
+      os.output.primary.name = "eDP-1";
       os.output.primary.hidpi = true;
 
       ## Setting keymap to `de' for this machine.
