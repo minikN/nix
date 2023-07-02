@@ -75,6 +75,16 @@
           };
         };
 
+        ## Output configuration
+        output = {
+          
+          ## Primary
+          "${config.os.output.primary.name}" = {
+            scale = if config.os.output.primary.hidpi
+              then "2"
+              else "1";
+          };
+        };
         ## Fonts
         fonts = {
           names = [ config.os.fonts.mono ];

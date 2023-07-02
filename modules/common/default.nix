@@ -113,11 +113,46 @@
           else "${pkgs.gnome.gnome-terminal}/bin/gnome-terminal";
       };
 
-
       shell = lib.mkOption {
         type = lib.types.str;
         default = "bash";
         description = "Shell used on the system";
+      };
+
+      ## Machine-specific outputs
+      output = {
+        primary = {
+          name = lib.mkOption {
+            type = lib.types.str;
+            description = "Primary output of the machine";
+          };
+          hidpi = lib.mkOption {
+            type = lib.types.bool;
+            description = "Whether the primary output is a HiDPI display";
+          };
+        };
+        
+        left = {
+          name = lib.mkOption {
+            type = lib.types.str;
+            description = "Left output of the machine";
+          };
+          hidpi = lib.mkOption {
+            type = lib.types.bool;
+            description = "Whether the left output is a HiDPI display";
+          };
+        };
+
+        right = {
+          name = lib.mkOption {
+            type = lib.types.str;
+            description = "Right output of the machine";
+          };
+          hidpi = lib.mkOption {
+            type = lib.types.bool;
+            description = "Whether the right output is a HiDPI display";
+          };
+        };
       };
     };
   };
@@ -153,6 +188,11 @@
     ## Allow unfree packages
     nixpkgs.config.allowUnfree = true;
 
+    ## Setting correct application settings if we're running wayland
+    environment.sessionVariables.NIXOS_OZONE_WL = if config.os.wayland
+      then "1"
+      else "0";
+	
     ## Global packages
     ##
     ## Packages should be managed with home-manager whereever

@@ -69,6 +69,10 @@ nixpkgs.lib.nixosSystem {
       hardware.enableRedistributableFirmware = true;
       hardware.cpu.intel.updateMicrocode = true;
 
+      ## Display settings
+      os.output.primary.name = "Chimei Innolux Corporation 0x1411 Unknown";
+      os.output.primary.hidpi = true;
+
       ## Setting keymap to `de' for this machine.
       os.keyboard.layout = "de";
 
