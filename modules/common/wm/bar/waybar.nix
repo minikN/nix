@@ -124,7 +124,7 @@
             format-critical = "<span color=\"#ab4642\">{temperatureC}°C </span>";
             format = " {temperatureC}°C";
             format-icons = [ "" "" "" "" "" ];
-            interval = 10;
+            interval = 2;
           };
           memory = {
             interval = 10;
