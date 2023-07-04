@@ -69,6 +69,9 @@
             "tray"
             "clock"
           ];
+          "sway/window" = lib.mkIf (config.os.wm == "sway") {
+            max-length = 50;
+          };
           "sway/workspaces" = lib.mkIf (config.os.wm == "sway") {
             format = "{icon}";
             on-click = "activate";
