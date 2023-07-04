@@ -121,7 +121,7 @@
            temperature = {
             critical-threshold = 80;
             hwmon-path = config.os.machine.temperaturePath;
-            format-critical = "<span color=\"#ab4642\">{temperatureC}°C </span>";
+            format-critical = "<span color=\"#ab4642\"> {temperatureC}°C</span>";
             format = " {temperatureC}°C";
             format-icons = [ "" "" "" "" "" ];
             interval = 2;
