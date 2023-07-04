@@ -98,21 +98,23 @@
 	      gaps.inner = 8;
 
 	      ## Launcher
-	      menu = config.os.launcher;
+	      menu = "${config.os.launcher.path} ${config.os.launcher.args}";
 
-        ## We'll start the bar through waybar
+        ## We'll start the bar through dbus
         bars = [];
 
 	      ## Keybindings
         keybindings = let
-	      mod = config.home-manager.users.${config.user}.wayland.windowManager.sway.config.modifier;
-	      menu = config.home-manager.users.${config.user}.wayland.windowManager.sway.config.menu;
+	        mod = config.home-manager.users.${config.user}.wayland.windowManager.sway.config.modifier;
+	        menu = config.home-manager.users.${config.user}.wayland.windowManager.sway.config.menu;
+          passwordManager = config.os.passwordManager;
         in lib.mkOptionDefault {
 	        "${mod}+Shift+r" = "reload";
           "${mod}+Shift+q" = "kill";
           "${mod}+Shift+f" = "fullscreen";
           "${mod}+Ctrl+Space" = "focus mode_toggle";
 	        "${mod}+Shift+d" = "exec ${menu}";
+          "${mod}+Shift+p" = "exec ${passwordManager}";
 	      };
       };
     };

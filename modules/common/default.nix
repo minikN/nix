@@ -30,7 +30,6 @@
 {
   imports = [
     ./git.nix
-    ./gpg.nix
     ./shell/zsh.nix
 
     # WM / GUI
@@ -45,6 +44,11 @@
     ./services/xdg.nix
     ./services/pipewire.nix
     ./services/bluetooth.nix
+
+    # security
+    ./security/gpg.nix
+    ./security/pass.nix
+    ./security/tessen.nix
 
     ## system
     ./system/boot.nix
@@ -73,6 +77,12 @@
       type = lib.types.str;
       description = "Primary email";
       default = "db@minikn.xyz";
+    };
+    
+    passDir = lib.mkOption {
+      type = lib.types.path;
+      description = "Default path to password-store";
+      default = "${config.users.users.${config.user}.home}/.local/var/lib/password-store";
     };
 
     stateVersion = lib.mkOption {
@@ -104,9 +114,21 @@
         description = "Window manager used throughout the system";
       };
 
-      launcher = lib.mkOption {
-        type = lib.types.path;
-        description = "The launcher used throughout the system";
+      launcher = {
+        path = lib.mkOption {
+          type = lib.types.path;
+          description = "Name of the launcher used";
+        };
+        
+        configFile = lib.mkOption {
+          type = lib.types.path;
+          description = "Config file of the current launcher";
+        }; 
+
+        args = lib.mkOption {
+          type = lib.types.str;
+          description = "Additional args for the launcher";
+        };
       };
 
       bar = lib.mkOption {
@@ -131,6 +153,11 @@
         type = lib.types.str;
         default = "bash";
         description = "Shell used on the system";
+      };
+
+      passwordManager = lib.mkOption {
+        type = lib.types.path;
+        description = "The password manager in use";
       };
 
       machine = {
@@ -234,10 +261,28 @@
     ## Setting the `stateVersion' for both home-manager and system.
     home-manager.users.${config.user} = {
 
-      home.packages = [ pkgs.ungoogled-chromium ];
+      home = lib.mkMerge [
+        {
+          ## Setting state version for home-manager
+          stateVersion = "${config.stateVersion}";
 
-      ## Setting state version for home-manager
-      home.stateVersion = "${config.stateVersion}";
+          ## Global home packages
+          packages = with pkgs; [
+              ungoogled-chromium
+              libnotify
+            ];
+        }
+        (lib.mkIf config.os.wayland {
+
+          ## Wayland specific packages
+          packages = with pkgs; [
+            wl-clipboard
+            mako
+          ];
+        })
+      ];
+      #home.packages = [ pkgs.ungoogled-chromium ];
+
     };
 
 
