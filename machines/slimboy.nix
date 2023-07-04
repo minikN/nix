@@ -97,5 +97,7 @@ nixpkgs.lib.nixosSystem {
     ../modules/common
 
     ../modules/hardware/backlight.nix
+
+    ../modules/browsers/chromium.nix
   ];
 }
