@@ -30,14 +30,16 @@
 {
   imports = [
     ./git.nix
-    ./shell/zsh.nix
 
     # WM / GUI
     ./wm/sway.nix
     ./wm/cursor.nix
     ./wm/launcher/rofi.nix
     ./wm/bar/waybar.nix
+
+    ## Terminal
     ./terminal/alacritty.nix
+    ./shell/zsh.nix
 
     ## services
     ./services
@@ -286,8 +288,6 @@
           ];
         })
       ];
-      #home.packages = [ pkgs.ungoogled-chromium ];
-
     };
 
 

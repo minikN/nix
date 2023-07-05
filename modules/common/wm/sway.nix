@@ -32,9 +32,6 @@
 
   ## Sway
   home-manager.users.${config.user} = {
-    ## TODO: Move to own module 
-    programs.vscode.enable = true;
-
     wayland.windowManager.sway = {
       enable = true;
 

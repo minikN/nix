@@ -19,28 +19,15 @@
 ###
 ### COMMENT:
 ###
-### Enables modules commonly used for (web)development
+### VSCode configuration
 ###
 ### CODE:
 
 { config, lib, pkgs, ... }:
 
 {
-  imports = [
-    ## Reverse import the wrapper feature so that the options are defined.
-    ../features
-
-    ## Browsers
-    ../modules/browsers/chromium.nix
-    ../modules/browsers/firefox.nix
-
-    ## IDE
-    ../modules/development/webstorm.nix
-    ../modules/development/vscode.nix
-  ];
-
-  config = {  
-    ## Setting the appropriate option so other modules know it.
-    features.development = true;
+  home-manager.users.${config.user}.programs.vscode = {
+    enable = true;
   };
 }
+

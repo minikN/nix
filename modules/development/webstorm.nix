@@ -19,28 +19,18 @@
 ###
 ### COMMENT:
 ###
-### Enables modules commonly used for (web)development
+### Webstorm configuration
 ###
 ### CODE:
 
 { config, lib, pkgs, ... }:
 
 {
-  imports = [
-    ## Reverse import the wrapper feature so that the options are defined.
-    ../features
+  home-manager.users.${config.user} = {
 
-    ## Browsers
-    ../modules/browsers/chromium.nix
-    ../modules/browsers/firefox.nix
-
-    ## IDE
-    ../modules/development/webstorm.nix
-    ../modules/development/vscode.nix
-  ];
-
-  config = {  
-    ## Setting the appropriate option so other modules know it.
-    features.development = true;
+    home.packages = [
+      pkgs.jetbrains.webstorm
+    ];
   };
 }
+
