@@ -100,9 +100,11 @@ nixpkgs.lib.nixosSystem {
     ## other machines too as long as it fits their purpose.
     ../modules/common
 
+    ## Hardware specific modules
     ../modules/hardware/backlight.nix
 
-    ../modules/browsers/chromium.nix
-    ../modules/browsers/firefox.nix
+    ## Features
+    ## Sets of modules for a specific purpose
+    ../features/development.nix
   ];
 }

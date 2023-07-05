@@ -85,7 +85,7 @@
               "4" = "󰃯";
               "5" = "󰫔";
               "6" = "󱋊";
-              "7" = "󰺶";
+              "7" = lib.mkIf config.features.gaming "󰺶";
               "9" = "\\uf008";
               "10" = "\\uf07c";
               "urgent" = "\\uf06a";
@@ -99,7 +99,7 @@
                 "4" = []; 
                 "5" = []; 
                 "6" = []; 
-                "7" = []; 
+                "7" = lib.mkIf config.features.gaming []; 
             };
           };
           "battery" = lib.mkIf (config.os.machine.isLaptop) {
