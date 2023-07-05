@@ -28,6 +28,22 @@
 {
   home-manager.users.${config.user}.programs.vscode = {
     enable = true;
+    userSettings = {
+      ## No auto-sync
+      "git.confirmSync" = false;
+      
+      ## Auto save
+      "files.autoSave" = "onFocusChange";
+
+      ## Indentation
+      "editor.tabSize" =  2;
+      "editor.detectIndentation" = false;
+
+      ## Font
+      "editor.fontFamily" = "'${config.os.fonts.mono.regular}', 'monospace', monospace";
+      "editor.fontSize" = config.os.fonts.mono.size + 2;
+      "editor.fontLigatures" = true;
+    };
   };
 }
 
