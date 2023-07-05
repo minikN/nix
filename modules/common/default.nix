@@ -31,6 +31,9 @@
   imports = [
     ./git.nix
 
+    # Repositories
+    ../repositories/dotfiles.nix
+
     # WM / GUI
     ./wm/sway.nix
     ./wm/cursor.nix
