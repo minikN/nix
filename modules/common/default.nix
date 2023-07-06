@@ -44,6 +44,9 @@
     ./terminal/alacritty.nix
     ./shell/zsh.nix
 
+    ## File manager
+    ./file-manager/thunar.nix
+
     ## services
     ./services
     ./services/xdg.nix
