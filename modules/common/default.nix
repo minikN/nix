@@ -255,9 +255,10 @@
     nixpkgs.config.allowUnfree = true;
 
     ## Setting correct application settings if we're running wayland
-    environment.sessionVariables.NIXOS_OZONE_WL = if config.os.wayland
-      then "1"
-      else "0";
+    environment.sessionVariables = lib.mkIf config.os.wayland {
+      NIXOS_OZONE_WL = "1";
+      GTK_USE_PORTAL = "1";
+    };
 	
     ## Global packages
     ##
