@@ -106,5 +106,8 @@ nixpkgs.lib.nixosSystem {
     ## Features
     ## Sets of modules for a specific purpose
     ../features/development.nix
+
+    ## Chat
+    ../modules/chat/discord.nix
   ];
 }
