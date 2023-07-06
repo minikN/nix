@@ -109,5 +109,6 @@ nixpkgs.lib.nixosSystem {
 
     ## Chat
     ../modules/chat/discord.nix
+    ../modules/chat/slack.nix
   ];
 }
