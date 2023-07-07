@@ -39,7 +39,10 @@
     ./wm/cursor.nix
     ./wm/launcher/rofi.nix
     ./wm/bar/waybar.nix
-    #./wm/screenshot/swappy.nix
+    ./image/screenshot/swappy.nix
+
+    ## Scripts
+    ./scripts/screenshot.nix
 
     ## Terminal
     ./terminal/alacritty.nix

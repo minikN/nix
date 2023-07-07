@@ -105,6 +105,7 @@
 	        mod = config.home-manager.users.${config.user}.wayland.windowManager.sway.config.modifier;
 	        menu = config.home-manager.users.${config.user}.wayland.windowManager.sway.config.menu;
           passwordManager = config.os.passwordManager;
+          screenshot = config.os.screenshot;
         in lib.mkOptionDefault {
 	        "${mod}+Shift+r" = "reload";
           "${mod}+Shift+q" = "kill";
@@ -112,6 +113,7 @@
           "${mod}+Ctrl+Space" = "focus mode_toggle";
 	        "${mod}+Shift+d" = "exec ${menu}";
           "${mod}+Shift+p" = "exec ${passwordManager}";
+          "Print" = "exec ${screenshot}/bin/screenshot";
 	      };
       };
     };
