@@ -61,10 +61,10 @@
           exec ${pkgs.pulseaudioFull}/bin/pactl set-sink-mute @DEFAULT_SINK@ false; \
           exec ${pkgs.pulseaudioFull}/bin/pactl set-sink-volume @DEFAULT_SINK@ +5%
           bindsym --locked XF86AudioLowerVolume \
-          exec pactl${pkgs.pulseaudioFull}/bin/pactl set-sink-mute @DEFAULT_SINK@ false; \
-          exec ${pkgs.pulseaudioFull}/bin/pactlpactl set-sink-volume @DEFAULT_SINK@ -5%
-          bindsym --locked XF86AudioMute exec ${pkgs.pulseaudioFull}/bin/pactlpactl set-sink-mute @DEFAULT_SINK@ toggle
-          bindsym --locked XF86AudioMicMute exec ${pkgs.pulseaudioFull}/bin/pactlpactl set-source-mute @DEFAULT_SOURCE@ toggle
+          exec ${pkgs.pulseaudioFull}/bin/pactl set-sink-mute @DEFAULT_SINK@ false; \
+          exec ${pkgs.pulseaudioFull}/bin/pactl set-sink-volume @DEFAULT_SINK@ -5%
+          bindsym --locked XF86AudioMute exec ${pkgs.pulseaudioFull}/bin/pactl set-sink-mute @DEFAULT_SINK@ toggle
+          bindsym --locked XF86AudioMicMute exec ${pkgs.pulseaudioFull}/bin/pactl set-source-mute @DEFAULT_SOURCE@ toggle
         '';
       };
     };
