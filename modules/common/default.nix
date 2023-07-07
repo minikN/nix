@@ -39,6 +39,7 @@
     ./wm/cursor.nix
     ./wm/launcher/rofi.nix
     ./wm/bar/waybar.nix
+    #./wm/screenshot/swappy.nix
 
     ## Terminal
     ./terminal/alacritty.nix
@@ -123,8 +124,13 @@
       };
 
       launcher = {
-        path = lib.mkOption {
+        pkg = lib.mkOption {
           type = lib.types.path;
+          description = "The launcher in use";
+        };
+
+        name = lib.mkOption {
+          type = lib.types.str;
           description = "Name of the launcher used";
         };
         
@@ -291,6 +297,8 @@
           ## Wayland specific packages
           packages = with pkgs; [
             wl-clipboard
+            grim
+            slurp
             mako
           ];
         })

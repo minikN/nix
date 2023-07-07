@@ -95,7 +95,7 @@
 	      gaps.inner = 8;
 
 	      ## Launcher
-	      menu = "${config.os.launcher.path} ${config.os.launcher.args}";
+	      menu = "${config.os.launcher.pkg}/bin/${config.os.launcher.name} ${config.os.launcher.args}";
 
         ## We'll start the bar through dbus
         bars = [];

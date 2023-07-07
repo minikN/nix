@@ -35,7 +35,8 @@
   in {
 
     ## Telling the config about the launcher
-    os.launcher.path = "${rofiPkg}/bin/rofi";
+    os.launcher.pkg = rofiPkg;
+    os.launcher.name = "rofi";
     os.launcher.args = "-show drun";
     os.launcher.configFile = config.home-manager.users.${config.user}.programs.rofi.configPath;
 

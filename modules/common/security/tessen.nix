@@ -26,11 +26,7 @@
 { config, lib, pkgs, ... }:
 
 {
-  config = let
-
-    ## Getting the basename of the current launcher
-    launcher = builtins.baseNameOf config.os.launcher.path;
-  in {
+  config = {
 
     ## Informing nix about the current password manager
     os.passwordManager = "${pkgs.tessen}/bin/tessen";
@@ -42,8 +38,8 @@
       ## The use of 'launcher` makes tessen work with every launcher
       ## as long as it's supported by it
       xdg.configFile."tessen/config".text = ''
-        dmenu_backend="${launcher}"
-        ${launcher}_config_file="${config.os.launcher.configFile}"
+        dmenu_backend="${config.os.launcher.name}"
+        ${config.os.launcher.name}_config_file="${config.os.launcher.configFile}"
       '';
     };
   };
