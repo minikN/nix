@@ -25,11 +25,14 @@
 ###
 ### CODE:
 
-{ self, config, lib, pkgs, ... }:
+{ nur, config, lib, pkgs, ... }:
 
 {
   config = {
     home-manager.users.${config.user} = {
+      #imports = [
+      #  nur.repos.rycee.hmModules.emacs-init
+      #];
       programs.emacs = {
         extraPackages = epkgs: [ epkgs.minions ];
         extraConfig = ''

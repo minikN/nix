@@ -42,6 +42,9 @@
       fullName = "Demis Balbach";
       stateVersion = "23.05";
     };
+      overlays = [
+        inputs.nur.overlay
+      ];
 
     supportedSystems = [ "x86_64-linux" ];
     forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
@@ -50,7 +53,7 @@
     
     ## System configurations
     nixosConfigurations = {
-      slimboy = import ./machines/slimboy.nix { inherit inputs globals nixpkgs; };
+      slimboy = import ./machines/slimboy.nix { inherit inputs globals nixpkgs overlays; };
     };
 
     ## Home configurations
