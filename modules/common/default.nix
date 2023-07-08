@@ -51,22 +51,28 @@
     ## File manager
     ./file-manager/thunar.nix
 
-    ## services
+    ## Services
     ./services
     ./services/xdg.nix
     ./services/pipewire.nix
     ./services/bluetooth.nix
 
-    # security
+    ## Security
     ./security/gpg.nix
     ./security/pass.nix
     ./security/tessen.nix
 
-    ## system
+    ## System
     ./system/boot.nix
     ./system/filesystem.nix
     ./system/networking.nix
     ./system/fonts.nix
+
+    ## Emacs
+    ../development/emacs
+
+    ## Mail
+    ../mail/mailbox.nix
   ];
   
   ## Global options
