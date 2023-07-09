@@ -22,17 +22,39 @@
 ### COMMENT:
 ###
 ### Emacs appearance configuration
+### Source: https://github.com/abcdw/rde/blob/master/src/rde/features/emacs-xyz.scm#L154
 ###
 ### CODE:
 
-{ nur, config, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   config = {
     home-manager.users.${config.user} = {
-      #imports = [
-      #  nur.repos.rycee.hmModules.emacs-init
-      #];
+      imports = with config.nur.repos.rycee.hmModules; [
+        emacs-init
+      ];
+      programs.emacs.init = {
+        enable = true;
+        earlyInit = ''
+          (push '(menu-bar-lines . 0) default-frame-alist)
+          (push '(tool-bar-lines . 0) default-frame-alist)
+          (push '(vertical-scroll-bars) default-frame-alist)
+          (push '(horizontal-scroll-bars) default-frame-alist)
+          (push (cons 'left-fringe 8) default-frame-alist)
+          (push (cons 'right-fringe 8) default-frame-alist)
+          (push '(no-special-glyphs) default-frame-alist)
+          (push '(undecorated) default-frame-alist)
+          (setq menu-bar-mode nil
+                tool-bar-mode nil
+                scroll-bar-mode nil)
+          (push '(internal-border-width . 8) default-frame-alist)
+          (setq inhibit-startup-screen t)
+                (setq inhibit-startup-message t)
+                (setq initial-scratch-message nil)
+        '';
+      };
+
       programs.emacs = {
         extraPackages = epkgs: [ epkgs.minions ];
         extraConfig = ''
@@ -47,6 +69,19 @@
             (setq minions-mode-line-lighter ";"))
 
           (setq mode-line-compact 'long)
+
+          ;; Modus theme adapations
+          (with-eval-after-load 'modus-themes
+            (setq modus-themes-common-palette-overrides
+                  '((border-mode-line-active unspecified)
+                    (border-mode-line-inactive unspecified)
+                    (fringe unspecified)
+                    (fg-line-number-inactive "gray50")
+                    (fg-line-number-active fg-main)
+                    (bg-line-number-inactive unspecified)
+                    (bg-line-number-active unspecified)
+                    (bg-region bg-ochre)
+                    (fg-region unspecified))))
 
           ;; Mode line at the top
           (setq minions-mode-line-minor-modes-map
