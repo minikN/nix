@@ -29,35 +29,61 @@
   ## Importing general mail settings
   imports = [ ../mail ];
 
+  ## Options related to this mail account
+  options = {
+    mail.${config.primaryMail} = {
+      signature = lib.mkOption {
+        type = lib.types.lines;
+        description = "Default mailbox signature";
+        default = ''
+            Mit freundlichen Grüßen / Best regards
+            Demis Balbach
+        '';
+      };
+
+      smtp-host = lib.mkOption {
+        type = lib.types.str;
+        default = "smtp.mailbox.org";
+      };
+      
+      smtp-port = lib.mkOption {
+        type = lib.types.int;
+        default = 587;
+      };
+    };
+  };
+
   ## General mail settings
   config = {
      home-manager.users.${config.user}.accounts.email = {
-      accounts.mailbox = {
+      accounts.${config.primaryMail} = {
         address = config.primaryMail;
         gpg = {
-          key = "F17DDB98CC3C405C";
+          key = "${config.signingKey}";
           signByDefault = true;
         };
         imap.host = "imap.mailbox.org";
         mbsync = {
           enable = true;
-          create = "maildir";
+          create = "imap";
         };
         msmtp.enable = true;
         notmuch.enable = true;
+        ## this is the primary mail I use
         primary = true;
         realName = config.fullName;
         signature = {
-          text = ''
-            ---
-            Mit freundlichen Grüßen / Best regards
-            Demis Balbach
-          '';
+          text = config.mail.${config.primaryMail}.signature;
           showSignature = "append";
         };
         passwordCommand = "pass show Mail/mailbox.org/db@minikn.xyz";
         smtp = {
-          host = "smtp.mailbox.org";
+          host = config.mail.${config.primaryMail}.smtp-host;
+          port = config.mail.${config.primaryMail}.smtp-port;
+          tls = {
+            enable = true;
+            useStartTls = true;
+          };
         };
         userName = config.primaryMail;
       };

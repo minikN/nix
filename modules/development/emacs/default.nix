@@ -26,24 +26,17 @@
 
 { config, lib, pkgs, inputs, ... }:
 
-
-  let
-    #nurNoPkgs = import config.inputs.nur { pkgs = null; nurpkgs = pkgs; };
-  in {
+{
   imports = [
     ./appearance.nix
   ];
   
   config = {
     home-manager.users.${config.user} = {
-      #imports = [
-      #  nur-no-pkgs.repos.rycee.hmModules.emacs-init
-      #];
       services.emacs = {
         enable = true;
         package = pkgs.emacs29-pgtk;
       };
-      
 
       programs.emacs = {
         enable = true;
@@ -61,7 +54,7 @@
           (add-hook 'emacs-startup-hook
             (lambda ()
               (setq undo-limit (* 8 1024 1024)
-	                  read-process-output-max (* 1024 1024))))
+                    read-process-output-max (* 1024 1024))))
 
           ;; Ignore X resources
           (advice-add #'x-apply-session-resources :override #'ignore)
@@ -74,15 +67,33 @@
           (pixel-scroll-precision-mode 1)
 
           ;; Set some defaults for the startup behaviour.
-          (setq inhibit-splash-screen t
-                inhibit-startup-screen t
-                inhibit-startup-buffer-menu t
-                inhibit-startup-echo-area-message "Welcome."
-                use-dialog-box t
+          (setq use-dialog-box t
                 use-file-dialog nil)
 
           ;; Theme
           (load-theme 'modus-operandi t)
+
+          ;; User information
+          (setq user-full-name "${config.fullName}"
+                user-mail-address "${config.primaryMail}")
+
+          ;; Directories
+          ;;; Backup
+          (setq backup-directory-alist
+            `(,(cons "." "${config.home-manager.users.${config.user}.xdg.cacheHome}/emacs/backup")))
+          
+          ;;; recentf
+          (recentf-mode 1)
+          (run-with-idle-timer 30 t 'recentf-save-list)
+          (setq recentf-save-file "${config.home-manager.users.${config.user}.xdg.cacheHome}/emacs/recentf")
+
+          ;; savehist
+          (savehist-mode 1)
+          (run-with-idle-timer 30 t 'savehist-save)
+          (setq savehist-file "${config.home-manager.users.${config.user}.xdg.cacheHome}/emacs/history")
+
+          ;; bookmarks
+          (setq bookmark-default-file "${config.home-manager.users.${config.user}.xdg.cacheHome}/emacs/bookmarks")
 
           ;; Font
           (add-to-list 'default-frame-alist '(font . "${config.os.fonts.mono.regular}-${builtins.toString config.os.fonts.mono.size}"))
@@ -91,6 +102,6 @@
       };
     };
   };
-  }
+}
 
 

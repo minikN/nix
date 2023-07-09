@@ -26,6 +26,8 @@
 { config, lib, pkgs, ... }:
 
 {
+  imports = [ ../development/emacs/mail.nix ];
+
   ## General mail settings
   config = {
     home-manager.users.${config.user} = {
