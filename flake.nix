@@ -40,6 +40,7 @@
     globals = rec {
       user = "db";
       fullName = "Demis Balbach";
+      signingKey = "F17DDB98CC3C405C";
       stateVersion = "23.05";
     };
       overlays = [

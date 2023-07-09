@@ -90,6 +90,11 @@
       type = lib.types.str;
       description = "Full name of the user";
     };
+    
+    signingKey = lib.mkOption {
+      type = lib.types.str;
+      description = "Primary key to use for signing";
+    };
 
     primaryMail = lib.mkOption {
       type = lib.types.str;

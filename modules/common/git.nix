@@ -37,7 +37,7 @@
       git.userEmail = "${config.primaryMail}";
 
       ## Set up signing key and auto-sign commits
-      git.signing.key = "F17DDB98CC3C405C";
+      git.signing.key = "${config.signingKey}";
       git.signing.signByDefault = true;
 
       ## Extra config
