@@ -40,12 +40,14 @@
     globals = rec {
       user = "db";
       fullName = "Demis Balbach";
-      signingKey = "F17DDB98CC3C405C";
+      mail.primary.enable = true;
+      mail.work.enable = true;
       stateVersion = "23.05";
     };
-      overlays = [
-        inputs.nur.overlay
-      ];
+
+    overlays = [
+      inputs.nur.overlay
+    ];
 
     supportedSystems = [ "x86_64-linux" ];
     forAllSystems = nixpkgs.lib.genAttrs supportedSystems;

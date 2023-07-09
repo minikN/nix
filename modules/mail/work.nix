@@ -19,7 +19,7 @@
 ###
 ### COMMENT:
 ###
-### Mailbox configuration
+### Work mail configuration
 ###
 ### CODE:
 
@@ -28,26 +28,37 @@
 {
   ## Options related to this mail account
   options = {
-    mail.primary = {
-      enable = lib.mkEnableOption "Enable primary email account";
+    mail.work = {
+      enable = lib.mkEnableOption "Enable work email account";
 
       address = lib.mkOption {
         type = lib.types.str;
-        default = "db@minikn.xyz";
+        default = "demis.balbach@apprologic.de";
       };
 
       signature = lib.mkOption {
         type = lib.types.lines;
-        description = "Default mailbox signature";
+        description = "Default work signature";
         default = ''
             Mit freundlichen Grüßen / Best regards
             Demis Balbach
+            ApproLogic GmbH
         '';
+      };
+
+      imap-host = lib.mkOption {
+        type = lib.types.str;
+        default = "wp168.webpack.hosteurope.de";
+      };
+      
+      imap-port = lib.mkOption {
+        type = lib.types.int;
+        default = 993;
       };
 
       smtp-host = lib.mkOption {
         type = lib.types.str;
-        default = "smtp.mailbox.org";
+        default = "wp168.webpack.hosteurope.de";
       };
       
       smtp-port = lib.mkOption {
@@ -58,23 +69,22 @@
   };
 
   ## General mail settings
-  config = lib.mkIf config.mail.primary.enable {
+  config = lib.mkIf config.mail.work.enable {
      home-manager.users.${config.user}.accounts.email = {
-      accounts.primary = {
-
+      accounts.work = {
         ## General settings for the mail account
-        primary = true;
-        address = config.mail.primary.address;
-        userName = config.mail.primary.address;
+        primary = false;
+        address = config.mail.work.address;
+        userName = "wp10718698-balbach";
         realName = config.fullName;
-        imap.host = "imap.mailbox.org";
-        
+        imap.host = config.mail.work.imap-host;
+
         ## We need to expose these vars so the mbsync service knows of them
-        passwordCommand = "GNUPGHOME=${config.home-manager.users.${config.user}.programs.gpg.homedir} PASSWORD_STORE_DIR=${config.passDir} ${pkgs.pass}/bin/pass show Mail/mailbox.org/db@minikn.xyz";
+        passwordCommand = "GNUPGHOME=${config.home-manager.users.${config.user}.programs.gpg.homedir} PASSWORD_STORE_DIR=${config.passDir} ${pkgs.pass}/bin/pass show Mail/apprologic.de/demis.balbach@apprologic.de";
 
         ## IMAP folder mapping
         folders = {
-          drafts = "Drafts";
+          drafts = "Entwurf";
           sent = "Sent";
           trash = "Trash";
         };
@@ -103,14 +113,14 @@
 
         ## Signature settings
         signature = {
-          text = config.mail.primary.signature;
+          text = config.mail.work.signature;
           showSignature = "append";
         };
 
         ## smtp settings
         smtp = {
-          host = config.mail.primary.smtp-host;
-          port = config.mail.primary.smtp-port;
+          host = config.mail.work.smtp-host;
+          port = config.mail.work.smtp-port;
           tls = {
             enable = true;
             useStartTls = true;

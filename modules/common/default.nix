@@ -72,7 +72,8 @@
     ../development/emacs
 
     ## Mail
-    ../mail/mailbox.nix
+    ../mail
+
   ];
   
   ## Global options
@@ -94,12 +95,7 @@
     signingKey = lib.mkOption {
       type = lib.types.str;
       description = "Primary key to use for signing";
-    };
-
-    primaryMail = lib.mkOption {
-      type = lib.types.str;
-      description = "Primary email";
-      default = "db@minikn.xyz";
+      default = "F17DDB98CC3C405C";
     };
     
     passDir = lib.mkOption {

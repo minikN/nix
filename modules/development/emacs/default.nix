@@ -33,11 +33,6 @@
   
   config = {
     home-manager.users.${config.user} = {
-      services.emacs = {
-        enable = true;
-        package = pkgs.emacs29-pgtk;
-      };
-
       programs.emacs = {
         enable = true;
         package = pkgs.emacs29-pgtk;
@@ -75,7 +70,7 @@
 
           ;; User information
           (setq user-full-name "${config.fullName}"
-                user-mail-address "${config.primaryMail}")
+                user-mail-address "${config.mail.primary.address}")
 
           ;; Directories
           ;;; Backup
