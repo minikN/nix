@@ -41,6 +41,9 @@
     ## Enabling XDG
     home-manager.users.${config.user} = {
       xdg.enable = true;
+
+      ## Setting custom cacheHome
+      xdg.cacheHome = "${config.home-manager.users.${config.user}.home.homeDirectory}/.local/cache";
       
       ## Enable XDG mime type handling
       xdg.mime.enable = true;
