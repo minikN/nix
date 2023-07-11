@@ -75,38 +75,39 @@
     ../mail
 
   ];
+
   
   ## Global options
   ##
   ## These can be used throughout the configuration. If a value
   ## with the same name has been declared in `globals', its
   ## value will be set as default for the respective option.
-  options = {
-    user = lib.mkOption {
+  options = let
+    mkConst = const: (lib.mkOption { default = const; });
+  in {
+
+    user = lib.mkOption { # is defined in flake.nix
       type = lib.types.str;
       description = "Primary user of the system";
     };
 
-    fullName = lib.mkOption {
+    fullName = lib.mkOption { # is defined in flake.nix
       type = lib.types.str;
       description = "Full name of the user";
     };
     
-    signingKey = lib.mkOption {
-      type = lib.types.str;
-      description = "Primary key to use for signing";
-      default = "F17DDB98CC3C405C";
-    };
-    
-    passDir = lib.mkOption {
-      type = lib.types.path;
-      description = "Default path to password-store";
-      default = "${config.users.users.${config.user}.home}/.local/var/lib/password-store";
-    };
-
-    stateVersion = lib.mkOption {
+    stateVersion = lib.mkOption { # is defined in flake.nix
       type = lib.types.str;
       description = "State version of nixos and home-manager";
+    };
+
+    ## Constants
+    ##
+    ## Object of options that can be set throughout the configuration.
+    ## Meant for options that get set by any module once, and never again.
+    const = {
+      signingKey = mkConst "F17DDB98CC3C405C";
+      passDir = mkConst "${config.users.users.${config.user}.home}/.local/var/lib/password-store";
     };
 
     ## Namespacing some options so they don't interfere with

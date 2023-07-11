@@ -40,8 +40,6 @@
     globals = rec {
       user = "db";
       fullName = "Demis Balbach";
-      mail.primary.enable = true;
-      mail.work.enable = true;
       stateVersion = "23.05";
     };
 

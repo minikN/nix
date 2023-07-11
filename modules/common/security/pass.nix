@@ -44,7 +44,7 @@
 
     ## Using the correct directory
     settings = {
-      PASSWORD_STORE_DIR = "${config.passDir}";
+      PASSWORD_STORE_DIR = "${config.const.passDir}";
     };
   };
 

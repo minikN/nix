@@ -61,7 +61,7 @@
                   smtpmail-debug-info t))
 
           ;; sign mails
-          (setq mml-secure-openpgp-signers '("${config.signingKey}"))
+          (setq mml-secure-openpgp-signers '("${config.const.signingKey}"))
             ;; (setq mml-secure-openpgp-sign-with-sender t)
             (add-hook 'message-setup-hook 'mml-secure-message-sign-pgpmime)
         '';

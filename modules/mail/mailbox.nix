@@ -85,10 +85,7 @@
           enable = true;
           boxes = [ "Inbox" ];
           #onNotify = "${pkgs.isync}/bin/mbsync primary";
-          onNotify = "${pkgs.libnotify}/bin/notify-send -t 5000 \"New mail\" \"You received new private mail.\"";
-          extraConfig = {
-            wait = 1;
-          };
+          onNotify = "${pkgs.libnotify}/bin/notify-send -t 5000 'You received new private mail.'";
         };
 
         ## Enable features
@@ -97,7 +94,7 @@
 
         ## Sign emails by default
         gpg = {
-          key = "${config.signingKey}";
+          key = "${config.const.signingKey}";
           signByDefault = true;
         };
 
