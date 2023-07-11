@@ -73,13 +73,6 @@
           ${pkgs.pass}/bin/pass show Mail/mailbox.org/db@minikn.xyz | head -n 1
         '');
 
-        ## IMAP folder mapping
-        folders = {
-          drafts = "Drafts";
-          sent = "Sent";
-          trash = "Trash";
-        };
-
         # imapnotify settings
         imapnotify = {
           enable = true;
@@ -97,11 +90,39 @@
           key = "${config.const.signingKey}";
           signByDefault = true;
         };
+        
+        ## IMAP folder mapping
+        folders.inbox = "inbox";
 
         ## mbsync settings
         mbsync = {
           enable = true;
-          create = "imap";
+          groups.primary.channels = {
+            inbox = {
+              farPattern = "INBOX";
+              nearPattern = "inbox";
+            };
+            sent = {
+              farPattern = "Sent";
+              nearPattern = "sent";
+            };
+            drafts = {
+              farPattern = "Drafts";
+              nearPattern = "drafts";
+            };
+            trash = {
+              farPattern = "Trash";
+              nearPattern = "trash";
+            };
+            spam = {
+              farPattern = "Junk";
+              nearPattern = "spam";
+            };
+            archive = {
+              farPattern = "Archive";
+              nearPattern = "archive";
+            };
+          };
         };
 
         ## Signature settings

@@ -84,13 +84,6 @@
         #passwordCommand = "${pkgs.pass}/bin/pass show Mail/apprologic.de/demis.balbach@apprologic.de";
         passwordCommand = "${pkgs.coreutils}/bin/env GNUPGHOME=${config.home-manager.users.${config.user}.programs.gpg.homedir} PASSWORD_STORE_DIR=${config.const.passDir} ${pkgs.pass}/bin/pass show Mail/apprologic.de/demis.balbach@apprologic.de";
 
-        ## IMAP folder mapping
-        folders = {
-          drafts = "Entwurf";
-          sent = "Sent";
-          trash = "Trash";
-        };
-
         # imapnotify settings
         imapnotify = {
           enable = true;
@@ -107,10 +100,38 @@
           signByDefault = true;
         };
 
+        ## IMAP folder mapping
+        folders.inbox = "inbox";
+
         ## mbsync settings
         mbsync = {
           enable = true;
-          create = "imap";
+          groups.work.channels = {
+            inbox = {
+              farPattern = "INBOX";
+              nearPattern = "inbox";
+            };
+            sent = {
+              farPattern = "Sent";
+              nearPattern = "sent";
+            };
+            drafts = {
+              farPattern = "Drafts";
+              nearPattern = "drafts";
+            };
+            trash = {
+              farPattern = "Trash";
+              nearPattern = "trash";
+            };
+            spam = {
+              farPattern = "Spam";
+              nearPattern = "spam";
+            };
+            archive = {
+              farPattern = "All";
+              nearPattern = "archive";
+            };
+          };
         };
 
         ## Signature settings
