@@ -35,19 +35,21 @@
   ## General mail settings
   config = {
     home-manager.users.${config.user} = {
-        services.mbsync = {
-          enable = true;
-          frequency = "*:0/1"; ## Every minute
-          postExec = "${pkgs.notmuch}/bin/notmuch new";
+        services = {
+          #mbsync = {
+          #  enable = true;
+          #  frequency = "*:0/10"; ## Every 1 minutes
+          #  postExec = "${pkgs.notmuch}/bin/notmuch new";
+          #};
+          imapnotify = {
+            enable = true;
+          };
         };
         programs.mbsync.enable = true;
         programs.msmtp.enable = true;
         programs.astroid.enable = true;
         programs.notmuch = {
           enable = true;
-          #hooks = {
-          #  preNew = "mbsync --all";
-          #};
         };
     };
   };

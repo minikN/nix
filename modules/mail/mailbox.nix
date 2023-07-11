@@ -69,8 +69,9 @@
         realName = config.fullName;
         imap.host = "imap.mailbox.org";
         
-        ## We need to expose these vars so the mbsync service knows of them
-        passwordCommand = "GNUPGHOME=${config.home-manager.users.${config.user}.programs.gpg.homedir} PASSWORD_STORE_DIR=${config.passDir} ${pkgs.pass}/bin/pass show Mail/mailbox.org/db@minikn.xyz";
+        passwordCommand = toString (pkgs.writeShellScript "getPassword" ''
+          ${pkgs.pass}/bin/pass show Mail/mailbox.org/db@minikn.xyz | head -n 1
+        '');
 
         ## IMAP folder mapping
         folders = {
@@ -83,6 +84,11 @@
         imapnotify = {
           enable = true;
           boxes = [ "Inbox" ];
+          #onNotify = "${pkgs.isync}/bin/mbsync primary";
+          onNotify = "${pkgs.libnotify}/bin/notify-send -t 5000 New mail You received new private mail.";
+          extraConfig = {
+            wait = 1;
+          };
         };
 
         ## Enable features

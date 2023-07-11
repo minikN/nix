@@ -80,7 +80,9 @@
         imap.host = config.mail.work.imap-host;
 
         ## We need to expose these vars so the mbsync service knows of them
-        passwordCommand = "GNUPGHOME=${config.home-manager.users.${config.user}.programs.gpg.homedir} PASSWORD_STORE_DIR=${config.passDir} ${pkgs.pass}/bin/pass show Mail/apprologic.de/demis.balbach@apprologic.de";
+        #passwordCommand = "GNUPGHOME=${config.home-manager.users.${config.user}.programs.gpg.homedir} PASSWORD_STORE_DIR=${config.passDir} ${pkgs.pass}/bin/pass show Mail/apprologic.de/demis.balbach@apprologic.de";
+        #passwordCommand = "${pkgs.pass}/bin/pass show Mail/apprologic.de/demis.balbach@apprologic.de";
+        passwordCommand = "${pkgs.coreutils}/bin/env GNUPGHOME=${config.home-manager.users.${config.user}.programs.gpg.homedir} PASSWORD_STORE_DIR=${config.passDir} ${pkgs.pass}/bin/pass show Mail/apprologic.de/demis.balbach@apprologic.de";
 
         ## IMAP folder mapping
         folders = {
