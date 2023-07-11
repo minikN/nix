@@ -108,6 +108,7 @@
     const = {
       signingKey = mkConst "F17DDB98CC3C405C";
       passDir = mkConst "${config.users.users.${config.user}.home}/.local/var/lib/password-store";
+      mailDir = mkConst "${config.users.users.${config.user}.home}/.local/var/lib/mail";
     };
 
     ## Namespacing some options so they don't interfere with

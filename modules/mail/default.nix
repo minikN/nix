@@ -35,6 +35,8 @@
   ## General mail settings
   config = {
     home-manager.users.${config.user} = {
+        accounts.email.maildirBasePath = config.const.mailDir;
+
         services = {
           #mbsync = {
           #  enable = true;
