@@ -85,7 +85,7 @@
           enable = true;
           boxes = [ "Inbox" ];
           #onNotify = "${pkgs.isync}/bin/mbsync primary";
-          onNotify = "${pkgs.libnotify}/bin/notify-send -t 5000 New mail You received new private mail.";
+          onNotify = "${pkgs.libnotify}/bin/notify-send -t 5000 \"New mail\" \"You received new private mail.\"";
           extraConfig = {
             wait = 1;
           };
