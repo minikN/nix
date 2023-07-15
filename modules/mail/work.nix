@@ -70,8 +70,8 @@
 
   ## General mail settings
   config = lib.mkIf config.mail.work.enable {
-     home-manager.users.${config.user}.accounts.email = {
-      accounts.work = {
+     home-manager.users.${config.user} = {
+      accounts.email.accounts.work = {
         ## General settings for the mail account
         primary = false;
         address = config.mail.work.address;
@@ -86,7 +86,7 @@
 
         # imapnotify settings
         imapnotify = {
-          enable = true;
+          enable = false;
           boxes = [ "Inbox" ];
         };
 
@@ -149,6 +149,12 @@
             useStartTls = true;
           };
         };
+      };
+
+      programs.notmuch.hooks = {
+        postNew = ''
+          ${pkgs.notmuch}/bin/notmuch tag +work -- path:work/** and tag:new
+        '';
       };
     };
   };

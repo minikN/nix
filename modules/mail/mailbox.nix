@@ -59,8 +59,9 @@
 
   ## General mail settings
   config = lib.mkIf config.mail.primary.enable {
-     home-manager.users.${config.user}.accounts.email = {
-      accounts.primary = {
+     home-manager.users.${config.user} = {
+      
+      accounts.email.accounts.primary = {
 
         ## General settings for the mail account
         primary = true;
@@ -140,6 +141,12 @@
             useStartTls = true;
           };
         };
+      };
+
+      programs.notmuch.hooks = {
+        postNew = ''
+          ${pkgs.notmuch}/bin/notmuch tag +primary -- path:primary/** and tag:new
+        '';
       };
     };
   };
