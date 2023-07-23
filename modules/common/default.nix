@@ -56,6 +56,7 @@
     ./services/xdg.nix
     ./services/pipewire.nix
     ./services/bluetooth.nix
+    ./services/printer.nix
 
     ## Security
     ./security/gpg.nix
