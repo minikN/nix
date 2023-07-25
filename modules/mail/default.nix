@@ -47,8 +47,7 @@
         };
         programs.mbsync.enable = true;
         programs.msmtp.enable = true;
-        programs.astroid.enable = true;
-
+      
         services.mbsync = {
           enable = true;
           preExec = toString (pkgs.writeShellScript "mbsync-pre" ''
