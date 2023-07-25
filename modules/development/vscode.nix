@@ -35,6 +35,9 @@
       ## Auto save
       "files.autoSave" = "onFocusChange";
 
+      ## No tabs
+      "workbench.editor.showTabs" = false;
+
       ## Indentation
       "editor.tabSize" =  2;
       "editor.detectIndentation" = false;
