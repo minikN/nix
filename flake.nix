@@ -30,10 +30,11 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager/master";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nur.url = "github:nix-community/NUR";
   };
 
-  outputs = { nixpkgs, ... }@inputs:
+  outputs = { nixpkgs, nixos-hardware, ... }@inputs:
   let
 
     ## Global variables used throughout the configuration
@@ -54,7 +55,7 @@
     
     ## System configurations
     nixosConfigurations = {
-      slimboy = import ./machines/slimboy.nix { inherit inputs globals nixpkgs overlays; };
+      slimboy = import ./machines/slimboy.nix { inherit inputs globals nixpkgs nixos-hardware overlays; };
     };
 
     ## Home configurations

@@ -50,6 +50,9 @@ nixpkgs.lib.nixosSystem {
     ## This module will return a `nur' object that can be used to access
     ## NUR packages.
     nur.nixosModules.nur
+
+    ## Applying recommended hardware settings
+    nixos-hardware.nixosModules.dell-latitude-7430
     
     ## System specific
     ##
