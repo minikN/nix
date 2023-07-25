@@ -36,7 +36,7 @@
       programs.emacs = {
         enable = true;
         package = pkgs.emacs29-pgtk;
-        extraPackages = epkgs: [ epkgs.magit ];
+        extraPackages = epkgs: [ epkgs.magit epkgs.which-key ];
         extraConfig = ''
           ;; Packages will be initialized by guix later.
           (setq package-enable-at-startup nil)
@@ -93,6 +93,15 @@
           ;; Font
           (add-to-list 'default-frame-alist '(font . "${config.os.fonts.mono.regular}-${builtins.toString config.os.fonts.mono.size}"))
           (set-face-attribute 'default t :font "${config.os.fonts.mono.regular}-${builtins.toString config.os.fonts.mono.size}")
+        
+          ;; Keymap
+          (defvar user-app-map nil "Prefix keymap for applications.")
+          (define-prefix-command 'user-app-map nil)
+          (defvar user-toggle-map nil "Prefix keymap for binding various minor modes for toggling functionality.")
+          (define-prefix-command 'user-toggle-map nil)
+
+          (define-key mode-specific-map (kbd "a") '("applications" . user-app-map))
+          (define-key mode-specific-map (kbd "t") '("toggles" . user-toggle-map))
         '';
       };
     };

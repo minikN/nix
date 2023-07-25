@@ -72,6 +72,9 @@
   config = lib.mkIf config.mail.work.enable {
      home-manager.users.${config.user} = {
       accounts.email.accounts.work = {
+
+        maildir.path = "accounts/${config.mail.work.address}";
+
         ## General settings for the mail account
         primary = false;
         address = config.mail.work.address;
@@ -152,9 +155,21 @@
       };
 
       programs.notmuch.hooks = {
-        postNew = ''
-          ${pkgs.notmuch}/bin/notmuch tag +work -- path:work/** and tag:new
+        postNew = lib.mkOrder 100 ''
+          notmuch tag +work -- path:accounts/${config.mail.work.address}/** and tag:new
         '';
+      };
+
+            programs.emacs = {
+          extraConfig = ''
+            (if (not (boundp 'notmuch-fcc-dirs))
+              (setq notmuch-fcc-dirs '()))
+            (if (not (boundp 'notmuch-identities))
+              (setq identities '()))
+
+            (add-to-list 'notmuch-fcc-dirs '("${config.mail.work.address}" . "accounts/${config.mail.work.address}/sent"))
+            (add-to-list 'notmuch-identities "${config.mail.work.address}")
+          '';
       };
     };
   };

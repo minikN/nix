@@ -63,6 +63,8 @@
       
       accounts.email.accounts.primary = {
 
+        maildir.path = "accounts/${config.mail.primary.address}";
+
         ## General settings for the mail account
         primary = true;
         address = config.mail.primary.address;
@@ -98,6 +100,9 @@
         ## mbsync settings
         mbsync = {
           enable = true;
+          create = "both";
+          expunge = "both";
+          
           groups.primary.channels = {
             inbox = {
               farPattern = "INBOX";
@@ -144,9 +149,21 @@
       };
 
       programs.notmuch.hooks = {
-        postNew = ''
-          ${pkgs.notmuch}/bin/notmuch tag +primary -- path:primary/** and tag:new
+        postNew = lib.mkOrder 100 ''
+          notmuch tag +personal -- path:accounts/${config.mail.primary.address}/** and tag:new
         '';
+      };
+
+      programs.emacs = {
+          extraConfig = ''
+            (if (not (boundp 'notmuch-fcc-dirs))
+              (setq notmuch-fcc-dirs '()))
+            (if (not (boundp 'notmuch-identities))
+              (setq notmuch-identities '()))
+                
+            (add-to-list 'notmuch-fcc-dirs '("${config.mail.primary.address}" . "accounts/${config.mail.primary.address}/sent"))
+            (add-to-list 'notmuch-identities "${config.mail.primary.address}")
+          '';
       };
     };
   };
