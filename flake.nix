@@ -56,11 +56,13 @@
     ## System configurations
     nixosConfigurations = {
       slimboy = import ./machines/slimboy.nix { inherit inputs globals nixpkgs nixos-hardware overlays; };
+      geekcave = import ./machines/geekcave.nix { inherit inputs globals nixpkgs nixos-hardware overlays; };
     };
 
     ## Home configurations
     homeConfigurations = {
       slimboy = nixosConfigurations.slimboy.config.home-manager.users.${globals.user}.home;
+      geekcave = nixosConfigurations.geekcave.config.home-manager.users.${globals.user}.home;
     };
   };
 }

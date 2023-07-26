@@ -210,6 +210,7 @@
           name = lib.mkOption {
             type = lib.types.str;
             description = "Primary output of the machine";
+            default = "eDP-1";
           };
           hidpi = lib.mkOption {
             type = lib.types.bool;
