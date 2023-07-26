@@ -79,6 +79,18 @@
           };
         };
 
+        ## Assigning workspaces to outputs
+        workspaceOutputAssign = [
+          { workspace = "1"; output = "${config.os.output.left.name}"; }
+          { workspace = "2"; output = "${config.os.output.right.name}"; }
+          { workspace = "3"; output = "${config.os.output.right.name}"; }
+          { workspace = "4"; output = "${config.os.output.left.name}"; }
+          { workspace = "5"; output = "${config.os.output.left.name}"; }
+          { workspace = "6"; output = "${config.os.output.right.name}"; }
+          { workspace = "7"; output = "${config.os.output.left.name}"; }
+          { workspace = "8"; output = "${config.os.output.left.name}"; }
+        ];
+
         ## Fonts
         fonts = {
           names = [ config.os.fonts.mono.regular ];

@@ -47,7 +47,7 @@
       
       ## Settings
       settings = {
-        primary = {
+        primary = lib.mkIf (config.os.machine.isLaptop == true) {
           layer = "top";
           position = "top";
           name = "primary";
@@ -86,11 +86,10 @@
               "5" = "󰫔";
               "6" = "󱋊";
               "7" = lib.mkIf config.features.gaming "󰺶";
-              "9" = "\\uf008";
-              "10" = "\\uf07c";
-              "urgent" = "\\uf06a";
-              "focused" = "\\uf192";
-              "default" = "\\uf111";
+              "8" = "";
+              "urgent" = "";
+              "focused" = "";
+              "default" = "";
             };
             persistent_workspaces = {
                 "1" = []; 
@@ -99,7 +98,8 @@
                 "4" = []; 
                 "5" = []; 
                 "6" = []; 
-                "7" = lib.mkIf config.features.gaming []; 
+                "7" = lib.mkIf config.features.gaming [];
+                "8" = [];
             };
           };
           "battery" = lib.mkIf (config.os.machine.isLaptop) {
@@ -144,6 +144,174 @@
             format = "󰋊 {percentage_used}%";
             tooltip-format = "{path}: {used} / {total}";
             path = "/";
+          };
+        };
+
+        left = if (config.os.machine.isLaptop != true)
+        then {
+          layer = "top";
+          position = "top";
+          name = "left";
+          output = [ "${config.os.output.left.name}" ];
+          modules-left = [
+            (
+              if config.os.wm == "sway"
+              then "sway/workspaces"
+              else "wlr/workspaces"
+            )
+          ];
+          modules-center = ["${config.os.wm}/window"];
+          "sway/window" = lib.mkIf (config.os.wm == "sway") {
+            max-length = 50;
+          };
+          "sway/workspaces" = lib.mkIf (config.os.wm == "sway") {
+            format = "{icon}";
+            on-click = "activate";
+            all-outputs = false;
+            disable-scroll = true;
+            sort-by-number = true;
+            format-icons = {
+              "1" = "";
+              "2" = "󱄅";
+              "3" = "";
+              "4" = "󰃯";
+              "5" = "󰫔";
+              "6" = "󱋊";
+              "7" = lib.mkIf config.features.gaming "󰺶";
+              "8" = "";
+              "urgent" = "";
+              "focused" = "";
+              "default" = "";
+            };
+            persistent_workspaces = {
+                "1" = ["${config.os.output.left.name}"]; 
+                "2" = ["${config.os.output.right.name}"]; 
+                "3" = ["${config.os.output.right.name}"]; 
+                "4" = ["${config.os.output.left.name}"]; 
+                "5" = ["${config.os.output.left.name}"]; 
+                "6" = ["${config.os.output.right.name}"]; 
+                "7" = lib.mkIf config.features.gaming ["${config.os.output.left.name}"];
+                "8" = ["${config.os.output.left.name}"];
+            };
+          };
+        } else {
+          layer = "top";
+          position = "top";
+          name = "left";
+          output = [ "${config.os.output.left.name}" ];
+          modules-center = ["${config.os.wm}/window"];
+          "sway/window" = lib.mkIf (config.os.wm == "sway") {
+            max-length = 50;
+          };
+        };
+
+        right = if (config.os.machine.isLaptop != true)
+        then {
+          layer = "top";
+          position = "top";
+          name = "right";
+          output = [ "${config.os.output.right.name}" ];
+          modules-left = [
+            (
+              if config.os.wm == "sway"
+              then "sway/workspaces"
+              else "wlr/workspaces"
+            )
+          ];
+          modules-center = ["${config.os.wm}/window"];
+          modules-right = [
+            "disk#system"
+            "cpu"
+            "memory"
+            "temperature"
+            "battery"
+            "tray"
+            "clock"
+          ];
+          "sway/workspaces" = lib.mkIf (config.os.wm == "sway") {
+            format = "{icon}";
+            on-click = "activate";
+            all-outputs = false;
+            disable-scroll = true;
+            sort-by-number = true;
+            format-icons = {
+              "1" = "";
+              "2" = "󱄅";
+              "3" = "";
+              "4" = "󰃯";
+              "5" = "󰫔";
+              "6" = "󱋊";
+              "7" = lib.mkIf config.features.gaming "󰺶";
+              "8" = "";
+              "urgent" = "";
+              "focused" = "";
+              "default" = "";
+            };
+            persistent_workspaces = {
+                "1" = ["${config.os.output.left.name}"]; 
+                "2" = ["${config.os.output.right.name}"]; 
+                "3" = ["${config.os.output.right.name}"]; 
+                "4" = ["${config.os.output.left.name}"]; 
+                "5" = ["${config.os.output.left.name}"]; 
+                "6" = ["${config.os.output.right.name}"]; 
+                "7" = lib.mkIf config.features.gaming ["${config.os.output.left.name}"];
+                "8" = ["${config.os.output.left.name}"];
+            };
+          };
+          "sway/window" = lib.mkIf (config.os.wm == "sway") {
+            max-length = 50;
+          };
+          "battery" = lib.mkIf (config.os.machine.isLaptop) {
+            format = "{icon}";
+            format-charging = "󱐋 {icon}";
+            tooltip-format = "Current capacity: {capacity}%\n{timeTo}";
+            states = {
+              empty = 5;
+              low = 15;
+              half-low = 40;
+              half = 60;
+              high = 85;
+              full = 100;
+            };
+            format-icons = [ "" "" "" "" "" "" ];
+          };
+          clock = {
+            tooltip-format = "<big>{:%B %Y}</big>\n<tt><small>{calendar}</small></tt>";
+            format = "{:%H:%M}";
+            interval = 60;
+          };
+           temperature = {
+            critical-threshold = 80;
+            hwmon-path = config.os.machine.temperaturePath;
+            format-critical = "<span color=\"#ab4642\"> {temperatureC}°C</span>";
+            format = " {temperatureC}°C";
+            format-icons = [ "" "" "" "" "" ];
+            interval = 2;
+          };
+          memory = {
+            interval = 10;
+            format = "󰍛 {}%";
+            tooltip-format = "{used:0.1f}G / {total:0.1f}G";
+          };
+          cpu = {
+            interval = 2;
+            format = "󰻠 {usage}%";
+            max-length = 10;
+          };
+          "disk\#system" = {
+            interval = 30;
+            format = "󰋊 {percentage_used}%";
+            tooltip-format = "{path}: {used} / {total}";
+            path = "/";
+          };
+        } else {
+          layer = "top";
+          position = "top";
+          name = "right";
+          output = [ "${config.os.output.right.name}" ];
+          modules-center = ["${config.os.wm}/window"];
+          "sway/window" = lib.mkIf (config.os.wm == "sway") {
+            max-length = 50;
           };
         };
       };
