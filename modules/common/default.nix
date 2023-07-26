@@ -69,6 +69,9 @@
     ./system/networking.nix
     ./system/fonts.nix
 
+    ## Hardware
+    ../hardware/color-temperature.nix
+
     ## Emacs
     ../development/emacs
 
