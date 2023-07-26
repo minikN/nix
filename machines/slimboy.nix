@@ -77,6 +77,15 @@ nixpkgs.lib.nixosSystem {
       hardware.enableRedistributableFirmware = true;
       hardware.cpu.intel.updateMicrocode = true;
 
+      hardware.opengl = {
+       extraPackages = with pkgs; [
+         intel-media-driver # LIBVA_DRIVER_NAME=iHD
+         vaapiIntel         # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
+         vaapiVdpau
+         libvdpau-va-gl
+       ];
+      };
+
       ## Display settings
       os.output.primary.name = "eDP-1";
       os.output.primary.hidpi = true;

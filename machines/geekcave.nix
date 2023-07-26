@@ -61,7 +61,7 @@ nixpkgs.lib.nixosSystem {
       networking.hostName = "geekcave";
      
       ## kernel
-      boot.initrd.kernelModules = [];
+      boot.initrd.kernelModules = [ "amdgpu" ];
       boot.initrd.availableKernelModules = [
         "xhci_pci" "ahci" "usbhid"
         "usb_storage" "sd_mod"
@@ -72,6 +72,15 @@ nixpkgs.lib.nixosSystem {
       
       hardware.enableRedistributableFirmware = true;
       hardware.cpu.intel.updateMicrocode = true;
+
+      hardware.opengl = {
+       extraPackages = with pkgs; [
+         amdvlk
+       ];
+       extraPackages32 = with pkgs; [
+        driversi686Linux.amdvlk
+       ];
+      };
 
       ## Display settings
       os.output.left.name = "DP-1";
