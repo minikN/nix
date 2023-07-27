@@ -220,7 +220,7 @@
         
         left = {
           name = lib.mkOption {
-            type = lib.types.str;
+            type = lib.types.listOf lib.types.str;
             description = "Left output of the machine";
           };
           hidpi = lib.mkOption {
@@ -231,7 +231,7 @@
 
         right = {
           name = lib.mkOption {
-            type = lib.types.str;
+            type = lib.types.listOf lib.types.str;
             description = "Right output of the machine";
           };
           hidpi = lib.mkOption {

@@ -29,7 +29,7 @@
   ## Setting appropriate options so other modules can use them.
   os.wayland = true;
   os.wm = "sway";
-
+  
   ## Sway
   home-manager.users.${config.user} = {
     wayland.windowManager.sway = {
@@ -81,14 +81,14 @@
 
         ## Assigning workspaces to outputs
         workspaceOutputAssign = [
-          { workspace = "1"; output = "${config.os.output.left.name}"; }
-          { workspace = "2"; output = "${config.os.output.right.name}"; }
-          { workspace = "3"; output = "${config.os.output.right.name}"; }
-          { workspace = "4"; output = "${config.os.output.left.name}"; }
-          { workspace = "5"; output = "${config.os.output.left.name}"; }
-          { workspace = "6"; output = "${config.os.output.right.name}"; }
-          { workspace = "7"; output = "${config.os.output.left.name}"; }
-          { workspace = "8"; output = "${config.os.output.left.name}"; }
+          { workspace = "1"; output = lib.strings.concatStringsSep "\" \"" config.os.output.left.name; }
+          { workspace = "2"; output = lib.strings.concatStringsSep "\" \"" config.os.output.right.name; }
+          { workspace = "3"; output = lib.strings.concatStringsSep "\" \"" config.os.output.right.name; }
+          { workspace = "4"; output = lib.strings.concatStringsSep "\" \"" config.os.output.left.name; }
+          { workspace = "5"; output = lib.strings.concatStringsSep "\" \"" config.os.output.left.name; }
+          { workspace = "6"; output = lib.strings.concatStringsSep "\" \"" config.os.output.right.name; }
+          { workspace = "7"; output = lib.strings.concatStringsSep "\" \"" config.os.output.left.name; }
+          { workspace = "8"; output = lib.strings.concatStringsSep "\" \"" config.os.output.left.name; }
         ];
 
         ## Fonts

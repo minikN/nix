@@ -51,7 +51,7 @@
           layer = "top";
           position = "top";
           name = "primary";
-          output = [ "${config.os.output.primary.name}" ];
+          output = config.os.output.primary.name;
           modules-left = [
             (
               if config.os.wm == "sway"
@@ -152,7 +152,7 @@
           layer = "top";
           position = "top";
           name = "left";
-          output = [ "${config.os.output.left.name}" ];
+          output = config.os.output.left.name;
           modules-left = [
             (
               if config.os.wm == "sway"
@@ -184,21 +184,21 @@
               "default" = "";
             };
             persistent_workspaces = {
-                "1" = ["${config.os.output.left.name}"]; 
-                "2" = ["${config.os.output.right.name}"]; 
-                "3" = ["${config.os.output.right.name}"]; 
-                "4" = ["${config.os.output.left.name}"]; 
-                "5" = ["${config.os.output.left.name}"]; 
-                "6" = ["${config.os.output.right.name}"]; 
-                "7" = lib.mkIf config.features.gaming ["${config.os.output.left.name}"];
-                "8" = ["${config.os.output.left.name}"];
+                "1" = config.os.output.left.name; 
+                "2" = config.os.output.right.name; 
+                "3" = config.os.output.right.name; 
+                "4" = config.os.output.left.name; 
+                "5" = config.os.output.left.name; 
+                "6" = config.os.output.right.name; 
+                "7" = lib.mkIf config.features.gaming config.os.output.left.name;
+                "8" = config.os.output.left.name;
             };
           };
         } else {
           layer = "top";
           position = "top";
           name = "left";
-          output = [ "${config.os.output.left.name}" ];
+          output = config.os.output.left.name;
           modules-center = ["${config.os.wm}/window"];
           "sway/window" = lib.mkIf (config.os.wm == "sway") {
             max-length = 50;
@@ -210,7 +210,7 @@
           layer = "top";
           position = "top";
           name = "right";
-          output = [ "${config.os.output.right.name}" ];
+          output = config.os.output.right.name;
           modules-left = [
             (
               if config.os.wm == "sway"
@@ -248,14 +248,14 @@
               "default" = "";
             };
             persistent_workspaces = {
-                "1" = ["${config.os.output.left.name}"]; 
-                "2" = ["${config.os.output.right.name}"]; 
-                "3" = ["${config.os.output.right.name}"]; 
-                "4" = ["${config.os.output.left.name}"]; 
-                "5" = ["${config.os.output.left.name}"]; 
-                "6" = ["${config.os.output.right.name}"]; 
-                "7" = lib.mkIf config.features.gaming ["${config.os.output.left.name}"];
-                "8" = ["${config.os.output.left.name}"];
+                "1" = config.os.output.left.name; 
+                "2" = config.os.output.right.name; 
+                "3" = config.os.output.right.name; 
+                "4" = config.os.output.left.name; 
+                "5" = config.os.output.left.name; 
+                "6" = config.os.output.right.name; 
+                "7" = lib.mkIf config.features.gaming config.os.output.left.name;
+                "8" = config.os.output.left.name;
             };
           };
           "sway/window" = lib.mkIf (config.os.wm == "sway") {
@@ -308,7 +308,7 @@
           layer = "top";
           position = "top";
           name = "right";
-          output = [ "${config.os.output.right.name}" ];
+          output = config.os.output.right.name;
           modules-center = ["${config.os.wm}/window"];
           "sway/window" = lib.mkIf (config.os.wm == "sway") {
             max-length = 50;

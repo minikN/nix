@@ -83,8 +83,8 @@ nixpkgs.lib.nixosSystem {
       };
 
       ## Display settings
-      os.output.left.name = "DP-1";
-      os.output.right.name = "DP-2";
+      os.output.left.name = [ "DP-1" ];
+      os.output.right.name = [ "DP-2" ];
       os.output.primary.hidpi = true;
 
       ## Setting keymap to `de' for this machine.
