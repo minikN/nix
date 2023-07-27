@@ -71,6 +71,7 @@
 
     ## Hardware
     ../hardware/color-temperature.nix
+    ../hardware/outputs.nix
 
     ## Emacs
     ../development/emacs
@@ -88,7 +89,7 @@
   ## value will be set as default for the respective option.
   options = let
     mkConst = const: (lib.mkOption { default = const; });
-  in {
+   in {
 
     user = lib.mkOption { # is defined in flake.nix
       type = lib.types.str;
@@ -201,43 +202,6 @@
           type = lib.types.path;
           description = "Machine specific path to the core temp class";
           default = "/sys/class/hwmon/hwmon4/temp1_input";
-        };
-      };
-
-      ## Machine-specific outputs
-      output = {
-        primary = {
-          name = lib.mkOption {
-            type = lib.types.str;
-            description = "Primary output of the machine";
-            default = "eDP-1";
-          };
-          hidpi = lib.mkOption {
-            type = lib.types.bool;
-            description = "Whether the primary output is a HiDPI display";
-          };
-        };
-        
-        left = {
-          name = lib.mkOption {
-            type = lib.types.listOf lib.types.str;
-            description = "Left output of the machine";
-          };
-          hidpi = lib.mkOption {
-            type = lib.types.bool;
-            description = "Whether the left output is a HiDPI display";
-          };
-        };
-
-        right = {
-          name = lib.mkOption {
-            type = lib.types.listOf lib.types.str;
-            description = "Right output of the machine";
-          };
-          hidpi = lib.mkOption {
-            type = lib.types.bool;
-            description = "Whether the right output is a HiDPI display";
-          };
         };
       };
     };

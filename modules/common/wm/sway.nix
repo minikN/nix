@@ -52,7 +52,9 @@
         export _JAVA_AWT_WM_NOPARENTING=1
       '';
  
-      config = {
+      config = let
+       concatOutputs = lib.lists.foldl (all: output: if builtins.stringLength all > 0 then "${all}\" \"${output.name}" else "${output.name}") "";
+      in {
 
         ## Set modifier
         modifier = "Mod4";
@@ -69,6 +71,7 @@
         };
 
         ## Output configuration
+        ## For left/right configuration see module hardware/outputs
         output = {
           
           ## Primary
@@ -81,14 +84,14 @@
 
         ## Assigning workspaces to outputs
         workspaceOutputAssign = [
-          { workspace = "1"; output = lib.strings.concatStringsSep "\" \"" config.os.output.left.name; }
-          { workspace = "2"; output = lib.strings.concatStringsSep "\" \"" config.os.output.right.name; }
-          { workspace = "3"; output = lib.strings.concatStringsSep "\" \"" config.os.output.right.name; }
-          { workspace = "4"; output = lib.strings.concatStringsSep "\" \"" config.os.output.left.name; }
-          { workspace = "5"; output = lib.strings.concatStringsSep "\" \"" config.os.output.left.name; }
-          { workspace = "6"; output = lib.strings.concatStringsSep "\" \"" config.os.output.right.name; }
-          { workspace = "7"; output = lib.strings.concatStringsSep "\" \"" config.os.output.left.name; }
-          { workspace = "8"; output = lib.strings.concatStringsSep "\" \"" config.os.output.left.name; }
+          { workspace = "1"; output = concatOutputs config.os.output.left; }
+          { workspace = "2"; output = concatOutputs config.os.output.right; }
+          { workspace = "3"; output = concatOutputs config.os.output.right; }
+          { workspace = "4"; output = concatOutputs config.os.output.left; }
+          { workspace = "5"; output = concatOutputs config.os.output.left; }
+          { workspace = "6"; output = concatOutputs config.os.output.right; }
+          { workspace = "7"; output = concatOutputs config.os.output.left; }
+          { workspace = "8"; output = concatOutputs config.os.output.left; }
         ];
 
         ## Fonts

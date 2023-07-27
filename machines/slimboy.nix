@@ -87,10 +87,14 @@ nixpkgs.lib.nixosSystem {
       };
 
       ## Display settings
-      os.output.primary.name = [ "eDP-1" ];
-      os.output.left.name = [ "DP-5" ];
-      os.output.right.name = [ "DP-6" ];
+      os.output.primary.name = "eDP-1";
       os.output.primary.hidpi = true;
+      os.output.left = [
+        { name = "DP-6"; width = 2560; }
+      ];
+      os.output.right = [
+        { name = "DP-5"; width = 2560; }
+      ];
 
       ## Declaring this machine to be a laptop
       os.machine.isLaptop = true;
