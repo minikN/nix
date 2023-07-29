@@ -33,6 +33,8 @@
 
   config = {
 
+    features."3d-printing" = true;
+
     nixpkgs.overlays = [
       (self: super: {
         lychee-slicer = super.callPackage ../packages/lychee-slicer.nix { };
