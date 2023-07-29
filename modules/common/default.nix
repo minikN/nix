@@ -135,48 +135,10 @@
         };
       };
 
-      wm = lib.mkOption {
-        type = lib.types.str;
-        description = "Window manager used throughout the system";
-      };
-
-      launcher = {
-        pkg = lib.mkOption {
-          type = lib.types.path;
-          description = "The launcher in use";
-        };
-
-        name = lib.mkOption {
-          type = lib.types.str;
-          description = "Name of the launcher used";
-        };
-        
-        configFile = lib.mkOption {
-          type = lib.types.path;
-          description = "Config file of the current launcher";
-        }; 
-
-        args = lib.mkOption {
-          type = lib.types.str;
-          description = "Additional args for the launcher";
-        };
-      };
-
-      bar = lib.mkOption {
-        type = lib.types.path;
-        description = "The bar used throughout the system";
-      };
-
       wayland = lib.mkOption {
         type = lib.types.bool;
         default = false;
         description = "Whether wayland is used on the system";
-      };
-
-      shell = lib.mkOption {
-        type = lib.types.str;
-        default = "bash";
-        description = "Shell used on the system";
       };
 
       passwordManager = lib.mkOption {

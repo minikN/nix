@@ -19,7 +19,7 @@
 ###
 ### COMMENT:
 ###
-### File manager configuration
+### Shell configuration
 ###
 ### CODE:
 
@@ -29,18 +29,11 @@
   ## Setting the appropriate option so other modules know it
   options = {
     os = {
-      file-manager = lib.mkOption {
-        type = lib.types.path;
-        description = "File manager used throughout the system";
+      shell = lib.mkOption {
+        type = lib.types.str;
+        default = "bash";
+        description = "Shell used on the system";
       };
     };
-  };
-
-  config = {
-    home-manager.users.${config.user}.wayland.windowManager.sway.extraConfig = lib.mkIf (config.os.wm == "sway") ''
-      workspace 8
-      exec ${config.os.file-manager}
-      workspace 1
-    '';
   };
 }

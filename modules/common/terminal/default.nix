@@ -38,10 +38,10 @@
     };
   };
 
-  config = {
-    home-manager.users.${config.user}.wayland.windowManager.sway.extraConfig = lib.mkIf (config.os.wm == "sway") ''
-      workspace 2
-      exec ${config.os.terminal}
-    '';
-  };
+  # config = {
+  #   home-manager.users.${config.user}.wayland.windowManager.sway.extraConfig = lib.mkIf (config.os.wm == "sway") ''
+  #     workspace 2
+  #     exec ${config.os.terminal}
+  #   '';
+  # };
 }

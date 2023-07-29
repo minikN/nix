@@ -19,7 +19,7 @@
 ###
 ### COMMENT:
 ###
-### File manager configuration
+### Bar configuration
 ###
 ### CODE:
 
@@ -29,18 +29,10 @@
   ## Setting the appropriate option so other modules know it
   options = {
     os = {
-      file-manager = lib.mkOption {
+      bar = lib.mkOption {
         type = lib.types.path;
-        description = "File manager used throughout the system";
+        description = "The bar used throughout the system";
       };
     };
-  };
-
-  config = {
-    home-manager.users.${config.user}.wayland.windowManager.sway.extraConfig = lib.mkIf (config.os.wm == "sway") ''
-      workspace 8
-      exec ${config.os.file-manager}
-      workspace 1
-    '';
   };
 }

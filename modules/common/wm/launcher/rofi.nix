@@ -26,6 +26,10 @@
 { config, lib, pkgs, ... }:
 
 {
+  imports = [
+    ../launcher
+  ];
+
   config = let
 
     ## Using the correct package based on the window system

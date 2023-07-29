@@ -19,7 +19,7 @@
 ###
 ### COMMENT:
 ###
-### File manager configuration
+### Launcher configuration
 ###
 ### CODE:
 
@@ -29,18 +29,27 @@
   ## Setting the appropriate option so other modules know it
   options = {
     os = {
-      file-manager = lib.mkOption {
-        type = lib.types.path;
-        description = "File manager used throughout the system";
+      launcher = {
+        pkg = lib.mkOption {
+          type = lib.types.path;
+          description = "The launcher in use";
+        };
+
+        name = lib.mkOption {
+          type = lib.types.str;
+          description = "Name of the launcher used";
+        };
+        
+        configFile = lib.mkOption {
+          type = lib.types.path;
+          description = "Config file of the current launcher";
+        }; 
+
+        args = lib.mkOption {
+          type = lib.types.str;
+          description = "Additional args for the launcher";
+        };
       };
     };
-  };
-
-  config = {
-    home-manager.users.${config.user}.wayland.windowManager.sway.extraConfig = lib.mkIf (config.os.wm == "sway") ''
-      workspace 8
-      exec ${config.os.file-manager}
-      workspace 1
-    '';
   };
 }

@@ -26,6 +26,10 @@
 { config, lib, pkgs, ... }:
 
 {
+  imports = [
+    ../bar
+  ];
+
   config = let
     mapOutputs = lib.lists.imap0 (i: output: "${output.name}");
   in {
