@@ -173,13 +173,6 @@
         description = "Whether wayland is used on the system";
       };
 
-      terminal = lib.mkOption {
-        type = lib.types.path;
-        default = if config.os.wayland
-          then "${pkgs.foot}/bin/foot"
-          else "${pkgs.gnome.gnome-terminal}/bin/gnome-terminal";
-      };
-
       shell = lib.mkOption {
         type = lib.types.str;
         default = "bash";

@@ -26,7 +26,10 @@
 { config, lib, pkgs, ... }:
 
 {
-	 
+	imports = [
+    ../terminal
+  ];
+
   config = {
   os.terminal = "${pkgs.alacritty}/bin/alacritty";  
 
