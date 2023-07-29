@@ -127,6 +127,7 @@ nixpkgs.lib.nixosSystem {
     ## Sets of modules for a specific purpose
     ../features/development.nix
     ../features/gaming.nix
+    ../features/3d-printing.nix
 
     ## Chat
     ../modules/chat/discord.nix

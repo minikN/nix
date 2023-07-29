@@ -52,7 +52,7 @@
     forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
 
   in rec {
-    
+
     ## System configurations
     nixosConfigurations = {
       slimboy = import ./machines/slimboy.nix { inherit inputs globals nixpkgs nixos-hardware overlays; };
