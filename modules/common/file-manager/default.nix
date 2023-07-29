@@ -19,30 +19,27 @@
 ###
 ### COMMENT:
 ###
-### Thunar configuration
+### File manager configuration
 ###
 ### CODE:
 
 { config, lib, pkgs, ... }:
 
 {
-  imports = [
-    ../file-manager
-  ];
+  ## Setting the appropriate option so other modules know it
+  options = {
+    os = {
+      file-manager = lib.mkOption {
+        type = lib.types.path;
+        description = "File manager used throughout the system";
+      };
+    };
+  };
 
   config = {
-    os.file-manager = "${pkgs.xfce.thunar}/bin/thunar";
-
-    ## Enabling thunar related services
-    services.gvfs.enable = true; # Mount, trash, and other functionalities
-    services.tumbler.enable = true; # Thumbnail support for images
-
-    ## Installing thunar with some plugins
-    home-manager.users.${config.user}.home.packages = with pkgs.xfce; [
-      thunar
-      thunar-archive-plugin
-      thunar-volman
-    ];
-  };  
+    home-manager.users.${config.user}.wayland.windowManager.sway.extraConfig = lib.mkIf (config.os.wm == "sway") ''
+      workspace 8
+      exec ${config.os.file-manager}
+    '';
+  };
 }
-
