@@ -34,6 +34,7 @@
           name = lib.mkOption {
             type = lib.types.str;
             description = "Primary output of the machine";
+            default = "eDP-1";
           };
           hidpi = lib.mkOption {
             type = lib.types.bool;
@@ -50,7 +51,22 @@
           type = lib.types.listOf lib.types.attrs;
           description = "List of attribute sets which each describe a output that is considered `right'";
         };
+
+        # test = lib.mkOption {
+        #   type = lib.types.listOf lib.types.listOf lib.types.attrs;
+        # };
       };
     };
   };
+
+  # config = {
+  #   home-manager.users.${config.user}.services.kanshi = {
+  #     enable = true;
+  #     profiles = {
+  #       home = {
+  #         outputs = [];
+  #       };
+  #     };
+  #   };
+  # }
 }

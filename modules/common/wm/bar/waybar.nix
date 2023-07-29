@@ -192,7 +192,7 @@
                 "4" = mapOutputs config.os.output.left; 
                 "5" = mapOutputs config.os.output.left; 
                 "6" = mapOutputs config.os.output.right; 
-                "7" = lib.mkIf config.features.gaming mapOutputs config.os.output.left;
+                "7" = lib.mkIf config.features.gaming (mapOutputs config.os.output.left);
                 "8" = mapOutputs config.os.output.left;
             };
           };
@@ -256,7 +256,7 @@
                 "4" = mapOutputs config.os.output.left; 
                 "5" = mapOutputs config.os.output.left; 
                 "6" = mapOutputs config.os.output.right; 
-                "7" = lib.mkIf config.features.gaming mapOutputs config.os.output.left;
+                "7" = lib.mkIf config.features.gaming (mapOutputs config.os.output.left);
                 "8" = mapOutputs config.os.output.left;
             };
           };

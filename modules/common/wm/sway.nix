@@ -75,7 +75,7 @@
         output = {
           
           ## Primary
-          "${config.os.output.primary.name}" = {
+          "${config.os.output.primary.name}" = lib.mkIf (config.os.machine.isLaptop == true) {
             scale = if config.os.output.primary.hidpi
               then "1.5"
               else "1";
