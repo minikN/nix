@@ -37,9 +37,9 @@
   };
 
   config = {
-    ## Start WM if logging into TTY2
+    ## Start WM if logging into TTY1
     environment.loginShellInit = ''
-      [[ "$(tty)" == /dev/tty2 ]] && exec ${config.os.wm}
+      [[ "$(tty)" == /dev/tty1 ]] && ${config.os.wm}
     '';
     
   };
