@@ -35,4 +35,12 @@
       };
     };
   };
+
+  config = {
+    ## Start WM if logging into TTY2
+    environment.loginShellInit = ''
+      [[ "$(tty)" == /dev/tty2 ]] && exec ${config.os.wm}
+    '';
+    
+  };
 }
