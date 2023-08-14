@@ -30,7 +30,7 @@
   options = {
     os = {
       file-manager = lib.mkOption {
-        type = lib.types.path;
+        type = lib.types.str;
         description = "File manager used throughout the system";
       };
     };
