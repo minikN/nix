@@ -220,6 +220,7 @@
           ## Global home packages
           packages = with pkgs; [
               libnotify
+              unzip
             ];
         }
         (lib.mkIf config.os.wayland {

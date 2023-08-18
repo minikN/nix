@@ -52,6 +52,7 @@
       lychee-slicer
       lychee-slicer-desktop
       cura
+      blender
     ];
   };
 }
