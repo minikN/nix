@@ -19,35 +19,31 @@
 ###
 ### COMMENT:
 ###
-### Enables modules commonly used for gaming
+### `Lutris' configuration
 ###
 ### CODE:
 
 { config, lib, pkgs, ... }:
 
 {
-  imports = [
-    ## Reverse import the wrapper feature so that the options are defined.
-    ../features
-
-    ../modules/games/steam.nix
-    ../modules/games/lutris.nix
-  ];
-
   config = {
 
-    ## Mounting games SSD
-    ## needs `sudo chown db:users -R /mnt/games'
-    fileSystems."/mnt/games" = {
-      device = "/dev/disk/by-label/GAMES";
-      fsType = "btrfs";
+    ## Extra libraries and packges
+    environment = {
+      systemPackages = with pkgs; [
+        (lutris.override {
+          extraLibraries =  pkgs: [
+            # List library dependencies here
+          ];
+          extraPkgs = pkgs: [
+            # List package dependencies here
+          ];
+        })
+      ];
     };
 
-    ## Setting the appropriate option so other modules know it.
-    features.gaming = true;
-
     home-manager.users.${config.user}.home.packages = with pkgs; [
-      mangohud
+      lutris
     ];
   };
 }
