@@ -77,6 +77,9 @@ nixpkgs.lib.nixosSystem {
       hardware.enableRedistributableFirmware = true;
       hardware.cpu.intel.updateMicrocode = true;
 
+      ## NVIDIA Settings
+      ## Not using built in GPU in this machine. Make sure discrete graphics are turned off in BIOS!
+
       hardware.opengl = {
        extraPackages = with pkgs; [
          intel-media-driver # LIBVA_DRIVER_NAME=iHD
