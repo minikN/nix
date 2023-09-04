@@ -58,7 +58,7 @@
         '';
   
         config = let
-        concatOutputs = lib.lists.foldl (all: output: if builtins.stringLength all > 0 then "${all}\" \"${output.name}" else "${output.name}") "";
+        concatOutputs = lib.lists.foldl (all: output: if builtins.stringLength all > 0 then "${all}\" \"${output}" else "${output}") "";
         in {
 
           ## Set modifier
@@ -77,16 +77,7 @@
 
           ## Output configuration
           ## For left/right configuration see module hardware/outputs
-          output = {
-            
-            ## Primary
-            "${config.os.output.primary.name}" = lib.mkIf (config.os.machine.isLaptop == true) {
-              scale = if config.os.output.primary.hidpi
-                then "1.5"
-                else "1";
-            };
-          };
-
+        
           ## Assigning workspaces to outputs
           workspaceOutputAssign = [
             { workspace = "1"; output = concatOutputs config.os.output.left; }

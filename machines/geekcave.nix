@@ -83,19 +83,9 @@ nixpkgs.lib.nixosSystem {
       };
 
       ## Display settings
-      os.output.left = [
-        { name = "DP-1"; width = 2560; }
-      ];
-      os.output.right = [
-        { name = "DP-2"; width = 2560; }
-      ];
-      # os.output.test = [
-      #   [
-      #     { name = "DP-1"; align = "left"; width = 2560; }
-      #     { name = "DP-2"; align = "right"; width = 2560; }
-      #   ]
-      # ];
-
+      os.output.left = ["DP-1"];
+      os.output.right = ["DP-2"];
+      
       ## Setting keymap to `de' for this machine.
       os.keyboard.layout = "us";
 

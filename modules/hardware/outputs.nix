@@ -43,30 +43,35 @@
         };
         
         left = lib.mkOption {
-          type = lib.types.listOf lib.types.attrs;
+          type = lib.types.listOf lib.types.str;
           description = "List of attribute sets which each describe a output that is considered `left'";
         };
 
         right = lib.mkOption {
-          type = lib.types.listOf lib.types.attrs;
+          type = lib.types.listOf lib.types.str;
           description = "List of attribute sets which each describe a output that is considered `right'";
         };
-
-        # test = lib.mkOption {
-        #   type = lib.types.listOf lib.types.listOf lib.types.attrs;
-        # };
       };
     };
   };
 
-  # config = {
-  #   home-manager.users.${config.user}.services.kanshi = {
-  #     enable = true;
-  #     profiles = {
-  #       home = {
-  #         outputs = [];
-  #       };
-  #     };
-  #   };
-  # }
+  config = {
+    home-manager.users.${config.user}.services.kanshi = {
+      enable = true;
+      profiles = {
+        home = {
+          outputs = [
+            { criteria = "DP-1"; }
+            { criteria = "DP-2"; }
+          ];
+        };
+        work = {
+          outputs = [
+            { criteria = "HDMI-A-1"; }
+            { criteria = "HDMI-A-2"; }
+          ];
+        };
+      };
+    };
+  };
 }

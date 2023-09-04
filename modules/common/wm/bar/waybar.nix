@@ -31,7 +31,7 @@
   ];
 
   config = let
-    mapOutputs = lib.lists.imap0 (i: output: "${output.name}");
+    mapOutputs = lib.lists.imap0 (i: output: "${output}");
   in {
     nixpkgs.overlays = [
       (self: super: {
