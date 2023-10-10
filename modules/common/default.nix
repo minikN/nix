@@ -222,6 +222,7 @@
           packages = with pkgs; [
               libnotify
               unzip
+              mediaelch
             ];
         }
         (lib.mkIf config.os.wayland {
