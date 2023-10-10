@@ -19,42 +19,17 @@
 ###
 ### COMMENT:
 ###
-### Enables modules commonly used for 3D printing
+### Flatpak configuration
 ###
 ### CODE:
 
 { config, lib, pkgs, ... }:
 
 {
-  imports = [
-    ## Reverse import the wrapper feature so that the options are defined.
-    ../features
-  ];
-
   config = {
 
-    features."3d-printing" = true;
-
-    nixpkgs.overlays = [
-      (self: super: {
-        lychee-slicer = super.callPackage ../packages/lychee-slicer.nix { };
-        lychee-slicer-desktop = super.writeTextDir "share/applications/lychee-slicer.desktop" ''
-          [Desktop Entry]
-          Version=5.2.2
-          Type=Application
-          Name=Lychee Slicer
-          Exec=${pkgs.lychee-slicer}/bin/lychee-slicer-5.2.2
-        '';
-      })
-    ];
-
-    home-manager.users.${config.user}.home.packages = with pkgs; [
-      lychee-slicer
-      lychee-slicer-desktop
-      # Installed 5.x via flatpak
-      #cura
-      blender
-      prusa-slicer
-    ];
+    ## Enabling flatpak
+    services.flatpak.enable = true;
   };
 }
+

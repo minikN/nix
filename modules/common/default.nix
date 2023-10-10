@@ -57,6 +57,7 @@
     ./services/pipewire.nix
     ./services/bluetooth.nix
     ./services/printer.nix
+    ./services/flatpak.nix
 
     ## Security
     ./security/gpg.nix
