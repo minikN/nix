@@ -92,18 +92,14 @@ nixpkgs.lib.nixosSystem {
       ## Display settings
       os.output.primary.name = "LVDS-1";
       os.output.primary.hidpi = false;
-      os.output.left = [
-        { name = "DP-6"; width = 2560; }
-      ];
-      os.output.right = [
-        { name = "DP-5"; width = 2560; }
-      ];
+      os.output.left = ["DP-5"];
+      os.output.right = ["DP-6"];
 
       ## Declaring this machine to be a laptop
       os.machine.isLaptop = true;
 
       ## Setting keymap to `de' for this machine.
-      os.keyboard.layout = "de";
+      os.keyboard.layout = "us";
 
       ## Mail accounts in use on this machine
       mail.primary.enable = true;
