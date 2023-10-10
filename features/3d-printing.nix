@@ -51,8 +51,11 @@
     home-manager.users.${config.user}.home.packages = with pkgs; [
       lychee-slicer
       lychee-slicer-desktop
-      # Installed 5.x via flatpak
-      #cura
+      ## Installed 5.x via flatpak:
+      ## flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+      ## flatpak update
+      ## flatpak install flathub com.ultimaker.cura
+      # cura
       blender
       prusa-slicer
     ];
