@@ -35,8 +35,8 @@
     home-manager.users.${config.user} = {
       programs.emacs = {
         enable = true;
-        package = pkgs.emacs29-pgtk;
-        extraPackages = epkgs: [ epkgs.magit epkgs.which-key ];
+        package = pkgs.emacsPgtk;
+        extraPackages = epkgs: [ epkgs.magit epkgs.which-key epkgs.treesit-grammars.with-all-grammars ];
         extraConfig = ''
           ;; Packages will be initialized by guix later.
           (setq package-enable-at-startup nil)
