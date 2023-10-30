@@ -223,6 +223,8 @@
               libnotify
               unzip
               mediaelch
+              mpv
+              realvnc-vnc-viewer
             ];
         }
         (lib.mkIf config.os.wayland {
