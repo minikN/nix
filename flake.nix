@@ -32,6 +32,11 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nur.url = "github:nix-community/NUR";
+    emacs-overlay = {
+      url = "github:nix-community/emacs-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+      #inputs.flake-utils.follows = "flake-utils";
+    };
   };
 
   outputs = { nixpkgs, nixos-hardware, ... }@inputs:
@@ -46,6 +51,7 @@
 
     overlays = [
       inputs.nur.overlay
+      inputs.emacs-overlay.overlay
     ];
 
     supportedSystems = [ "x86_64-linux" ];
