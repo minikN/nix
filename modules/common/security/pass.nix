@@ -30,8 +30,9 @@
   home-manager.users.${config.user} = {
 
   ## Sync store periodically
-  services.password-store-sync.enable = true;
-  
+  #services.password-store-sync.enable = true;
+  # use services.git-sync instead
+
   ## Password store
   programs.password-store = {
     enable = true;
