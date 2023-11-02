@@ -46,6 +46,22 @@
         description = "Whether the 3d-printing feature is enabled";
         default = false;
       };
+
+      emacs = {
+        eglot = lib.mkOption {
+          type = lib.types.bool;
+          description = "Whether the emacs eglot feature is enabled";
+          default = false;
+        };
+        
+        lang = {
+          javascript = lib.mkOption {
+            type = lib.types.bool;
+            description = "Whether the emacs javascript feature is enabled";
+            default = false;
+          };
+        };
+      };
     };
   };
 }

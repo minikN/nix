@@ -122,6 +122,9 @@ nixpkgs.lib.nixosSystem {
     ../features/gaming.nix
     ../features/3d-printing.nix
 
+      ## Emacs
+      ../features/emacs/lang/javascript.nix
+
     ## Chat
     ../modules/chat/discord.nix
     ../modules/chat/slack.nix
