@@ -176,6 +176,16 @@
         experimental-features = nix-command flakes
         warn-dirty = false
       '';
+
+      ## Store optimization
+      optimise.automatic = true;
+
+      ## Automatic garbage collection
+      gc = {
+        automatic = true;
+        dates = "weekly";
+        options = "--delete-older-than 7d";
+      };
     };
 
     ## OpenGL support
