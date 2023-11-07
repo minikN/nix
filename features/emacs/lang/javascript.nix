@@ -46,9 +46,12 @@
       programs.emacs = let
         dape = pkgs.emacsPackages.trivialBuild {
           pname = "dape";
-          src = pkgs.fetchurl {
-            url = "https://raw.githubusercontent.com/svaante/dape/master/dape.el";
-            sha256 = "b90384c64940345ec316ec807ec90c02f5631ead4b786ae91e8c648b9ee2babb";
+	        version = "0.1";
+          src = pkgs.fetchFromGitHub {
+            owner = "svaante";
+            repo = "dape";
+            rev = "a9f68bf701bede7a1e96e9f38b1ed42ba1eeb994";
+            sha256 = "sha256-arU7cGvsEdd0VPw5DD/q22rWXVz6Fr574x40orv1A4M=";
           }; 
         };
       in {
@@ -59,28 +62,27 @@
           (add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
           (add-to-list 'major-mode-remap-alist `(javascript-mode . js-ts-mode))
 
-          (with-eval-after-load
-            'dape
-            (setq snam-vscode-js-debug-dir (file-name-concat user-emacs-directory "dape/vscode-js-debug"))
-            (add-to-list 'dape-configs
-              `(vscode-js-node
-                modes (js-mode js-ts-mode typescript-mode typescript-ts-mode)
-                host "localhost"
-                port 8123
-                command "${pkgs.nodejs_18}/bin/node"
-                command-cwd ,(file-name-concat snam-vscode-js-debug-dir "dist")
-                command-args ("src/dapDebugServer.js" "8123")
-                :type "pwa-node"
-                :request "launch"
-                :cwd dape-cwd-fn
-                :program dape-find-file-buffer-default
-                :outputCapture "console"
-                :sourceMapRenames t
-                :pauseForSourceMap nil
-                :enableContentValidation t
-                :autoAttachChildProcesses t
-                :console "internalConsole"
-                :killBehavior "forceful")))
+	  ;; dape
+	  (with-eval-after-load
+	    'dape
+	    (setq dape-configs-adapter-dir (file-name-as-directory (concat user-emacs-directory "dape-debuggers")))
+	    (setq dape-configs-js-debug-version "v1.84.0")
+            (setq dape-configs-port 8123)
+
+	    (add-to-list 'dape-configs
+             `(js-debug-chrome
+               modes (js-mode js-ts-mode)
+	       command "${pkgs.nodejs_18}/bin/node"
+               command-cwd ,(concat dape-configs-adapter-dir "js-debug")
+               command-args ("src/dapDebugServer.js" ,(format "%d" dape-configs-port))
+               port dape-configs-port
+               :type "pwa-chrome"
+               :trace t
+               :url ,(lambda ()
+                       (read-string "Url: "
+                                    "http://localhost:3000"))
+               :webRoot dape-cwd-fn
+               :outputCapture "console")))
 
             (defun snam-install-vscode-js-debug ()
               "Run installation procedure to install JS debugging support"
@@ -130,7 +132,3 @@
     };
   };
 }
-
-                                       #"--tsserver-path" ${pkgs.nodePackages.typescript}/lib/node_modules/typescript/lib
-                                       #"--stdio"))))
-
