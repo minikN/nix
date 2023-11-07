@@ -28,7 +28,11 @@
 {
   home-manager.users.${config.user}.programs.vscode = {
     enable = true;
+    package = pkgs.vscodium;
+    
     userSettings = {
+      "window.titleBarStyle" = "custom"; 
+
       ## No auto-sync
       "git.confirmSync" = false;
       
