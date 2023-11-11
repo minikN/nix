@@ -37,6 +37,9 @@
     ## IDE
     ../modules/development/webstorm.nix
     ../modules/development/vscode.nix
+    
+    ## Emacs
+    ../modules/development/emacs/code/lang/javascript.nix
 
     ## Tools
     ../modules/common/services/docker.nix

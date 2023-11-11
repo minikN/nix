@@ -28,13 +28,10 @@
 
 { 
   imports = [
-    ../../../features
     ../eglot.nix
   ];
 
   config = {
-    features.emacs.lang.javascript = true;
-
     home-manager.users.${config.user} = {
       home.packages = [
         pkgs.nodePackages.vscode-langservers-extracted
@@ -50,29 +47,34 @@
           src = pkgs.fetchFromGitHub {
             owner = "svaante";
             repo = "dape";
-            rev = "a9f68bf701bede7a1e96e9f38b1ed42ba1eeb994";
-            sha256 = "sha256-arU7cGvsEdd0VPw5DD/q22rWXVz6Fr574x40orv1A4M=";
+            rev = "e34a87dd679fdac66674b08e141719f5cd5db0df";
+            sha256 = "sha256-Hslw7vD7yRpILNYw5fG+fH63q+BgA8SnmWAUIKnYiGY=";
           }; 
         };
       in {
-        extraPackages = epkgs: [ epkgs.consult-eglot epkgs.markdown-mode epkgs.corfu dape ];
+        extraPackages = epkgs: [
+          epkgs.consult-eglot ## Move
+          epkgs.markdown-mode
+          epkgs.corfu ## Move
+          dape ## Move to debug config
+        ];
         extraConfig = ''
           ;; Tell emacs to use treesitter modes
           (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
           (add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
           (add-to-list 'major-mode-remap-alist `(javascript-mode . js-ts-mode))
 
-	  ;; dape
-	  (with-eval-after-load
-	    'dape
-	    (setq dape-configs-adapter-dir (file-name-as-directory (concat user-emacs-directory "dape-debuggers")))
-	    (setq dape-configs-js-debug-version "v1.84.0")
+          ;; dape
+          (with-eval-after-load
+            'dape
+            (setq dape-configs-adapter-dir (file-name-as-directory (concat user-emacs-directory "dape-debuggers")))
+            (setq dape-configs-js-debug-version "v1.84.0")
             (setq dape-configs-port 8123)
 
-	    (add-to-list 'dape-configs
+            (add-to-list 'dape-configs
              `(js-debug-chrome
                modes (js-mode js-ts-mode)
-	       command "${pkgs.nodejs_18}/bin/node"
+	             command "${pkgs.nodejs_18}/bin/node"
                command-cwd ,(concat dape-configs-adapter-dir "js-debug")
                command-args ("src/dapDebugServer.js" ,(format "%d" dape-configs-port))
                port dape-configs-port
@@ -84,20 +86,7 @@
                :webRoot dape-cwd-fn
                :outputCapture "console")))
 
-            (defun snam-install-vscode-js-debug ()
-              "Run installation procedure to install JS debugging support"
-              (interactive)
-              (mkdir snam-vscode-js-debug-dir t)
-              (let ((default-directory (expand-file-name snam-vscode-js-debug-dir)))
-                
-                (vc-git-clone "https://github.com/microsoft/vscode-js-debug.git" "." nil)
-                (message "git repository created")
-                (call-process "${pkgs.nodejs_18}/bin/npm" nil "*snam-install*" t "install")
-                (message "npm dependencies installed")
-                (call-process "${pkgs.nodejs_18}/bin/npx" nil "*snam-install*" t "${pkgs.nodePackages.gulp}/bin/gulp" "dapDebugServer")
-                (message "vscode-js-debug installed")))
-
-          (defun db--javascript-setup-electric-pairs-for-jsx-tsx ()
+          (defun ${config.user}--javascript-setup-electric-pairs-for-jsx-tsx ()
             (electric-pair-local-mode)
             (setq-local electric-pair-pairs
                         (append electric-pair-pairs
@@ -126,7 +115,7 @@
             (add-hook hook
                       (lambda ()
                        (eglot-ensure)
-                       (db--javascript-setup-electric-pairs-for-jsx-tsx))))
+                       (${config.user}--javascript-setup-electric-pairs-for-jsx-tsx))))
         '';
       };
     };
