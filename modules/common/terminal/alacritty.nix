@@ -69,7 +69,7 @@
 
         ## Font
         font = {
-	  	size = config.os.fonts.mono.size;
+	  	size = config.os.fonts.size;
 
           offset.x = 0; ## letter spacing
           offset.y = 0; ## line spacing

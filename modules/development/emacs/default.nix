@@ -91,8 +91,8 @@
           (setq bookmark-default-file "${config.home-manager.users.${config.user}.xdg.cacheHome}/emacs/bookmarks")
 
           ;; Font
-          (add-to-list 'default-frame-alist '(font . "${config.os.fonts.mono.regular}-${builtins.toString config.os.fonts.mono.size}"))
-          (set-face-attribute 'default t :font "${config.os.fonts.mono.regular}-${builtins.toString config.os.fonts.mono.size}")
+          (add-to-list 'default-frame-alist '(font . "${config.os.fonts.mono.regular}-${builtins.toString config.os.fonts.size}"))
+          (set-face-attribute 'default t :font "${config.os.fonts.mono.regular}-${builtins.toString config.os.fonts.size}")
         
           ;; Keymap
           (defvar user-app-map nil "Prefix keymap for applications.")

@@ -48,7 +48,7 @@
 
       ## Font
       "editor.fontFamily" = "'${config.os.fonts.mono.regular}', 'monospace', monospace";
-      "editor.fontSize" = config.os.fonts.mono.size + 2;
+      "editor.fontSize" = config.os.fonts.size + 2;
       "editor.fontLigatures" = true;
     };
   };

@@ -31,6 +31,7 @@
 {
   imports = [
     ./theme.nix
+    ./fonts.nix
   ];
 
   config = {

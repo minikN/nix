@@ -349,10 +349,11 @@
         @define-color base0F #a16946;
 
         * {
-            font-family: Symbols Nerd Font Mono, Iosevka Nerd Font;
+            font-family: ${config.os.fonts.mono.regular};
             transition: none;
             box-shadow: none;
             text-shadow: none;
+            font-size: ${toString config.os.fonts.size}px;
             min-height: 0;
         }
 

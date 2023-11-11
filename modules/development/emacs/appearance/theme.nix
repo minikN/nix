@@ -1,5 +1,3 @@
-
-
 ### NixOS Configuration
 ###
 ### Copyright © 2023 Demis Balbach <db@minikn.xyz>

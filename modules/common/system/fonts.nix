@@ -28,11 +28,16 @@
 {
   options = {
     os.fonts = {
+      size = lib.mkOption {
+        type = lib.types.int;
+        default = 16;
+      };
+
       mono = {
         regular = lib.mkOption {
           type = lib.types.str;
           description = "Default monospaced font";
-          default = "Iosevka NFM";
+          default = "Iosevka Nerd Font";
         };
 
         light = lib.mkOption {
@@ -40,12 +45,29 @@
           description = "Default monospaced font";
           default = "${config.os.fonts.mono.regular} Light";
         };
-        
-        
-        size = lib.mkOption {
-          type = lib.types.int;
-          description = "Default font size";
-          default = 16;
+      };
+      
+      sans = {
+        regular = lib.mkOption {
+          type = lib.types.str;
+          description = "Default sans font";
+          default = "Iosevka Aile";
+        };
+      };
+      
+      sans-serif = {
+        regular = lib.mkOption {
+          type = lib.types.str;
+          description = "Default sans-serif font";
+          default = "Iosevka Etoile";
+        };
+      };
+
+      emoji = {
+        regular = lib.mkOption {
+          type = lib.types.str;
+          description = "Default emoji font";
+          default = "Noto Color Emoji";
         };
       };
     };
@@ -53,8 +75,19 @@
 
   config = {
     fonts = {
+      fontconfig = {
+        enable = true;
+        defaultFonts = {
+          monospace = [ "Iosevka Nerd Font" ];
+          serif = [ "Iosevka Etoile" ];
+          sansSerif = [ "Iosevka Aile" ];
+        };
+      };
       packages = with pkgs; [
-        nerdfonts
+        (nerdfonts.override { fonts = [ "Iosevka" ]; })
+        (iosevka-bin.override { variant = "aile"; })
+        (iosevka-bin.override { variant = "etoile"; })
+        noto-fonts-emoji
       ];
     };
   };

@@ -50,7 +50,7 @@
         enable = true;
         package = rofiPkg;
         theme = "Arc";
-        font = "${config.os.fonts.mono.light} ${builtins.toString config.os.fonts.mono.size}";
+        font = "${config.os.fonts.mono.light} ${builtins.toString config.os.fonts.size}";
       
         extraConfig = {
           show-actions = true;
