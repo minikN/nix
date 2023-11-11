@@ -23,4 +23,4 @@
 - Many more
 
 ## Credit
-Most of my emacs configuration is taken from Andre Tropin's [RDE](https://github.com/abcdw/rde/tree/master). Full credit goes to him and all the people contributing to the project. Check it out, it's a great project!
+Most of my emacs configuration is taken from Andrew Tropin's [RDE](https://github.com/abcdw/rde/tree/master). Full credit goes to him and all the people contributing to the project. Check it out, it's a great project!
