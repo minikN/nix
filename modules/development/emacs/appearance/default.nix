@@ -22,13 +22,17 @@
 ### COMMENT:
 ###
 ### Emacs appearance configuration
-### Source: https://github.com/abcdw/rde/blob/master/src/rde/features/emacs-xyz.scm#L154
+### Source: https://github.com/abcdw/rde/blob/master/src/rde/features/emacs-xyz.scm
 ###
 ### CODE:
 
 { config, lib, pkgs, ... }:
 
 {
+  imports = [
+    ./theme.nix
+  ];
+
   config = {
     home-manager.users.${config.user} = {
       imports = with config.nur.repos.rycee.hmModules; [ emacs-init ];
@@ -57,7 +61,7 @@
         extraPackages = epkgs: [ epkgs.minions ];
         extraConfig = ''
           (set-default 'cursor-type  '(bar . 1))
-          (blink-cursor-mode 0)
+          (blink-cursor-mode 1)
           (setq-default cursor-in-non-selected-windows nil)
           (setq bookmark-set-fringe-mark nil)
 
@@ -88,14 +92,14 @@
                         (define-key map (vector 'header-line 'down-mouse-1)
                           'minions-minor-modes-menu)
                         map))
-                (defun rde--move-mode-line-to-header ()
+                (defun ${config.user}--move-mode-line-to-header ()
                   "Move mode-line to header-line.
 This function is needed for various modes to set up the mode-line late."
                   (setq-local header-line-format mode-line-format)
                   (setq-local mode-line-format nil))
 
                 (add-hook 'calendar-initial-window-hook
-                          'rde--move-mode-line-to-header)
+                          '${config.user}--move-mode-line-to-header)
                 (setq-default header-line-format mode-line-format)
                 (setq-default mode-line-format nil)
                 (setq mode-line-format nil)

@@ -22,7 +22,7 @@
 ### COMMENT:
 ###
 ### Emacs theme configuration
-### Source: https://github.com/abcdw/${config.user}/blob/master/src/${config.user}/features/emacs-xyz.scm#L277
+### Source: https://github.com/abcdw/${config.user}/blob/master/src/rde/features/emacs-xyz.scm
 ###
 ### CODE:
 

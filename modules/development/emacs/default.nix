@@ -28,8 +28,7 @@
 
 {
   imports = [
-    ./appearance.nix
-    ./theme.nix
+    ./appearance
   ];
   
   config = {
