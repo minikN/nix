@@ -62,7 +62,24 @@
 
             ;; Kill compile buffer on build success
             ;; (add-hook 'dape-compile-compile-hooks 'kill-buffer)
-          )
+
+            ;; Customize actions in info buffer
+            (setq dape-info-buttons
+              '(("→" . dape-next)
+                ("↘" . dape-step-in)
+                ("↗" . dape-step-out)
+                ("⯈" . dape-continue)
+                ("⏸" . dape-pause)
+                ("⭯" . dape-restart)
+                ("x" . dape-quit)))
+
+            (dolist
+            (hook
+              '(dape-info-mode-hook
+                dape-repl-mode-hook))
+              (add-hook hook
+                        (lambda ()
+                        (face-remap-add-relative 'default :height 0.75)))))
         '';
       };
     };
