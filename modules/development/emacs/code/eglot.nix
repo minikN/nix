@@ -39,7 +39,7 @@
             (add-hook 'eglot-managed-mode-hook
                       (lambda () (setq consult-imenu--cache nil)))
             ;; Potentially can speed up eglot:
-            ;; (setq eglot-events-buffer-size 0)
+            (setq eglot-events-buffer-size 0)
             (setq eglot-extend-to-xref t))
         '';
       };

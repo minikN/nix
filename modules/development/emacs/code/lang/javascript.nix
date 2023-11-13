@@ -32,12 +32,18 @@
   ];
 
   config = {
+     nixpkgs.overlays = [
+      (self: super: {
+        vscode-js-debug = super.callPackage ../../../../../packages/node/vscode-js-debug.nix { };
+      })
+     ];
+
     home-manager.users.${config.user} = {
       home.packages = [
         pkgs.nodePackages.vscode-langservers-extracted
         pkgs.nodePackages.typescript-language-server
         pkgs.nodePackages.typescript
-        #node
+        pkgs.vscode-js-debug
       ];
 
       programs.emacs = let
@@ -74,9 +80,9 @@
             (add-to-list 'dape-configs
              `(js-debug-chrome
                modes (js-mode js-ts-mode)
-	             command "${pkgs.nodejs_18}/bin/node"
+	             command "${pkgs.vscode-js-debug}/bin/dapDebugServer"
                command-cwd ,(concat dape-configs-adapter-dir "js-debug")
-               command-args ("src/dapDebugServer.js" ,(format "%d" dape-configs-port))
+               command-args (,(format "%d" dape-configs-port))
                port dape-configs-port
                :type "pwa-chrome"
                :trace t
