@@ -29,6 +29,8 @@
 {
   imports = [
     ./appearance
+    ./code/eglot.nix
+    ./code/dape.nix
   ];
   
   config = {

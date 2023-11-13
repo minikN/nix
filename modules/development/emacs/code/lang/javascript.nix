@@ -27,10 +27,6 @@
 { config, lib, pkgs, inputs, ... }:
 
 { 
-  imports = [
-    ../eglot.nix
-  ];
-
   config = {
      nixpkgs.overlays = [
       (self: super: {
@@ -46,23 +42,11 @@
         pkgs.vscode-js-debug
       ];
 
-      programs.emacs = let
-        dape = pkgs.emacsPackages.trivialBuild {
-          pname = "dape";
-	        version = "0.1";
-          src = pkgs.fetchFromGitHub {
-            owner = "svaante";
-            repo = "dape";
-            rev = "e34a87dd679fdac66674b08e141719f5cd5db0df";
-            sha256 = "sha256-Hslw7vD7yRpILNYw5fG+fH63q+BgA8SnmWAUIKnYiGY=";
-          }; 
-        };
-      in {
+      programs.emacs = {
         extraPackages = epkgs: [
           epkgs.consult-eglot ## Move
           epkgs.markdown-mode
           epkgs.corfu ## Move
-          dape ## Move to debug config
         ];
         extraConfig = ''
           ;; Tell emacs to use treesitter modes
@@ -74,7 +58,6 @@
           (with-eval-after-load
             'dape
             (setq dape-configs-adapter-dir (file-name-as-directory (concat user-emacs-directory "dape-debuggers")))
-            (setq dape-configs-js-debug-version "v1.84.0")
             (setq dape-configs-port 8123)
 
             (add-to-list 'dape-configs
