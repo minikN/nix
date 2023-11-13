@@ -235,6 +235,7 @@
               mediaelch
               mpv
               realvnc-vnc-viewer
+              gnome.gnome-system-monitor
             ];
         }
         (lib.mkIf config.os.wayland {
