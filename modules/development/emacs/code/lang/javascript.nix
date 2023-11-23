@@ -86,7 +86,6 @@
           (setq js-indent-level 2
                 js-chain-indent t)
 
-
           ;; Configure eglot
           (with-eval-after-load
            'eglot
