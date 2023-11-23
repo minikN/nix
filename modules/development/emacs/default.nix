@@ -1,4 +1,3 @@
-
 ### NixOS Configuration
 ###
 ### Copyright © 2023 Demis Balbach <db@minikn.xyz>
@@ -31,6 +30,11 @@
     ./appearance
     ./code/eglot.nix
     ./code/dape.nix
+
+    ./vertico.nix
+    ./completion.nix
+
+    ./windows.nix
   ];
   
   config = {
