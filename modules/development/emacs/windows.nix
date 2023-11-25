@@ -54,7 +54,7 @@
                       (side . right) (slot . 0) (window-width . 50)
                       (preserve-size . (t . nil)) ,parameters)
                     (,${config.user}-window-bottom-regex display-buffer-in-side-window
-                      (side . bottom) (slot . 1) (preserve-size . (nil . t))
+                      (side . bottom) (slot . 0) (preserve-size . (nil . t))
                       ,parameters)))
 
            (defun ${config.user}--get-with-matching-buffer (target regex list)
@@ -98,13 +98,15 @@
              (let ((matching-buffer (${config.user}--get-matching-buffer regex)))
                (get-buffer-window (or matching-buffer ""))))
 
-           (defun ${config.user}-toggle-side-window (regex)
+           (defun ${config.user}-toggle-window (regex)
              "Toggles side window having buffers matching REGEX"
              (if (${config.user}--is-side-window-visible-p regex)
                  (${config.user}-window-delete-side-window regex)
                (${config.user}-window-show-side-window regex)))
 
            (defun ${config.user}--is-side-window-selected-p (regex)
+             "Checks whether the currently selected window has buffers
+             matching REGEX"
              (equal (selected-window) (${config.user}--get-matching-window regex)))
           
           (defun ${config.user}-focus-window (regex)
@@ -127,59 +129,37 @@
                       (window-state-put state (frame-root-window (window-frame)) t))
               (window--sides-reverse-frame (window-frame))))))
 
+          ;; toggle all side windows
+          (global-set-key (kbd "<f12>") 'window-toggle-side-windows)
+
+
           ;; toggling right side window
           (global-set-key (kbd "<f11>") (lambda ()
                                            (interactive)
-                                           (${config.user}-toggle-side-window
-                                           ${config.user}-window-right-regex)))
+                                           (${config.user}-toggle-window
+                                            ${config.user}-window-right-regex)))
           
           ;; focusing right side window
           (global-set-key (kbd "S-<f11>") (lambda ()
-                                           (interactive)
-                                           (${config.user}-focus-window
-                                           ${config.user}-window-right-regex)))
+                                            (interactive)
+                                            (${config.user}-focus-window
+                                              ${config.user}-window-right-regex)))   
           
            ;; toggling bottom side window
            (global-set-key (kbd "<f10>") (lambda ()
                                            (interactive)
-                                           (${config.user}-toggle-side-window
-                                           ${config.user}-window-bottom-regex)))
+                                           (${config.user}-toggle-window
+                                            ${config.user}-window-bottom-regex)))
            
            ;; focusing bottom side window
            (global-set-key (kbd "S-<f10>") (lambda ()
                                            (interactive)
                                            (${config.user}-focus-window
-                                           ${config.user}-window-bottom-regex)))
+                                            ${config.user}-window-bottom-regex)))
 
-
-          (global-set-key (kbd "<f12>") (lambda () (interactive) (${config.user}-toggle-window ${config.user}-window-right-regex)))   
 
         '';
       };
     };
   };
 }
-
-          # (defun ${config.user}-toggle-focus-side-window (regex &optional horizontal)
-          #   "Toggles the focus on a side window."
-          #   (if (${config.user}--is-side-window-selected-p regex)
-          #       (progn
-          #         (shrink-window 50 (or horizontal nil))
-          #         (other-window 1))
-          #       (let ((window (${config.user}--get-matching-window regex)))
-          #         (when window
-          #           (select-window window)
-          #           (enlarge-window 50 (or horizontal nil))))))
-
-          # ;; focusing right side window
-          # (global-set-key (kbd "S-<f11>") (lambda ()
-          #                                   (interactive)
-          #                                   (${config.user}-toggle-focus-side-window
-          #                                   ${config.user}-window-right-regex
-          #                                   t)))
-          
-          # ;; focusing bottom side window
-          # (global-set-key (kbd "S-<f10>") (lambda ()
-          #                                   (interactive)
-          #                                   (${config.user}-toggle-focus-side-window
-          #                                   ${config.user}-window-bottom-regex)))
