@@ -162,7 +162,10 @@
               'notmuch-mua-send-hook)
             (setq mail-user-agent 'notmuch-user-agent)
 
-            (define-key user-app-map (kbd "n") 'notmuch)
+            (with-eval-after-load
+              '${config.user}-keymaps
+              (define-key ${config.user}-app-map (kbd "n") 'notmuch))
+            
             (define-key global-map (kbd "M-s n") 'consult-notmuch-tree)
             (define-key global-map (kbd "s-m") 'notmuch-jump-search)
             (setq notmuch-saved-searches
