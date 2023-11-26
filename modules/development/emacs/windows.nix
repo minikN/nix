@@ -30,17 +30,21 @@
     home-manager.users.${config.user} = {
       programs.emacs = {
         extraConfig = ''
-          (if after-init-time
-            (winner-mode 1)
-            (add-hook 'after-init-hook 'winner-mode))
+          (defgroup ${config.user}-windows nil
+            "Tweaks to the built-in Emacs window management."
+            :group '${config.user})
 
           (defcustom ${config.user}-window-right-regex
             "\\*\\(?:help\\|grep\\|Completions\\)\\*"
-            "Regex string matching buffers being shown in right side window")
+            "Regex string matching buffers being shown in right side window"
+            :type 'string
+            :group '${config.user}-windows)
           
           (defcustom ${config.user}-window-bottom-regex
-                      "\\*\\(?:shell\\|compilation\\)\\*"
-                      "Regex string matching buffers being shown in bottom side window")
+            "\\*\\(?:shell\\|compilation\\)\\*"
+            "Regex string matching buffers being shown in bottom side window"
+            :type 'string
+            :group '${config.user}-windows)
           
             (defvar parameters
                 '(window-parameters . ((no-other-window . t)
@@ -57,58 +61,60 @@
                       (side . bottom) (slot . 0) (preserve-size . (nil . t))
                       ,parameters)))
 
-           (defun ${config.user}--get-with-matching-buffer (target regex list)
-             "Returns the first TARGET that has (or is) a buffer
-           matching REGEX in LIST"
-             (car (seq-filter
-             (lambda (x)
-               (string-match-p
-               regex
-               (buffer-name
-                 (cond ((equal target "window") (window-buffer x))
-                 ((equal target "buffer") x)))))
-             list)))
+          (defun ${config.user}--get-with-matching-buffer (target regex list)
+            "Returns the first TARGET that has (or is) a buffer
+          matching REGEX in LIST"
+            (car (seq-filter
+            (lambda (x)
+              (string-match-p
+              regex
+              (buffer-name
+                (cond ((equal target "window") (window-buffer x))
+                ((equal target "buffer") x)))))
+            list)))
 
-           (defun ${config.user}--get-matching-buffer (regex)
-             "Get the buffer matching REGEX"
-             (${config.user}--get-with-matching-buffer
-             "buffer"
-             regex
-             (buffer-list)))
+          (defun ${config.user}--get-matching-buffer (regex)
+            "Get the buffer matching REGEX"
+            (${config.user}--get-with-matching-buffer
+            "buffer"
+            regex
+            (buffer-list)))
 
-           (defun ${config.user}--get-matching-window (regex)
-             "Get the window with a buffer matching REGEX"
-             (${config.user}--get-with-matching-buffer
-             "window"
-             regex
-             (window-list-1 nil 0 t)))
+          (defun ${config.user}--get-matching-window (regex)
+            "Get the window with a buffer matching REGEX"
+            (${config.user}--get-with-matching-buffer
+            "window"
+            regex
+            (window-list-1 nil 0 t)))
 
-           (defun ${config.user}-window-delete-side-window (regex)
-             "Deletes window with a buffer matching REGEX"
-             (delete-window (${config.user}--get-matching-window regex)))
-           (defun ${config.user}-window-show-side-window (regex)
-             "Shows a side window with a buffer matching REGEX"
-             (let ((matching-buffer (${config.user}--get-matching-buffer regex)))
-               (when matching-buffer
-                 (display-buffer matching-buffer))))
+          (defun ${config.user}-window-delete-side-window (regex)
+            "Deletes window with a buffer matching REGEX"
+            (delete-window (${config.user}--get-matching-window regex)))
+          (defun ${config.user}-window-show-side-window (regex)
+            "Shows a side window with a buffer matching REGEX"
+            (let ((matching-buffer (${config.user}--get-matching-buffer regex)))
+              (when matching-buffer
+                (display-buffer matching-buffer))))
 
-           (defun ${config.user}--is-side-window-visible-p (regex)
-             "Returns the name of the window a buffer matching REGEX is currently
-                     being displayed or `nil' if the window is not visible"
-             (let ((matching-buffer (${config.user}--get-matching-buffer regex)))
-               (get-buffer-window (or matching-buffer ""))))
+          (defun ${config.user}--is-side-window-visible-p (regex)
+            "Returns the name of the window a buffer matching REGEX is currently
+                    being displayed or `nil' if the window is not visible"
+            (let ((matching-buffer (${config.user}--get-matching-buffer regex)))
+              (get-buffer-window (or matching-buffer ""))))
 
-           (defun ${config.user}-toggle-window (regex)
-             "Toggles side window having buffers matching REGEX"
-             (if (${config.user}--is-side-window-visible-p regex)
-                 (${config.user}-window-delete-side-window regex)
-               (${config.user}-window-show-side-window regex)))
+          ;;;###autoload
+          (defun ${config.user}-toggle-window (regex)
+            "Toggles side window having buffers matching REGEX"
+            (if (${config.user}--is-side-window-visible-p regex)
+                (${config.user}-window-delete-side-window regex)
+              (${config.user}-window-show-side-window regex)))
 
-           (defun ${config.user}--is-side-window-selected-p (regex)
-             "Checks whether the currently selected window has buffers
-             matching REGEX"
-             (equal (selected-window) (${config.user}--get-matching-window regex)))
+          (defun ${config.user}--is-side-window-selected-p (regex)
+            "Checks whether the currently selected window has buffers
+            matching REGEX"
+            (equal (selected-window) (${config.user}--get-matching-window regex)))
           
+          ;;;###autoload
           (defun ${config.user}-focus-window (regex)
             "Focuses window that has buffers matching REGEX by deleting all other windows.
           Will restore previous window layout on subsequent execution. NOTE: Layout changes
@@ -135,8 +141,8 @@
 
           ;; toggling right side window
           (global-set-key (kbd "<f11>") (lambda ()
-                                           (interactive)
-                                           (${config.user}-toggle-window
+                                          (interactive)
+                                          (${config.user}-toggle-window
                                             ${config.user}-window-right-regex)))
           
           ;; focusing right side window
@@ -145,19 +151,17 @@
                                             (${config.user}-focus-window
                                               ${config.user}-window-right-regex)))   
           
-           ;; toggling bottom side window
-           (global-set-key (kbd "<f10>") (lambda ()
-                                           (interactive)
-                                           (${config.user}-toggle-window
+          ;; toggling bottom side window
+          (global-set-key (kbd "<f10>") (lambda ()
+                                          (interactive)
+                                          (${config.user}-toggle-window
                                             ${config.user}-window-bottom-regex)))
-           
-           ;; focusing bottom side window
-           (global-set-key (kbd "S-<f10>") (lambda ()
-                                           (interactive)
-                                           (${config.user}-focus-window
+          
+          ;; focusing bottom side window
+          (global-set-key (kbd "S-<f10>") (lambda ()
+                                          (interactive)
+                                          (${config.user}-focus-window
                                             ${config.user}-window-bottom-regex)))
-
-
         '';
       };
     };
