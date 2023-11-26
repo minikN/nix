@@ -28,6 +28,7 @@
 {
   imports = [
     ./appearance
+    ./keymaps.nix
     ./code/eglot.nix
     ./code/dape.nix
 
@@ -35,6 +36,7 @@
     ./completion.nix
 
     ./windows.nix
+    ./which-key.nix
   ];
   
   config = {
@@ -71,6 +73,11 @@
           (setq use-dialog-box t
                 use-file-dialog nil)
 
+          (defgroup ${config.user} nil
+            "Base customization group for user settings."
+            :group 'external
+            :prefix '${config.user}-)
+
           ;; Theme
           (load-theme 'modus-operandi t)
 
@@ -99,15 +106,6 @@
           ;; Font
           (add-to-list 'default-frame-alist '(font . "${config.os.fonts.mono.regular}-${builtins.toString config.os.fonts.size}"))
           (set-face-attribute 'default t :font "${config.os.fonts.mono.regular}-${builtins.toString config.os.fonts.size}")
-        
-          ;; Keymap
-          (defvar user-app-map nil "Prefix keymap for applications.")
-          (define-prefix-command 'user-app-map nil)
-          (defvar user-toggle-map nil "Prefix keymap for binding various minor modes for toggling functionality.")
-          (define-prefix-command 'user-toggle-map nil)
-
-          (define-key mode-specific-map (kbd "a") '("applications" . user-app-map))
-          (define-key mode-specific-map (kbd "t") '("toggles" . user-toggle-map))
         '';
       };
     };
