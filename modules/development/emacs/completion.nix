@@ -45,7 +45,7 @@
           (eval-when-compile (require 'marginalia) (require 'consult))
           (defgroup ${config.user}-completion nil
             "Tweaks to the built-in Emacs completion."
-            :group 'rde)
+            :group '${config.user})
 
           (with-eval-after-load
             'minibuffer
