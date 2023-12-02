@@ -36,6 +36,7 @@
 
     home-manager.users.${config.user} = {
       home.packages = [
+        pkgs.nodejs
         pkgs.nodePackages.vscode-langservers-extracted
         pkgs.nodePackages.typescript-language-server
         pkgs.nodePackages.typescript
@@ -44,6 +45,10 @@
 
       programs.emacs = {
         extraPackages = epkgs: [
+          ## node / npm
+          epkgs.npm-mode
+          epkgs.nodejs-repl
+
           epkgs.consult-eglot ## Move
           epkgs.markdown-mode
           epkgs.corfu ## Move
@@ -86,6 +91,34 @@
           (setq js-indent-level 2
                 js-chain-indent t)
 
+          ;; npm-mode
+          ;; TODO: Add which-key descriptions
+          ;; TODO: Make npm-mode run with isolated npm runtime
+          (with-eval-after-load
+           'npm-mode
+           (fset 'npm-mode-command-keymap npm-mode-command-keymap)
+           (define-key npm-mode-keymap (kbd "C-c n") '("npm" . npm-mode-command-keymap)))
+
+          ;; nodejs-repl
+          ;; TODO: Add which-key descriptions
+          (defun ${config.user}--javascript-setup-nodejs-repl ()
+            (defvar nodejs-repl-mode-command-map
+              (let ((map (make-sparse-keymap)))
+                (define-key map (kbd "e") 'nodejs-repl-send-last-expression)
+                (define-key map (kbd "j") 'nodejs-repl-send-line)
+                (define-key map (kbd "r") 'nodejs-repl-send-region)
+                (define-key map (kbd "C-c") 'nodejs-repl-send-buffer)
+                (define-key map (kbd "C-l") 'nodejs-repl-load-file)
+                (define-key map (kbd "C-z") 'nodejs-repl-switch-to-repl)
+                map))
+            (fset 'nodejs-repl-mode-command-map nodejs-repl-mode-command-map)
+            (define-key js-ts-mode-map (kbd "C-c r")
+              '("repl" . nodejs-repl-mode-command-map)))
+
+          (with-eval-after-load
+              'nodejs-repl
+            (setq nodejs-repl-command "${pkgs.nodejs}/bin/node"))
+
           ;; Configure eglot
           (with-eval-after-load
            'eglot
@@ -103,6 +136,8 @@
             (add-hook hook
                       (lambda ()
                        (eglot-ensure)
+                       (npm-mode)
+                       (${config.user}--javascript-setup-nodejs-repl)
                        (${config.user}--javascript-setup-electric-pairs-for-jsx-tsx))))
         '';
       };
