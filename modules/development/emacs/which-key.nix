@@ -38,7 +38,7 @@
             "Configuration related to `which-key'."
             :group '${config.user})
 
-          (defcustom ${config.user}-which-key-min-lines 1
+          (defcustom ${config.user}-which-key-min-lines 5
             "The minimum amount of lines which-key should display."
             :type 'number
             :group '${config.user}-which-key)
