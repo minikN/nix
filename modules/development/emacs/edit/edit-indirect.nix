@@ -58,12 +58,12 @@ buffer based on a predefined delimiter."
 		(search-forward delimiter)
 		(when (match-string 0)
 		  (funcall mode)))))
-	  db-edit-indirect-delimiter-mode-alist))
+	  db-edit-delimiter-mode-alist))
 
 ;; Specifying which function should be called when opening
 ;; an indirect buffer with `edit-indirect' to guess the
 ;; correct mode. The function will use the custom variable
-`db-edit-indirect-delimiter-mode-alist'.
+;; `db-edit-indirect-delimiter-mode-alist'.
 (setq edit-indirect-guess-mode-function #'db-edit-guess-mode)
 
 (defun db-mark-text-between-delimiter (delimiter)
