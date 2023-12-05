@@ -35,6 +35,10 @@
     ./vertico.nix
     ./completion.nix
 
+    ./code/lang/nix.nix
+
+    ./edit/edit-indirect.nix
+
     ./windows.nix
     ./which-key.nix
   ];
