@@ -32,7 +32,6 @@
         extraPackages = epkgs: [ epkgs.edit-indirect ];
         extraConfig = ''
 ;; ~!emacs-lisp!~
-;; test
 (require 'edit-indirect)
 
 (defgroup db-edit nil
@@ -108,6 +107,7 @@ a literal string."
       (edit-indirect-region (point) (mark) t))))
 
 (with-eval-after-load 'nix-mode
+  ;; TODO: Add which-key description
   (define-key nix-mode-map
 	      (kbd "C-c C-'")
 	      (lambda
