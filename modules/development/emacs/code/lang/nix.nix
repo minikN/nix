@@ -37,10 +37,10 @@
           epkgs.nix-mode 
         ];
         extraConfig = ''
-          (eval-when-compile 
-            (require 'nix-mode)
-            ;;(nix-prettify-global-mode 1)
-            (add-to-list 'auto-mode-alist '("\\.nix\\'" . nix-mode)))
+;; ~!emacs-lisp!~
+(require 'nix-mode)
+;;(nix-prettify-global-mode 1)
+(add-to-list 'auto-mode-alist '("\\.nix\\'" . nix-mode))
         '';
       };
     };
