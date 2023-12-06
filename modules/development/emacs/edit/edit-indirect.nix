@@ -39,7 +39,8 @@
   :group 'db)
 
 (defcustom db-edit-delimiter-mode-alist
-  '(("~!emacs-lisp!~" . emacs-lisp-mode))
+  '(("~!emacs-lisp!~" . emacs-lisp-mode)
+    ("~!shell!~" . shell-script-mode))
   "An association list that binds a specific delimiter
 to a major mode. Used for guessing the correct mode
 while using `edit-indirect'."
@@ -54,10 +55,10 @@ buffer based on a predefined delimiter."
 		  (mode (cdr el)))
 	      (with-current-buffer (current-buffer)
 		(goto-char (point-min))
-		(search-forward delimiter)
-		(when (match-string 0)
+		(when (search-forward delimiter nil t)
 		  (funcall mode)))))
-	  db-edit-delimiter-mode-alist))
+	  db-edit-delimiter-mode-alist)
+  )
 
 ;; Specifying which function should be called when opening
 ;; an indirect buffer with `edit-indirect' to guess the
