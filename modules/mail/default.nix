@@ -51,23 +51,24 @@
         services.mbsync = {
           enable = true;
           preExec = toString (pkgs.writeShellScript "mbsync-pre" ''
-            function safeMove { s=$\{1##*/}; s=$\{s%%,*}; mv -f $1 $2/$s; }
-            mkdir -p ${config.const.mailDir}
-            for f in $(ls ${config.const.mailDir}/accounts); do
-              mkdir -p ${config.const.mailDir}/$f
-              for i in $(${pkgs.notmuch}/bin/notmuch search --exclude=false --output=files path:/.\*\/$f/ AND tag:trash AND NOT folder:trash); do
-                safeMove $i ${config.const.mailDir}/accounts/$f/trash/cur
-              done
-              for i in $(${pkgs.notmuch}/bin/notmuch search --exclude=false --output=files path:/.\*\/$f/ AND tag:deleted AND NOT folder:trash); do
-                safeMove $i ${config.const.mailDir}/accounts/$f/trash/cur
-              done
-              for i in $(${pkgs.notmuch}/bin/notmuch search --exclude=false --output=files path:/.\*\/$f/ AND tag:spam AND NOT folder:spam); do
-                safeMove $i ${config.const.mailDir}/accounts/$f/spam/cur
-              done
-              for i in $(${pkgs.notmuch}/bin/notmuch search --exclude=false --output=files path:/.\*\/$f/ AND tag:archive AND NOT folder:archive); do
-                safeMove $i ${config.const.mailDir}/accounts/$f/archive/cur
-              done
-            done
+## ~!shell!~
+function safeMove { s=$\\{1##*/}; s=$\\{s%%,*}; mv -f $1 $2/$s; }
+mkdir -p ${config.const.mailDir}
+for f in $(ls ${config.const.mailDir}/accounts); do
+    mkdir -p ${config.const.mailDir}/$f
+    for i in $(${pkgs.notmuch}/bin/notmuch search --exclude=false --output=files path:/.\*\/$f/ AND tag:trash AND NOT folder:trash); do
+	safeMove $i ${config.const.mailDir}/accounts/$f/trash/cur
+    done
+    for i in $(${pkgs.notmuch}/bin/notmuch search --exclude=false --output=files path:/.\*\/$f/ AND tag:deleted AND NOT folder:trash); do
+	safeMove $i ${config.const.mailDir}/accounts/$f/trash/cur
+    done
+    for i in $(${pkgs.notmuch}/bin/notmuch search --exclude=false --output=files path:/.\*\/$f/ AND tag:spam AND NOT folder:spam); do
+	safeMove $i ${config.const.mailDir}/accounts/$f/spam/cur
+    done
+    for i in $(${pkgs.notmuch}/bin/notmuch search --exclude=false --output=files path:/.\*\/$f/ AND tag:archive AND NOT folder:archive); do
+	safeMove $i ${config.const.mailDir}/accounts/$f/archive/cur
+    done
+done
           '');
           postExec = "${pkgs.notmuch}/bin/notmuch new";
         };
