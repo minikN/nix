@@ -164,8 +164,8 @@ done
             (setq mail-user-agent 'notmuch-user-agent)
 
             (with-eval-after-load
-              '${config.user}-keymaps
-              (define-key ${config.user}-app-map (kbd "n") 'notmuch))
+              'db-keymaps
+              (define-key db-app-map (kbd "n") 'notmuch))
             
             (define-key global-map (kbd "M-s n") 'consult-notmuch-tree)
             (define-key global-map (kbd "s-m") 'notmuch-jump-search)

@@ -93,14 +93,14 @@
                         (define-key map (vector 'header-line 'down-mouse-1)
                           'minions-minor-modes-menu)
                         map))
-                (defun ${config.user}--move-mode-line-to-header ()
+                (defun db--move-mode-line-to-header ()
                   "Move mode-line to header-line.
 This function is needed for various modes to set up the mode-line late."
                   (setq-local header-line-format mode-line-format)
                   (setq-local mode-line-format nil))
 
                 (add-hook 'calendar-initial-window-hook
-                          '${config.user}--move-mode-line-to-header)
+                          'db--move-mode-line-to-header)
                 (setq-default header-line-format mode-line-format)
                 (setq-default mode-line-format nil)
                 (setq mode-line-format nil)

@@ -31,15 +31,15 @@
     home-manager.users.${config.user} = {
       programs.emacs = let
         keymaps = pkgs.emacsPackages.trivialBuild {
-          pname = "${config.user}-keymaps";
+          pname = "db-keymaps";
           version = "0.1";
           src = pkgs.writeText "${keymaps.pname}.el" ''
             ;;; ${keymaps.pname}.el --- Window configuration -*- lexical-binding: t -*-
-              (defvar ${config.user}-app-map nil "Prefix keymap for applications.")
-              (define-prefix-command '${config.user}-app-map nil)
-              (defvar ${config.user}-toggle-map nil "\
+              (defvar db-app-map nil "Prefix keymap for applications.")
+              (define-prefix-command 'db-app-map nil)
+              (defvar db-toggle-map nil "\
           Prefix keymap for binding various minor modes for toggling functionalitty.")
-              (define-prefix-command '${config.user}-toggle-map nil)  
+              (define-prefix-command 'db-toggle-map nil)  
             (provide '${keymaps.pname})
           '';
         };
@@ -49,9 +49,9 @@
           (require '${keymaps.pname})
 
           (define-key mode-specific-map (kbd "a")
-            '("applications" . ${config.user}-app-map))
+            '("applications" . db-app-map))
           (define-key mode-specific-map (kbd "t")
-            '("toggles" . ${config.user}-toggle-map))
+            '("toggles" . db-toggle-map))
         '';
       };
     };

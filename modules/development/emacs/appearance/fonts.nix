@@ -33,8 +33,8 @@
         extraPackages = epkgs: [ epkgs.fontaine ];
         extraConfig = ''
         (eval-when-compile (require 'cl-macs) (require 'subr-x))
-        (defvar ${config.user}-fonts-emoji-list nil "Cached list of emojis.")
-        (defun ${config.user}-fonts--build-emojis ()
+        (defvar db-fonts-emoji-list nil "Cached list of emojis.")
+        (defun db-fonts--build-emojis ()
           "Create an emoji list by looping over the total range of characters."
           (delete
             nil
@@ -46,19 +46,19 @@
                                   (replace-regexp-in-string " " "-" (downcase name))
                                   (format ":%s:")
                                   (format "%s %s" (char-to-string (char-from-name name))))))))
-        (defun ${config.user}-fonts-insert-emoji ()
+        (defun db-fonts-insert-emoji ()
           "Insert an emoji character to the current buffer."
           (interactive)
           (thread-first
             (completing-read
               "Select emoji: "
-              (or ${config.user}-fonts-emoji-list
-                  (setq ${config.user}-fonts-emoji-list (${config.user}-fonts--build-emojis))))
+              (or db-fonts-emoji-list
+                  (setq db-fonts-emoji-list (db-fonts--build-emojis))))
             (substring 0 1)
             (insert)))
         
-        (define-key search-map "e" '${config.user}-fonts-insert-emoji)
-        (define-key minibuffer-mode-map (kbd "C-c C-e") '${config.user}-fonts-insert-emoji)
+        (define-key search-map "e" 'db-fonts-insert-emoji)
+        (define-key minibuffer-mode-map (kbd "C-c C-e") 'db-fonts-insert-emoji)
         
         (with-eval-after-load
           'fontset
@@ -83,15 +83,15 @@
               (expand-file-name "emacs/fontaine-latest.state.eld"
                                 (or (xdg-cache-home) "~/.cache")))
 
-        (defun ${config.user}-font--set-default-fonts ()
+        (defun db-font--set-default-fonts ()
           (fontaine-set-preset t))
         
         (if after-init-time
-          (when (display-graphic-p) (${config.user}-font--set-default-fonts))
-          (add-hook 'after-init-hook '${config.user}-font--set-default-fonts))
+          (when (display-graphic-p) (db-font--set-default-fonts))
+          (add-hook 'after-init-hook 'db-font--set-default-fonts))
         
         (add-hook
-          '${config.user}-modus-themes-after-enable-theme-hook
+          'db-modus-themes-after-enable-theme-hook
           'fontaine-apply-current-preset)
         '';
       };

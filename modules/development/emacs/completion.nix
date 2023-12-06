@@ -43,7 +43,7 @@
         ];
         extraConfig = ''
           (eval-when-compile (require 'marginalia) (require 'consult))
-          (defgroup ${config.user}-completion nil
+          (defgroup db-completion nil
             "Tweaks to the built-in Emacs completion."
             :group '${config.user})
 
@@ -78,7 +78,7 @@
             ;; Allows to use \\SPC instead of \\s-
             (setq orderless-component-separator 'orderless-escapable-split-on-space)
             
-            (defun ${config.user}-orderless-literal-dispatcher (pattern _index _total)
+            (defun db-orderless-literal-dispatcher (pattern _index _total)
               "Literal style dispatcher using the equals sign as a suffix.
               It matches PATTERN _INDEX and _TOTAL according to how Orderless
               parses its input."
@@ -86,7 +86,7 @@
                     ((string-suffix-p "=" pattern)
                       (cons 'orderless-literal (substring pattern 0 -1)))))
             
-            (defun ${config.user}-orderless-without-literal-dispatcher (pattern _index _total)
+            (defun db-orderless-without-literal-dispatcher (pattern _index _total)
               "Literal without style dispatcher using the exclamation mark as a
               suffix.  It matches PATTERN _INDEX and _TOTAL according to how Orderless
               parses its input."
@@ -94,7 +94,7 @@
                     ((string-suffix-p "!" pattern)
                       (cons 'orderless-without-literal (substring pattern 0 -1)))))
             
-            (defun ${config.user}-orderless-initialism-dispatcher (pattern _index _total)
+            (defun db-orderless-initialism-dispatcher (pattern _index _total)
               "Leading initialism  dispatcher using the comma suffix.
               It matches PATTERN _INDEX and _TOTAL according to how Orderless
               parses its input."
@@ -102,7 +102,7 @@
                     ((string-suffix-p "," pattern)
                       (cons 'orderless-initialism (substring pattern 0 -1)))))
             
-            (defun ${config.user}-orderless-flex-dispatcher (pattern _index _total)
+            (defun db-orderless-flex-dispatcher (pattern _index _total)
               "Flex  dispatcher using the tilde suffix.
               It matches PATTERN _INDEX and _TOTAL according to how Orderless
               parses its input."
@@ -110,21 +110,21 @@
                     ((string-suffix-p "~" pattern)
                       (cons 'orderless-flex (substring pattern 0 -1)))))
 
-            (defcustom ${config.user}-completion-initial-narrow-alist '()
+            (defcustom db-completion-initial-narrow-alist '()
               "Alist of MODE . KEY to present an initial completion narrowing via\n `consult'."
-              :group '${config.user}-completion
+              :group 'db-completion
               :type 'list)
             
-            (defun ${config.user}-completion--mode-buffers (&rest modes)
+            (defun db-completion--mode-buffers (&rest modes)
               "Return a list of buffers that are derived from MODES in `buffer-list'."
               (cl-remove-if-not
                 (lambda (buffer)
                   (with-current-buffer buffer (cl-some 'derived-mode-p modes)))
                 (buffer-list)))
 
-            (defun ${config.user}-completion-initial-narrow ()
+            (defun db-completion-initial-narrow ()
               "Set initial narrow source for buffers under a specific mode."
-              (let* ((buffer-mode-assoc ${config.user}-completion-initial-narrow-alist)
+              (let* ((buffer-mode-assoc db-completion-initial-narrow-alist)
                       (key (and (eq this-command 'consult-buffer)
                                 (or (alist-get
                                       (buffer-local-value
@@ -142,12 +142,12 @@
                           (setq unread-command-events
                                 (append unread-command-events (list key 32))))))
 
-            (add-hook 'minibuffer-setup-hook '${config.user}-completion-initial-narrow)
+            (add-hook 'minibuffer-setup-hook 'db-completion-initial-narrow)
             (setq orderless-style-dispatchers
-                  '(${config.user}-orderless-literal-dispatcher
-                    ${config.user}-orderless-without-literal-dispatcher
-                    ${config.user}-orderless-initialism-dispatcher
-                    ${config.user}-orderless-flex-dispatcher))
+                  '(db-orderless-literal-dispatcher
+                    db-orderless-without-literal-dispatcher
+                    db-orderless-initialism-dispatcher
+                    db-orderless-flex-dispatcher))
 
             (setq completion-styles '(orderless basic))
             (setq completion-category-overrides
@@ -177,14 +177,14 @@
             (define-key map (kbd "M") 'consult-global-mark)
             (define-key map (kbd "b") 'consult-bookmark))
 
-          (defun ${config.user}-goto-line-relative ()
+          (defun db-goto-line-relative ()
             "Just a wrapper around `consult-goto-line', which uses
             relative line numbers, when narrowing is active."
             (interactive)
             (let ((consult-line-numbers-widen nil))
               (call-interactively 'consult-goto-line)))
           
-          (define-key narrow-map (kbd "g") '${config.user}-goto-line-relative)
+          (define-key narrow-map (kbd "g") 'db-goto-line-relative)
           
           (let ((map search-map))
             (define-key map (kbd "f") 'consult-find)

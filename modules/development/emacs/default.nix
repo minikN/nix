@@ -48,7 +48,11 @@
       programs.emacs = {
         enable = true;
         package = pkgs.emacs-pgtk;
-        extraPackages = epkgs: [ epkgs.magit epkgs.which-key epkgs.treesit-grammars.with-all-grammars ];
+        extraPackages = epkgs: [
+          epkgs.magit
+          epkgs.wgrep
+          epkgs.treesit-grammars.with-all-grammars
+        ];
         extraConfig = ''
           ;; Packages will be initialized by guix later.
           (setq package-enable-at-startup nil)
@@ -80,7 +84,7 @@
           (defgroup ${config.user} nil
             "Base customization group for user settings."
             :group 'external
-            :prefix '${config.user}-)
+            :prefix 'db-)
 
           ;; Theme
           (load-theme 'modus-operandi t)

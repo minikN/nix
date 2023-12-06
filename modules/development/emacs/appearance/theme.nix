@@ -38,31 +38,31 @@
           (require 'modus-operandi-theme)
           (eval-when-compile
             (enable-theme 'modus-operandi))
-          (defgroup ${config.user}-modus-themes nil
+          (defgroup db-modus-themes nil
             "Configuration related to `modus-themes'."
             :group '${config.user})
-          (defcustom ${config.user}-modus-themes-mode-line-padding 1
+          (defcustom db-modus-themes-mode-line-padding 1
             "The padding of the mode line."
             :type 'number
-            :group '${config.user}-modus-themes)
-          (defcustom ${config.user}-modus-themes-tab-bar-padding 1
+            :group 'db-modus-themes)
+          (defcustom db-modus-themes-tab-bar-padding 1
             "The padding of the tab bar."
             :type 'number
-            :group '${config.user}-modus-themes)
-          (defcustom ${config.user}-modus-themes-header-line-padding 1
+            :group 'db-modus-themes)
+          (defcustom db-modus-themes-header-line-padding 1
             "The padding of the header line."
             :type 'number
-            :group '${config.user}-modus-themes)
-          (defcustom ${config.user}-modus-themes-after-enable-theme-hook nil
+            :group 'db-modus-themes)
+          (defcustom db-modus-themes-after-enable-theme-hook nil
             "Normal hook run after enabling a theme."
             :type 'hook
-            :group '${config.user}-modus-themes)
+            :group 'db-modus-themes)
           
-          (defun ${config.user}-modus-themes-run-after-enable-theme-hook (&rest _args)
-            "Run `${config.user}-modus-themes-after-enable-theme-hook'."
-            (run-hooks '${config.user}-modus-themes-after-enable-theme-hook))
+          (defun db-modus-themes-run-after-enable-theme-hook (&rest _args)
+            "Run `db-modus-themes-after-enable-theme-hook'."
+            (run-hooks 'db-modus-themes-after-enable-theme-hook))
           
-          (defun ${config.user}-modus-themes-set-custom-faces (&optional _theme)
+          (defun db-modus-themes-set-custom-faces (&optional _theme)
             "set faces based on the current theme."
             (interactive)
             (when (modus-themes--current-theme)
@@ -74,17 +74,17 @@
                       `(vertical-bo${config.user}r ((,c :foreground ,bg-main)))
                       `(tab-bar
                         ((,c :background ,bg-dim
-                            :box (:line-width ,${config.user}-modus-themes-tab-bar-padding
+                            :box (:line-width ,db-modus-themes-tab-bar-padding
                             :color ,bg-dim
                             :style unspecified))))
                       `(mode-line
-                          ((,c :box (:line-width ,${config.user}-modus-themes-mode-line-padding
+                          ((,c :box (:line-width ,db-modus-themes-mode-line-padding
                               :color ,bg-mode-line-active))))
                       `(mode-line-inactive
-                          ((,c :box (:line-width ,${config.user}-modus-themes-mode-line-padding
+                          ((,c :box (:line-width ,db-modus-themes-mode-line-padding
                               :color ,bg-mode-line-inactive))))
                       `(header-line
-                          ((,c :box (:line-width ,${config.user}-modus-themes-header-line-padding
+                          ((,c :box (:line-width ,db-modus-themes-header-line-padding
                               :color ,bg-dim))))
                       `(git-gutter-fr:added
                           ((,c :foreground ,bg-added-fringe :background ,bg-main)))
@@ -95,24 +95,24 @@
                       `(aw-leading-char-face
                           ((,c :height 1.0 :foreground ,blue-cooler)))))))
           
-          (defun ${config.user}-modus-themes--dark-theme-p (&optional theme)
+          (defun db-modus-themes--dark-theme-p (&optional theme)
                 "Indicate if there is a curently-active dark THEME."
                 (if theme
                   (eq theme 'modus-operandi)
                   (eq (car custom-enabled-themes) 'modus-vivendi)))
 
-          (setq ${config.user}-modus-themes-header-line-padding 4)
-          (setq ${config.user}-modus-themes-tab-bar-padding 4)
-          (setq ${config.user}-modus-themes-mode-line-padding 4)
+          (setq db-modus-themes-header-line-padding 4)
+          (setq db-modus-themes-tab-bar-padding 4)
+          (setq db-modus-themes-mode-line-padding 4)
 
           (advice-add 'enable-theme
-                      :after '${config.user}-modus-themes-run-after-enable-theme-hook)
+                      :after 'db-modus-themes-run-after-enable-theme-hook)
           
-          (add-hook '${config.user}-modus-themes-after-enable-theme-hook '${config.user}-modus-themes-set-custom-faces)
+          (add-hook 'db-modus-themes-after-enable-theme-hook 'db-modus-themes-set-custom-faces)
          
           (with-eval-after-load
-            '${config.user}-keymaps
-            (define-key ${config.user}-toggle-map (kbd "t") 'modus-themes-toggle))
+            'db-keymaps
+            (define-key db-toggle-map (kbd "t") 'modus-themes-toggle))
          
           (eval-when-compile
             (setq modus-themes-common-palette-overrides

@@ -80,7 +80,7 @@
                :webRoot dape-cwd-fn
                :outputCapture "console")))
 
-          (defun ${config.user}--javascript-setup-electric-pairs-for-jsx-tsx ()
+          (defun db--javascript-setup-electric-pairs-for-jsx-tsx ()
             (electric-pair-local-mode)
             (setq-local electric-pair-pairs
                         (append electric-pair-pairs
@@ -101,7 +101,7 @@
 
           ;; nodejs-repl
           ;; TODO: Add which-key descriptions
-          (defun ${config.user}--javascript-setup-nodejs-repl ()
+          (defun db--javascript-setup-nodejs-repl ()
             (defvar nodejs-repl-mode-command-map
               (let ((map (make-sparse-keymap)))
                 (define-key map (kbd "e") 'nodejs-repl-send-last-expression)
@@ -137,8 +137,8 @@
                       (lambda ()
                        (eglot-ensure)
                        (npm-mode)
-                       (${config.user}--javascript-setup-nodejs-repl)
-                       (${config.user}--javascript-setup-electric-pairs-for-jsx-tsx))))
+                       (db--javascript-setup-nodejs-repl)
+                       (db--javascript-setup-electric-pairs-for-jsx-tsx))))
         '';
       };
     };

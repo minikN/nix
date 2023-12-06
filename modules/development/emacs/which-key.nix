@@ -34,29 +34,29 @@
         extraConfig = ''
           (require 'which-key)
 
-          (defgroup ${config.user}-which-key nil
+          (defgroup db-which-key nil
             "Configuration related to `which-key'."
             :group '${config.user})
 
-          (defcustom ${config.user}-which-key-min-lines 5
+          (defcustom db-which-key-min-lines 5
             "The minimum amount of lines which-key should display."
             :type 'number
-            :group '${config.user}-which-key)
+            :group 'db-which-key)
           
-          (defcustom ${config.user}-which-key-ellipsis "..."
+          (defcustom db-which-key-ellipsis "..."
             "The kind of ellipsis to use."
             :type 'string
-            :group '${config.user}-which-key)
+            :group 'db-which-key)
           
-          (defcustom ${config.user}-which-key-idle-delay 0.5
+          (defcustom db-which-key-idle-delay 0.5
             "The delay before showing the popup."
             :type 'number
-            :group '${config.user}-which-key)
+            :group 'db-which-key)
 
-          (setq which-key-min-display-lines ${config.user}-which-key-min-lines)
+          (setq which-key-min-display-lines db-which-key-min-lines)
           ;; … takes the space of two characters, which missaligns some popups
-          (setq which-key-ellipsis ${config.user}-which-key-ellipsis)
-          (setq which-key-idle-delay ${config.user}-which-key-idle-delay)
+          (setq which-key-ellipsis db-which-key-ellipsis)
+          (setq which-key-idle-delay db-which-key-idle-delay)
 
           (which-key-mode 1)
           
