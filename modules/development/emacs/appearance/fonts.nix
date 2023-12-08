@@ -20,7 +20,7 @@
 ### COMMENT:
 ###
 ### Emacs fonts configuration
-### Source: https://github.com/abcdw/${config.user}/blob/master/src/rde/features/emacs-xyz.scm
+### Source: https://github.com/abcdw/rde/blob/master/src/rde/features/emacs-xyz.scm
 ###
 ### CODE:
 

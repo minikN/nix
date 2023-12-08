@@ -36,7 +36,7 @@
 
           (defgroup db-which-key nil
             "Configuration related to `which-key'."
-            :group '${config.user})
+            :group 'db)
 
           (defcustom db-which-key-min-lines 5
             "The minimum amount of lines which-key should display."

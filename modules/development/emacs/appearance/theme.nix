@@ -40,7 +40,7 @@
             (enable-theme 'modus-operandi))
           (defgroup db-modus-themes nil
             "Configuration related to `modus-themes'."
-            :group '${config.user})
+            :group 'db)
           (defcustom db-modus-themes-mode-line-padding 1
             "The padding of the mode line."
             :type 'number
@@ -71,7 +71,7 @@
                       `(window-divider ((,c :foreground ,bg-main)))
                       `(window-divider-first-pixel ((,c :foreground ,bg-main)))
                       `(window-divider-last-pixel ((,c :foreground ,bg-main)))
-                      `(vertical-bo${config.user}r ((,c :foreground ,bg-main)))
+                      `(vertical-border ((,c :foreground ,bg-main)))
                       `(tab-bar
                         ((,c :background ,bg-dim
                             :box (:line-width ,db-modus-themes-tab-bar-padding
@@ -116,8 +116,8 @@
          
           (eval-when-compile
             (setq modus-themes-common-palette-overrides
-                  '((bo${config.user}r-mode-line-active unspecified)
-                    (bo${config.user}r-mode-line-inactive unspecified)
+                  '((border-mode-line-active unspecified)
+                    (border-mode-line-inactive unspecified)
                     (fringe unspecified)
                     (fg-line-number-inactive "gray50")
                     (fg-line-number-active fg-main)

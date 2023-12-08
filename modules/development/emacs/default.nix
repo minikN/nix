@@ -81,7 +81,7 @@
           (setq use-dialog-box t
                 use-file-dialog nil)
 
-          (defgroup ${config.user} nil
+          (defgroup db nil
             "Base customization group for user settings."
             :group 'external
             :prefix 'db-)
