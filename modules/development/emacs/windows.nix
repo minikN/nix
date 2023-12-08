@@ -31,6 +31,10 @@
       programs.emacs = {
         extraConfig = ''
 ;; ~!emacs-lisp!~
+;; TODO: Add shrink (font-size function)
+;; TODO: Add proper toggle-all-windows function
+;; TODO: Add major-mode to "regex"
+;; TODO: Add side-window width/height variable
 (defgroup db-windows nil
   "Tweaks to the built-in Emacs window management."
   :group 'db)
@@ -42,10 +46,29 @@
   :group 'db-windows)
 
 (defcustom db-window-bottom-regex
-  "\\*\\(?:shell\\|compilation\\)\\*"
+  "\\*\\(?:shell\\|compilation\\|npm.*\\)\\*"
   "Regex string matching buffers being shown in bottom side window"
   :type 'string
   :group 'db-windows)
+
+(defcustom db-window-bottom-left-regex
+  "\\*dape-\\(debug\\|repl\\|processes\\)\\*"
+  "Regex string matching buffers being shown in bottom left side window"
+  :type 'string
+  :group 'db-windows)
+
+(defcustom db-window-debug-top-regex
+  "\\*\\(dape-info Scope .*\\)\\*"
+  "Regex string matching buffers being shown in the top debug side window"
+  :type 'string
+  :group 'db-windows)
+
+(defcustom db-window-debug-bottom-regex
+  "\\*dape-info \\(Stack\\|Breakpoints\\)\\*"
+  "Regex string matching buffers being shown in the bottom side window"
+  :type 'string
+  :group 'db-windows)
+
 
 (defvar parameters
   '(window-parameters . ((no-other-window . t)
@@ -55,12 +78,27 @@
 (setq window-resize-pixelwise t)
 
 (setq display-buffer-alist
+      ;; RIGHT
       `((,db-window-right-regex display-buffer-in-side-window
 				(side . right) (slot . 0) (window-width . 50)
 				(preserve-size . (t . nil)) ,parameters)
+	;; BOTTOM
         (,db-window-bottom-regex display-buffer-in-side-window
 				 (side . bottom) (slot . 0) (preserve-size . (nil . t))
-				 ,parameters)))
+				 ,parameters)
+	(,db-window-bottom-left-regex display-buffer-in-side-window
+				      (side . bottom) (slot . -1) (preserve-size . (nil . t))
+				      ,parameters)
+	;; LEFT DEBUG
+	;;; TOP
+	(,db-window-debug-top-regex display-buffer-in-side-window
+				    (side . left) (slot . -1) (preserve-size . (nil . t))
+				    ,parameters)
+		;;; BOTTOM
+
+	(,db-window-debug-bottom-regex display-buffer-in-side-window
+				       (side . left) (slot . -2) (preserve-size . (nil . t))
+				       ,parameters)))
 
 (defun db--get-with-matching-buffer (target regex list)
   "Returns the first TARGET that has (or is) a buffer
