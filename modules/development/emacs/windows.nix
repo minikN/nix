@@ -30,138 +30,184 @@
     home-manager.users.${config.user} = {
       programs.emacs = {
         extraConfig = ''
-          (defgroup db-windows nil
-            "Tweaks to the built-in Emacs window management."
-            :group '${config.user})
+;; ~!emacs-lisp!~
+(defgroup db-windows nil
+  "Tweaks to the built-in Emacs window management."
+  :group 'db)
 
-          (defcustom db-window-right-regex
-            "\\*\\(?:help\\|grep\\|Completions\\)\\*"
-            "Regex string matching buffers being shown in right side window"
-            :type 'string
-            :group 'db-windows)
-          
-          (defcustom db-window-bottom-regex
-            "\\*\\(?:shell\\|compilation\\)\\*"
-            "Regex string matching buffers being shown in bottom side window"
-            :type 'string
-            :group 'db-windows)
-          
-            (defvar parameters
-                '(window-parameters . ((no-other-window . t)
-                                      (no-delete-other-windows . t))))
+(defcustom db-window-right-regex
+  "\\*\\(?:help\\|grep\\|Completions\\|Buffer list\\)\\*"
+  "Regex string matching buffers being shown in right side window"
+  :type 'string
+  :group 'db-windows)
 
-            (setq fit-window-to-buffer-horizontally t)
-            (setq window-resize-pixelwise t)
-            
-            (setq display-buffer-alist
-                  `((,db-window-right-regex display-buffer-in-side-window
-                      (side . right) (slot . 0) (window-width . 50)
-                      (preserve-size . (t . nil)) ,parameters)
-                    (,db-window-bottom-regex display-buffer-in-side-window
-                      (side . bottom) (slot . 0) (preserve-size . (nil . t))
-                      ,parameters)))
+(defcustom db-window-bottom-regex
+  "\\*\\(?:shell\\|compilation\\)\\*"
+  "Regex string matching buffers being shown in bottom side window"
+  :type 'string
+  :group 'db-windows)
 
-          (defun db--get-with-matching-buffer (target regex list)
-            "Returns the first TARGET that has (or is) a buffer
+(defvar parameters
+  '(window-parameters . ((no-other-window . t)
+                         (no-delete-other-windows . t))))
+
+(setq fit-window-to-buffer-horizontally t)
+(setq window-resize-pixelwise t)
+
+(setq display-buffer-alist
+      `((,db-window-right-regex display-buffer-in-side-window
+				(side . right) (slot . 0) (window-width . 50)
+				(preserve-size . (t . nil)) ,parameters)
+        (,db-window-bottom-regex display-buffer-in-side-window
+				 (side . bottom) (slot . 0) (preserve-size . (nil . t))
+				 ,parameters)))
+
+(defun db--get-with-matching-buffer (target regex list)
+  "Returns the first TARGET that has (or is) a buffer
           matching REGEX in LIST"
-            (car (seq-filter
-            (lambda (x)
-              (string-match-p
-              regex
-              (buffer-name
-                (cond ((equal target "window") (window-buffer x))
-                ((equal target "buffer") x)))))
-            list)))
+  (car (seq-filter
+        (lambda (x)
+          (string-match-p
+           regex
+           (buffer-name
+            (cond ((equal target "window") (window-buffer x))
+                  ((equal target "buffer") x)))))
+        list)))
 
-          (defun db--get-matching-buffer (regex)
-            "Get the buffer matching REGEX"
-            (db--get-with-matching-buffer
-            "buffer"
-            regex
-            (buffer-list)))
+(defun db--get-matching-buffer (regex)
+  "Get the buffer matching REGEX"
+  (db--get-with-matching-buffer
+   "buffer"
+   regex
+   (buffer-list)))
 
-          (defun db--get-matching-window (regex)
-            "Get the window with a buffer matching REGEX"
-            (db--get-with-matching-buffer
-            "window"
-            regex
-            (window-list-1 nil 0 t)))
+(defun db--get-matching-window (regex)
+  "Get the window with a buffer matching REGEX"
+  (db--get-with-matching-buffer
+   "window"
+   regex
+   (window-list-1 nil 0 t)))
 
-          (defun db-window-delete-side-window (regex)
-            "Deletes window with a buffer matching REGEX"
-            (delete-window (db--get-matching-window regex)))
-          (defun db-window-show-side-window (regex)
-            "Shows a side window with a buffer matching REGEX"
-            (let ((matching-buffer (db--get-matching-buffer regex)))
-              (when matching-buffer
-                (display-buffer matching-buffer))))
+(defun db-window-delete-side-window (regex)
+  "Deletes window with a buffer matching REGEX"
+  (delete-window (db--get-matching-window regex)))
+(defun db-window-show-side-window (regex)
+  "Shows a side window with a buffer matching REGEX"
+  (let ((matching-buffer (db--get-matching-buffer regex)))
+    (when matching-buffer
+      (display-buffer matching-buffer))))
 
-          (defun db--is-side-window-visible-p (regex)
-            "Returns the name of the window a buffer matching REGEX is currently
+(defun db--is-side-window-visible-p (regex)
+  "Returns the name of the window a buffer matching REGEX is currently
                     being displayed or `nil' if the window is not visible"
-            (let ((matching-buffer (db--get-matching-buffer regex)))
-              (get-buffer-window (or matching-buffer ""))))
+  (let ((matching-buffer (db--get-matching-buffer regex)))
+    (get-buffer-window (or matching-buffer ""))))
 
           ;;;###autoload
-          (defun db-toggle-window (regex)
-            "Toggles side window having buffers matching REGEX"
-            (if (db--is-side-window-visible-p regex)
-                (db-window-delete-side-window regex)
-              (db-window-show-side-window regex)))
+(defun db-toggle-window (regex)
+  "Toggles side window having buffers matching REGEX"
+  (if (db--is-side-window-visible-p regex)
+      (db-window-delete-side-window regex)
+    (db-window-show-side-window regex)))
 
-          (defun db--is-side-window-selected-p (regex)
-            "Checks whether the currently selected window has buffers
+(defun db--is-side-window-selected-p (regex)
+  "Checks whether the currently selected window has buffers
             matching REGEX"
-            (equal (selected-window) (db--get-matching-window regex)))
-          
+  (equal (selected-window) (db--get-matching-window regex)))
+
+(defun db--compare-buffers (a b)
+  "Predicate comparing buffer A to buffer B.
+Used to sort buffers alphabetically in
+`db-cycle-buffer-in-window'."
+  (string< (buffer-name a) (buffer-name b)))
+
+(defun db-cycle-buffer-in-window (regex)
+  "Calls `db-toggle-window' if no buffer matching
+REGEX is live, e.g. their window is not visible.
+If it is, it will cycle through all buffers
+matching REGEX in order."
+  (let* ((window (db--get-matching-window regex))
+	 ;; Get a alphabatically ordered list of buffers
+	 (sorted-buffers (delete-dups (sort
+				       (match-buffers regex)
+				       'db--compare-buffers))))
+    (if (not (window-live-p window))
+     	(db-toggle-window regex)
+      (progn
+	;; rotate the list until the first element is the
+	;; currently displayed buffer. Then display the next
+	;; buffer in the list. That way order of cycling
+	;; will always be the same
+        (while (not (eq
+		     (car sorted-buffers)
+		     (window-buffer window)))
+          (setq sorted-buffers (nconc
+				(last sorted-buffers)
+				(butlast sorted-buffers))))
+	(set-window-buffer window (cadr sorted-buffers))))))
+
+(db-cycle-buffer-in-window db-window-right-regex)
+
           ;;;###autoload
-          (defun db-focus-window (regex)
-            "Focuses window that has buffers matching REGEX by deleting all other windows.
+(defun db-focus-window (regex)
+  "Focuses window that has buffers matching REGEX by deleting all other windows.
           Will restore previous window layout on subsequent execution. NOTE: Layout changes
           during the target window is focused will be lost once the layout is restored."
-            (let ((target (db--get-matching-window regex))
-            (ignore-window-parameters t))
-              (cond (;; Saving current window layout and deleting all windows other than TARGET
-              ;; if TARGET is live and not the only window
-              (and (> (count-windows) 1) (window-live-p target))
-              (set-frame-parameter
-                (window-frame) 'window-state (window-state-get (frame-root-window (window-frame))))
-              (delete-other-windows target))
-              (;; Stolen from window.el
-              ;; Recovering old window layout
-              (setq state (frame-parameter (window-frame) 'window-state))
-              (let ((window-combination-resize t)
-              (main-state (window-state-get (frame-root-window (window-frame)))))
-                      (window-state-put state (frame-root-window (window-frame)) t))
-              (window--sides-reverse-frame (window-frame))))))
+  (let ((target (db--get-matching-window regex))
+        (ignore-window-parameters t))
+    (cond (;; Saving current window layout and deleting all windows other than TARGET
+           ;; if TARGET is live and not the only window
+           (and (> (count-windows) 1) (window-live-p target))
+           (set-frame-parameter
+            (window-frame) 'window-state (window-state-get (frame-root-window (window-frame))))
+           (delete-other-windows target))
+          (;; Stolen from window.el
+           ;; Recovering old window layout
+           (setq state (frame-parameter (window-frame) 'window-state))
+           (let ((window-combination-resize t)
+		 (main-state (window-state-get (frame-root-window (window-frame)))))
+             (window-state-put state (frame-root-window (window-frame)) t))
+           (window--sides-reverse-frame (window-frame))))))
 
-          ;; toggle all side windows
-          (global-set-key (kbd "<f12>") 'window-toggle-side-windows)
+;; toggle all side windows
+(global-set-key (kbd "<f12>") 'window-toggle-side-windows)
 
 
-          ;; toggling right side window
-          (global-set-key (kbd "<f11>") (lambda ()
-                                          (interactive)
-                                          (db-toggle-window
-                                            db-window-right-regex)))
-          
-          ;; focusing right side window
-          (global-set-key (kbd "S-<f11>") (lambda ()
-                                            (interactive)
-                                            (db-focus-window
-                                              db-window-right-regex)))   
-          
-          ;; toggling bottom side window
-          (global-set-key (kbd "<f10>") (lambda ()
-                                          (interactive)
-                                          (db-toggle-window
-                                            db-window-bottom-regex)))
-          
-          ;; focusing bottom side window
-          (global-set-key (kbd "S-<f10>") (lambda ()
-                                          (interactive)
-                                          (db-focus-window
-                                            db-window-bottom-regex)))
+;; toggling right side window
+(global-set-key (kbd "<f11>") (lambda ()
+                                (interactive)
+                                (db-toggle-window
+                                 db-window-right-regex)))
+
+;; focusing right side window
+(global-set-key (kbd "S-<f11>") (lambda ()
+                                  (interactive)
+                                  (db-focus-window
+                                   db-window-right-regex)))
+;; cycling through right side window
+(global-set-key (kbd "C-<f11>") (lambda ()
+                                  (interactive)
+                                  (db-cycle-buffer-in-window
+                                   db-window-right-regex)))
+
+;; toggling bottom side window
+(global-set-key (kbd "<f10>") (lambda ()
+                                (interactive)
+                                (db-toggle-window
+                                 db-window-bottom-regex)))
+
+;; focusing bottom side window
+(global-set-key (kbd "S-<f10>") (lambda ()
+                                  (interactive)
+                                  (db-focus-window
+                                   db-window-bottom-regex)))
+
+;; cycling through bottom side window
+(global-set-key (kbd "C-<f10>") (lambda ()
+                                  (interactive)
+                                  (db-cycle-buffer-in-window
+                                   db-window-bottom-regex)))
+
         '';
       };
     };
