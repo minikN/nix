@@ -36,50 +36,54 @@
           src = pkgs.fetchFromGitHub {
             owner = "svaante";
             repo = "dape";
-            rev = "e34a87dd679fdac66674b08e141719f5cd5db0df";
-            sha256 = "sha256-Hslw7vD7yRpILNYw5fG+fH63q+BgA8SnmWAUIKnYiGY=";
+            rev = "18dc46cced6564ac3b1072a1409932a866df5b16";
+            sha256 = "sha256-9+VHfzl5XHN78S2CZdzBY2LVClTLg/Vxco/6Mny/9Ck=";
           }; 
         };
       in {
         extraPackages = epkgs: [ dape ];
         extraConfig = ''
-          (eval-when-compile (require 'dape))
-          (require 'dape)
+;; ~!emacs-lisp!~
+(eval-when-compile (require 'dape))
+(require 'dape)
 
-          (with-eval-after-load
-          'dape
-            ;; Add inline variable hints, this feature is highly experimental
-            ;; (setq dape-inline-variables t)
+(with-eval-after-load
+    'dape
+  ;; Enables ability to click on fringe to create breakpoints
+  (dape-info-breakpoints-mode 1)
+  
+  ;; Add inline variable hints, this feature is highly experimental
+  ;; (setq dape-inline-variables t)
 
-            ;; To remove info buffer on startup
-            ;; (remove-hook 'dape-on-start-hooks 'dape-info)
+  ;; To remove info buffer on startup
+  ;; (remove-hook 'dape-on-start-hooks 'dape-info)
 
-            ;; To remove repl buffer on startup
-            ;; (remove-hook 'dape-on-start-hooks 'dape-repl)
+  ;; To remove repl buffer on startup
+  ;; (remove-hook 'dape-on-start-hooks 'dape-repl)
 
-            ;; By default dape uses gdb keybinding prefix
-            ;; (setq dape-key-prefix "\C-x\C-a")
+  ;; By default dape uses gdb keybinding prefix
+  ;; (setq dape-key-prefix "\C-x\C-a")
 
-            ;; Kill compile buffer on build success
-            ;; (add-hook 'dape-compile-compile-hooks 'kill-buffer)
+  ;; Kill compile buffer on build success
+  ;; (add-hook 'dape-compile-compile-hooks 'kill-buffer)
 
-            ;; Customize actions in info buffer
-            (setq dape-info-buttons
-              '(("→" . dape-next)
-                ("↘" . dape-step-in)
-                ("↗" . dape-step-out)
-                ("⯈" . dape-continue)
-                ("⏸" . dape-pause)
-                ("⭯" . dape-restart)
-                ("x" . dape-quit)))
+  ;; Customize actions in info buffer
+  (setq dape-info-buttons
+        '(("→" . dape-next)
+          ("↘" . dape-step-in)
+          ("↗" . dape-step-out)
+          ("⯈" . dape-continue)
+          ("⏸" . dape-pause)
+          ("⭯" . dape-restart)
+          ("x" . dape-quit)))
 
-            (dolist
-            (hook
-              '(dape-info-mode-hook
-                dape-repl-mode-hook))
-              (add-hook hook
-                        (lambda ()
-                        (face-remap-add-relative 'default :height 0.75)))))
+  (dolist
+      (hook
+       '(dape-info-mode-hook
+         dape-repl-mode-hook))
+    (add-hook hook
+              (lambda ()
+                (face-remap-add-relative 'default :height 0.75)))))
         '';
       };
     };
