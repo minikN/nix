@@ -55,66 +55,71 @@
           epkgs.treesit-grammars.with-all-grammars
         ];
         extraConfig = ''
-          ;; Packages will be initialized by guix later.
-          (setq package-enable-at-startup nil)
-          (setq package-archives nil)
+;; ~~!emacs-lisp!~~
+;; Packages will be initialized by guix later.
+(setq package-enable-at-startup nil)
+(setq package-archives nil)
 
-          ;; Defer garbage collection further back in the startup process
-          (setq gc-cons-threshold most-positive-fixnum
-                gc-cons-percentage 0.6)
+;; Defer garbage collection further back in the startup process
+(setq gc-cons-threshold most-positive-fixnum
+      gc-cons-percentage 0.6)
 
-          (add-hook 'emacs-startup-hook
-            (lambda ()
-              (setq undo-limit (* 8 1024 1024)
-                    read-process-output-max (* 1024 1024))))
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (setq undo-limit (* 8 1024 1024)
+                  read-process-output-max (* 1024 1024))))
 
-          ;; Ignore X resources
-          (advice-add #'x-apply-session-resources :override #'ignore)
-          ;; TODO: Probably the better approach is:
-          ;; (setq inhibit-x-resources t)
+;; Ignore X resources
+(advice-add #'x-apply-session-resources :override #'ignore)
+;; TODO: Probably the better approach is:
+;; (setq inhibit-x-resources t)
 
-          ;; Do not resize the frame at this early stage.
-          (setq frame-inhibit-implied-resize t)
-          
-          (pixel-scroll-precision-mode 1)
+;; Do not resize the frame at this early stage.
+(setq frame-inhibit-implied-resize t)
 
-          ;; Set some defaults for the startup behaviour.
-          (setq use-dialog-box t
-                use-file-dialog nil)
+(pixel-scroll-precision-mode 1)
 
-          (defgroup db nil
-            "Base customization group for user settings."
-            :group 'external
-            :prefix 'db-)
+;; Set some defaults for the startup behaviour.
+(setq use-dialog-box t
+      use-file-dialog nil)
 
-          ;; Theme
-          (load-theme 'modus-operandi t)
+(defgroup db nil
+  "Base customization group for user settings."
+  :group 'external
+  :prefix 'db-)
 
-          ;; User information
-          (setq user-full-name "${config.fullName}"
-                user-mail-address "${config.mail.primary.address}")
+;; Theme
+(load-theme 'modus-operandi t)
 
-          ;; Directories
+;; use-package
+(setq use-package-always-defer t)
+
+
+;; User information
+(setq user-full-name "${config.fullName}"
+      user-mail-address "${config.mail.primary.address}")
+
+;; Directories
           ;;; Backup
-          (setq backup-directory-alist
-            `(,(cons "." "${config.home-manager.users.${config.user}.xdg.cacheHome}/emacs/backup")))
-          
+(setq backup-directory-alist
+      `(,(cons "." "${config.home-manager.users.${config.user}.xdg.cacheHome}/emacs/backup")))
+
           ;;; recentf
-          (recentf-mode 1)
-          (run-with-idle-timer 30 t 'recentf-save-list)
-          (setq recentf-save-file "${config.home-manager.users.${config.user}.xdg.cacheHome}/emacs/recentf")
+(recentf-mode 1)
+(run-with-idle-timer 30 t 'recentf-save-list)
+(setq recentf-save-file "${config.home-manager.users.${config.user}.xdg.cacheHome}/emacs/recentf")
 
-          ;; savehist
-          (savehist-mode 1)
-          (run-with-idle-timer 30 t 'savehist-save)
-          (setq savehist-file "${config.home-manager.users.${config.user}.xdg.cacheHome}/emacs/history")
+;; savehist
+(savehist-mode 1)
+(run-with-idle-timer 30 t 'savehist-save)
+(setq savehist-file "${config.home-manager.users.${config.user}.xdg.cacheHome}/emacs/history")
 
-          ;; bookmarks
-          (setq bookmark-default-file "${config.home-manager.users.${config.user}.xdg.cacheHome}/emacs/bookmarks")
+;; bookmarks
+(setq bookmark-default-file "${config.home-manager.users.${config.user}.xdg.cacheHome}/emacs/bookmarks")
 
-          ;; Font
-          (add-to-list 'default-frame-alist '(font . "${config.os.fonts.mono.regular}-${builtins.toString config.os.fonts.size}"))
-          (set-face-attribute 'default t :font "${config.os.fonts.mono.regular}-${builtins.toString config.os.fonts.size}")
+;; Font
+(add-to-list 'default-frame-alist '(font . "${config.os.fonts.mono.regular}-${builtins.toString config.os.fonts.size}"))
+(set-face-attribute 'default t :font "${config.os.fonts.mono.regular}-${builtins.toString config.os.fonts.size}")
         '';
       };
     };
