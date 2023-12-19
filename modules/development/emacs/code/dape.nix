@@ -44,13 +44,10 @@
         extraPackages = epkgs: [ dape ];
         extraConfig = ''
 ;; ~!emacs-lisp!~
-(eval-when-compile (require 'dape))
-(require 'dape)
-
-(with-eval-after-load
-    'dape
+(use-package dape
+  :config
   ;; Enables ability to click on fringe to create breakpoints
-  (dape-info-breakpoints-mode 1)
+  ;;(dape-info-breakpoints-mode 1)
   
   ;; Add inline variable hints, this feature is highly experimental
   ;; (setq dape-inline-variables t)
@@ -75,15 +72,16 @@
           ("⯈" . dape-continue)
           ("⏸" . dape-pause)
           ("⭯" . dape-restart)
-          ("x" . dape-quit)))
+          ("x" . dape-quit))))
 
-  (dolist
-      (hook
-       '(dape-info-mode-hook
-         dape-repl-mode-hook))
-    (add-hook hook
-              (lambda ()
-                (face-remap-add-relative 'default :height 0.75)))))
+;; TODO: Fix dape font size
+;; (dolist
+;;     (hook
+;;      '(dape-info-mode-hook
+;;        dape-repl-mode-hook))
+;;   (add-hook hook
+;;             (lambda ()
+;;               (face-remap-add-relative 'default :height 0.75))))
         '';
       };
     };
