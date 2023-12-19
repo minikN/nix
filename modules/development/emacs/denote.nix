@@ -33,7 +33,24 @@
         extraPackages = epkgs: [ epkgs.denote ];
         extraConfig = ''
 ;; ~!emacs-lisp!~
+
 (use-package denote
+  :init
+  (defvar denote-command-map
+    (let ((map (make-sparse-keymap)))
+      (define-key map (kbd "n") '("Note" . denote))
+      (define-key map (kbd "d") '("Note (Date)" . denote-date))
+      (define-key map (kbd "t") '("Note (Template)" . denote-template))
+      (define-key map (kbd "T") '("Note (Type)" . denote-type))
+      (define-key map (kbd "s") '("Note (Signature)" . denote-signatureo))
+      (define-key map (kbd "l") '("Add link" . denote-link))
+      (define-key map (kbd "b") '("Show backlinks" . denote-backlinks))
+      (define-key map (kbd "L") '("Add links" . denote-add-links))
+      map)
+    "Keymap for denote.")
+
+  (fset 'denote-command-map denote-command-map)
+  
   :config
   ;; Remember to check the doc strings of those variables.
   (setq denote-directory (expand-file-name "~/Documents/notes/"))
@@ -46,7 +63,7 @@
   (setq denote-excluded-keywords-regexp nil)
   (with-eval-after-load
       'db-keymaps
-    (define-key db-app-map (kbd "N") 'denote)))
+    (define-key db-app-map (kbd "N") '("Notes" . denote-command-map))))
         '';
       };
     };
