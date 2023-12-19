@@ -29,6 +29,7 @@
   imports = [
     ./appearance
     ./keymaps.nix
+    ./denote.nix
     ./code/eglot.nix
     ./code/dape.nix
 
