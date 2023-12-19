@@ -55,7 +55,7 @@
           epkgs.treesit-grammars.with-all-grammars
         ];
         extraConfig = ''
-;; ~~!emacs-lisp!~~
+;; ~!emacs-lisp!~
 ;; Packages will be initialized by guix later.
 (setq package-enable-at-startup nil)
 (setq package-archives nil)
@@ -78,6 +78,10 @@
 (setq frame-inhibit-implied-resize t)
 
 (pixel-scroll-precision-mode 1)
+
+;; This removes the linebreak character and also makes text
+;; in narrow windows better to read.
+(global-visual-line-mode 1)
 
 ;; Set some defaults for the startup behaviour.
 (setq use-dialog-box t
