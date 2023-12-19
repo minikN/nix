@@ -28,7 +28,7 @@
 {
   home-manager.users.${config.user}.programs.vscode = {
     enable = true;
-    package = pkgs.vscodium;
+    package = pkgs.vscode;
     
     userSettings = {
       "window.titleBarStyle" = "custom"; 
