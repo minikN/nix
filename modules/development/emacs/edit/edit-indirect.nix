@@ -32,7 +32,32 @@
         extraPackages = epkgs: [ epkgs.edit-indirect ];
         extraConfig = ''
 ;; ~!emacs-lisp!~
-(require 'edit-indirect)
+(defun db-edit-in-indirect-buffer (&optional delimiter)
+  (interactive)
+  (let ((delim (or delimiter (read-from-minibuffer "Delimiter: "))))
+    (save-excursion
+      (db-mark-text-between-delimiter delim)
+      (edit-indirect-region (point) (mark) t))))
+
+(use-package edit-indirect
+  :config
+  (add-hook
+   'edit-indirect-after-commit-functions
+   (lambda (beg end)
+     (interactive)
+     (deactivate-mark)))
+  (advice-add 'edit-indirect-abort :after #'deactivate-mark)
+  :hook ((edit-indirect-before-commit . db-indent-buffer)))
+
+(use-package nix-mode
+  :config
+  ;; TODO: Make it work with :bind
+  (with-eval-after-load 'nix-mode
+    (define-key nix-mode-map
+ 		(kbd "C-c C-'")
+ 		'("Edit in major mode" . (lambda ()
+ 					   (interactive)
+ 					   (db-edit-in-indirect-buffer "\'\'"))))))
 
 (defgroup db-edit nil
   "Tweaks to emacs' editing functionalities."
@@ -42,8 +67,8 @@
   '(("~!emacs-lisp!~" . emacs-lisp-mode)
     ("~!shell!~" . shell-script-mode))
   "An association list that binds a specific delimiter
-to a major mode. Used for guessing the correct mode
-while using `edit-indirect'."
+    to a major mode. Used for guessing the correct mode
+    while using `edit-indirect'."
   :type 'list
   :group 'db-edit)
 
@@ -57,8 +82,7 @@ buffer based on a predefined delimiter."
 		(goto-char (point-min))
 		(when (search-forward delimiter nil t)
 		  (funcall mode)))))
-	  db-edit-delimiter-mode-alist)
-  )
+	  db-edit-delimiter-mode-alist))
 
 ;; Specifying which function should be called when opening
 ;; an indirect buffer with `edit-indirect' to guess the
@@ -88,33 +112,6 @@ a literal string."
   (interactive)
   (save-excursion
     (indent-region (point-min) (point-max) nil)))
-
-;; Specifying which functions should be called before
-;; `edit-indirect's indirect buffer will be committed.
-(add-hook 'edit-indirect-before-commit-hook 'db-indent-buffer)
-
-;; Removing the residual mark after we committed the
-;; indirect buffer
-(add-hook 'edit-indirect-after-commit-functions (lambda
-						  (beg end)
-						  (interactive)
-						  (deactivate-mark)))
-
-(defun db-edit-in-indirect-buffer (&optional delimiter)
-  (interactive)
-  (let ((delim (or delimiter (read-from-minibuffer "Delimiter: "))))
-    (save-excursion
-      (db-mark-text-between-delimiter delim)
-      (edit-indirect-region (point) (mark) t))))
-
-(with-eval-after-load 'nix-mode
-  ;; TODO: Add which-key description
-  (define-key nix-mode-map
-	      (kbd "C-c C-'")
-	      (lambda
-		()
-		(interactive)
-		(db-edit-in-indirect-buffer "\'\'"))))
 '';
       };
     };
