@@ -27,33 +27,28 @@
 { config, lib, pkgs, inputs, ... }:
 
 {
-  config = {
+  config = let
+    utils = import ./../../../utils.nix { inherit pkgs; };
+  in {
     home-manager.users.${config.user} = {
-      programs.emacs = let
-        keymaps = pkgs.emacsPackages.trivialBuild {
-          pname = "db-keymaps";
-          version = "0.1";
-          src = pkgs.writeText "${keymaps.pname}.el" ''
-            ;;; ${keymaps.pname}.el --- Window configuration -*- lexical-binding: t -*-
-              (defvar db-app-map nil "Prefix keymap for applications.")
-              (define-prefix-command 'db-app-map nil)
-              (defvar db-toggle-map nil "\
-          Prefix keymap for binding various minor modes for toggling functionalitty.")
-              (define-prefix-command 'db-toggle-map nil)  
-            (provide '${keymaps.pname})
-          '';
-        };
-      in {
-        extraPackages = epkgs: [ keymaps ];
-        extraConfig = ''
-          (require '${keymaps.pname})
+      programs.emacs = utils.emacsPkg {
+          name = "db-keymaps";
+          description = "Global keymaps";
+          require = true;
+          code = ''
+;; ~!emacs-lisp!~
+(defvar db-app-map nil "Prefix keymap for applications.")
+(define-prefix-command 'db-app-map nil)
+(defvar db-toggle-map nil "\
+          Prefix keymap for binding various minor modes for toggling functionality.")
+(define-prefix-command 'db-toggle-map nil)
 
-          (define-key mode-specific-map (kbd "a")
+(define-key mode-specific-map (kbd "a")
             '("applications" . db-app-map))
-          (define-key mode-specific-map (kbd "t")
-            '("toggles" . db-toggle-map))
-        '';
-      };
+(define-key mode-specific-map (kbd "t")
+	    '("toggles" . db-toggle-map))
+'';
+        };
     };
   };
 }
