@@ -32,15 +32,21 @@
       programs.emacs = {
         extraPackages = epkgs: [ epkgs.consult-eglot ];
         extraConfig = ''
-          (with-eval-after-load
-            'eglot
-            (setq eldoc-echo-area-use-multiline-p nil)
-            (setq eglot-confirm-server-initiated-edits nil)
-            (add-hook 'eglot-managed-mode-hook
-                      (lambda () (setq consult-imenu--cache nil)))
-            ;; Potentially can speed up eglot:
-            (setq eglot-events-buffer-size 0)
-            (setq eglot-extend-to-xref t))
+;; ~!emacs-lisp!~
+(with-eval-after-load
+    'eglot
+  (setq eldoc-echo-area-use-multiline-p nil)
+  (setq eglot-confirm-server-initiated-edits nil)
+  (add-hook 'eglot-managed-mode-hook
+	    (lambda () (setq consult-imenu--cache nil)
+	      ;; TODO: Move this to own module
+	      ;; Add flymake diagnostics to mode bar
+	      (add-to-list 'mode-line-misc-info
+			   `(flymake-mode (" " flymake-mode-line-counters " ")))
+	      ))
+  ;; Potentially can speed up eglot:
+  (setq eglot-events-buffer-size 0)
+  (setq eglot-extend-to-xref t))
         '';
       };
     };
