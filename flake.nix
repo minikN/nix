@@ -64,6 +64,7 @@
       slimboy = import ./machines/slimboy.nix { inherit inputs globals nixpkgs nixos-hardware overlays; };
       geekcave = import ./machines/geekcave.nix { inherit inputs globals nixpkgs nixos-hardware overlays; };
       thinktank = import ./machines/thinktank.nix { inherit inputs globals nixpkgs nixos-hardware overlays; };
+      workhorse = import ./machines/workhorse.nix { inherit inputs globals nixpkgs nixos-hardware overlays; };
     };
 
     ## Home configurations
@@ -71,6 +72,7 @@
       slimboy = nixosConfigurations.slimboy.config.home-manager.users.${globals.user}.home;
       geekcave = nixosConfigurations.geekcave.config.home-manager.users.${globals.user}.home;
       thinktank = nixosConfigurations.thinktank.config.home-manager.users.${globals.user}.home;
+      workhorse = nixosConfigurations.workhorse.config.home-manager.users.${globals.user}.home;
     };
   };
 }

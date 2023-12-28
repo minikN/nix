@@ -67,8 +67,8 @@ nixpkgs.lib.nixosSystem {
       ## kernel
       boot.initrd.kernelModules = [];
       boot.initrd.availableKernelModules = [
-        "xhci_pci" "ahci" "evdi" "nvme"
-        #"usb_storage" "sd_mod" "sr_mod" "sdhci_pci"
+        "xhci_pci" "ahci" "nvme"
+        # "evdi" "usb_storage" "sd_mod" "sr_mod" "sdhci_pci"
       ];
       
       boot.kernelModules = [ "kvm-amd" ];
@@ -107,7 +107,7 @@ nixpkgs.lib.nixosSystem {
       os.keyboard.layout = "us";
 
       ## Mail accounts in use on this machine
-      #mail.primary.enable = true;
+      mail.primary.enable = true;
       #mail.work.enable = true;
 
       console = {
