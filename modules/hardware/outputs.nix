@@ -36,42 +36,57 @@
             description = "Primary output of the machine";
             default = "eDP-1";
           };
+          width = lib.mkOption {
+            type = lib.types.int;
+            description = "Width of the primary output";
+            default = 2560;
+          };
+          height = lib.mkOption {
+            type = lib.types.int;
+            description = "Height of the primary output";
+            default = 1440;
+          };
           hidpi = lib.mkOption {
             type = lib.types.bool;
             description = "Whether the primary output is a HiDPI display";
           };
         };
         
-        left = lib.mkOption {
-          type = lib.types.listOf lib.types.str;
-          description = "List of attribute sets which each describe a output that is considered `left'";
-        };
-
-        right = lib.mkOption {
-          type = lib.types.listOf lib.types.str;
-          description = "List of attribute sets which each describe a output that is considered `right'";
+        configs = lib.mkOption {
+          type = lib.types.listOf lib.types.attrs;
+          description = "List of output configurations available for the current machine";
         };
       };
     };
   };
 
   config = {
+
+    ## Forcing kanshi service to restart in order to correctly match new profile
+    services.acpid.handlers.outputEvent.event = "jack/videoout.*";
+    services.acpid.handlers.outputEvent.action = "systemctl --machine ${config.user}@.host --user restart kanshi.service";
+
+    ## Kanshi configuration
     home-manager.users.${config.user}.services.kanshi = {
       enable = true;
-      profiles = {
-        home = {
-          outputs = [
-            { criteria = "DP-1"; }
-            { criteria = "DP-2"; }
-          ];
-        };
-        work = {
-          outputs = [
-            { criteria = "HDMI-A-1"; }
-            { criteria = "HDMI-A-2"; }
-          ];
-        };
-      };
+      profiles = lib.lists.foldl (all: output: lib.attrsets.mergeAttrsList [
+        all
+        {
+          "${output.name}-clamshell" = {
+            outputs = [
+              { criteria = "${output.left.id}"; position = "0,0"; }
+              { criteria = "${output.right.id}"; position = "${toString output.left.width},0"; }
+            ];
+          };
+          "${output.name}-open" = lib.mkIf (config.os.output.primary != null) {
+            outputs = [
+              { criteria = "${config.os.output.primary.name}"; position = "${toString output.left.width},0"; }
+              { criteria = "${output.left.id}"; position = "0,0"; }
+              { criteria = "${output.right.id}"; position = "${toString (output.left.width + config.os.output.primary.width)},0"; }
+            ];
+          };
+        }
+      ]) {} config.os.output.configs;
     };
   };
 }
