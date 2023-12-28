@@ -58,7 +58,7 @@
         '';
   
         config = let
-        concatOutputs = lib.lists.foldl (all: output: if builtins.stringLength all > 0 then "${all}\" \"${output}" else "${output}") "";
+          utils = import ./../../../utils.nix { inherit pkgs lib config; };
         in {
 
           ## Set modifier
@@ -80,14 +80,14 @@
         
           ## Assigning workspaces to outputs
           workspaceOutputAssign = [
-            { workspace = "1"; output = concatOutputs config.os.output.left; }
-            { workspace = "2"; output = concatOutputs config.os.output.right; }
-            { workspace = "3"; output = concatOutputs config.os.output.right; }
-            { workspace = "4"; output = concatOutputs config.os.output.left; }
-            { workspace = "5"; output = concatOutputs config.os.output.left; }
-            { workspace = "6"; output = concatOutputs config.os.output.right; }
-            { workspace = "7"; output = concatOutputs config.os.output.left; }
-            { workspace = "8"; output = concatOutputs config.os.output.left; }
+            { workspace = "1"; output = utils.outputs.concat {}; }
+            { workspace = "2"; output = utils.outputs.concat { left = false; }; }
+            { workspace = "3"; output = utils.outputs.concat { left = false; }; }
+            { workspace = "4"; output = utils.outputs.concat {}; }
+            { workspace = "5"; output = utils.outputs.concat {}; }
+            { workspace = "6"; output = utils.outputs.concat { left = false; }; }
+            { workspace = "7"; output = utils.outputs.concat {}; }
+            { workspace = "8"; output = utils.outputs.concat {}; }
           ];
 
           ## Fonts

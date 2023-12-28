@@ -31,7 +31,7 @@
   ];
 
   config = let
-    mapOutputs = lib.lists.imap0 (i: output: "${output}");
+     utils = import ./../../../../utils.nix { inherit pkgs lib config; };
   in {
     nixpkgs.overlays = [
       (self: super: {
@@ -158,7 +158,7 @@
           layer = "top";
           position = "top";
           name = "left";
-          output = mapOutputs config.os.output.left;
+          output = utils.outputs.mapAttr {};
           modules-left = [
             (
               if config.os.wm == "sway"
@@ -190,21 +190,21 @@
               "default" = "";
             };
             persistent_workspaces = {
-                "1" = mapOutputs config.os.output.left; 
-                "2" = mapOutputs config.os.output.right; 
-                "3" = mapOutputs config.os.output.right; 
-                "4" = mapOutputs config.os.output.left; 
-                "5" = mapOutputs config.os.output.left; 
-                "6" = mapOutputs config.os.output.right; 
-                "7" = lib.mkIf config.features.gaming (mapOutputs config.os.output.left);
-                "8" = mapOutputs config.os.output.left;
+                "1" = utils.outputs.mapAttr {};
+                "2" = utils.outputs.mapAttr { left = false; };
+                "3" = utils.outputs.mapAttr { left = false; };
+                "4" = utils.outputs.mapAttr {};
+                "5" = utils.outputs.mapAttr {};
+                "6" = utils.outputs.mapAttr { left = false; };
+                "7" = lib.mkIf config.features.gaming (utils.outputs.mapAttr {});
+                "8" = utils.outputs.mapAttr {};
             };
           };
         } else {
           layer = "top";
           position = "top";
           name = "left";
-          output = mapOutputs config.os.output.left;
+          output = utils.outputs.mapAttr {};
           modules-center = ["${config.os.wm}/window"];
           "sway/window" = lib.mkIf (config.os.wm == "sway") {
             max-length = 50;
@@ -216,7 +216,7 @@
           layer = "top";
           position = "top";
           name = "right";
-          output = mapOutputs config.os.output.right;
+          output = utils.outputs.mapAttr { left = false; };
           modules-left = [
             (
               if config.os.wm == "sway"
@@ -254,14 +254,14 @@
               "default" = "";
             };
             persistent_workspaces = {
-                "1" = mapOutputs config.os.output.left; 
-                "2" = mapOutputs config.os.output.right; 
-                "3" = mapOutputs config.os.output.right; 
-                "4" = mapOutputs config.os.output.left; 
-                "5" = mapOutputs config.os.output.left; 
-                "6" = mapOutputs config.os.output.right; 
-                "7" = lib.mkIf config.features.gaming (mapOutputs config.os.output.left);
-                "8" = mapOutputs config.os.output.left;
+                "1" = utils.outputs.mapAttr {};
+                "2" = utils.outputs.mapAttr { left = false; };
+                "3" = utils.outputs.mapAttr { left = false; };
+                "4" = utils.outputs.mapAttr {};
+                "5" = utils.outputs.mapAttr {};
+                "6" = utils.outputs.mapAttr { left = false; };
+                "7" = lib.mkIf config.features.gaming (utils.outputs.mapAttr {});
+                "8" = utils.outputs.mapAttr {};
             };
           };
           "sway/window" = lib.mkIf (config.os.wm == "sway") {
@@ -314,7 +314,7 @@
           layer = "top";
           position = "top";
           name = "right";
-          output = mapOutputs config.os.output.right;
+          output = utils.outputs.mapAttr { left = false; };
           modules-center = ["${config.os.wm}/window"];
           "sway/window" = lib.mkIf (config.os.wm == "sway") {
             max-length = 50;
