@@ -82,7 +82,7 @@
           workspaceOutputAssign = [
             { workspace = "1"; output = utils.outputs.mapAttr { attr = "id"; }; }
             { workspace = "2"; output = utils.outputs.mapAttr { attr = "id"; left = false; }; }
-            { workspace = "3"; output = utils.outputs.mapAttr { attr = "id"; left = false; }; }
+            { workspace = "3"; output = config.os.output.primary.name; }
             { workspace = "4"; output = utils.outputs.mapAttr { attr = "id"; }; }
             { workspace = "5"; output = utils.outputs.mapAttr { attr = "id"; }; }
             { workspace = "6"; output = utils.outputs.mapAttr { attr = "id"; left = false; }; }
