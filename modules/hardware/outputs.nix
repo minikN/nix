@@ -64,33 +64,27 @@
     home-manager.users.${config.user} = {
       home = lib.mkIf (config.os.wayland == true) {
         packages = with pkgs; [
-          way-displays
           wdisplays # GUI
         ];
       };
-      xdg.configFile."way-displays/cfg.yaml".text = ''
-## ~!yaml!~
-ARRANGE: ROW
-ALIGN: BOTTOM
-ORDER:
-${lib.lists.foldl (all: output:
-  if builtins.stringLength all > 0
-  then "${all}\n  - '${output.left.id}'"
-  else "  - '${output.left.id}'"
-) "" config.os.output.configs}
-  - '${config.os.output.primary.name}'
-${lib.lists.foldl (all: output:
-  if builtins.stringLength all > 0
-  then "${all}\n  - '${output.right.id}'"
-  else "  - '${output.right.id}'"
-) "" config.os.output.configs}
-SCALING: FALSE
-AUTO_SCALE: FALSE
-'';
 
       ## Configure wdisplays windows to be floating
-      wayland.windowManager.sway.config.window = {
-        commands = lib.mkIf (config.os.wm == "sway") [
+      wayland.windowManager.sway = lib.mkIf (config.os.wm == "sway") {
+        extraConfig = let
+          clamshell = pkgs.writeShellScriptBin "clamshell" ''
+if grep -q open /proc/acpi/button/lid/LID1/state; then
+    swaymsg output ${config.os.output.primary.name} enable
+    ${pkgs.libnotify}/bin/notify-send -t 5000 "Enabled primary output"
+else
+    swaymsg output ${config.os.output.primary.name} disable
+    ${pkgs.libnotify}/bin/notify-send -t 5000 "Disabled primary output"
+fi
+'';
+        in ''
+bindswitch --reload --locked lid:on output ${config.os.output.primary.name} disable
+bindswitch --reload --locked lid:off output ${config.os.output.primary.name} enable
+'';
+        config.window.commands = [
           {
             command = "floating enable, border pixel 0";
             criteria = {
@@ -99,10 +93,6 @@ AUTO_SCALE: FALSE
           }
         ];
       };
-
-      wayland.windowManager.sway.extraConfig = ''
-exec ${pkgs.way-displays}/bin/way-displays > /tmp/way-displays.$XDG_VTNR.$USER.log 2>&1
-'';
     };
   };
 }
