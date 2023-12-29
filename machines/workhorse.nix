@@ -70,15 +70,21 @@ nixpkgs.lib.nixosSystem {
       ## kernel
       boot.initrd.kernelModules = [];
       boot.initrd.availableKernelModules = [
-        "xhci_pci" "ahci" "nvme"
+        "xhci_pci" "ahci" "nvme" "cpuid" "nvme_fabrics"
         # "evdi" "usb_storage" "sd_mod" "sr_mod" "sdhci_pci"
       ];
       
-      boot.kernelModules = [ "kvm-amd" ];
+      boot.kernelModules = [ "kvm-amd" "evdi" ];
       boot.kernelPackages = pkgs.linuxPackagesFor pkgs.linux_latest;
       
       hardware.enableRedistributableFirmware = true;
       hardware.cpu.amd.updateMicrocode = true;
+
+      ## Also works for wayland, but needs:
+      ## Download file from https://www.synaptics.com/products/displaylink-graphics/downloads/ubuntu-5.8?filetype=exe
+      ## Rename file to 'displaylink-580.zip'
+      ## nix-prefetch-url file:///$PWD/displaylink.zip
+      services.xserver.videoDrivers = [ "displaylink" "modesetting" ];
 
       hardware.tuxedo-control-center.enable = true;
       hardware.tuxedo-control-center.package = tuxedo-nixos.packages.x86_64-linux.default;
