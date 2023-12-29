@@ -15,7 +15,7 @@ ${code}
     '';
     };
   in rec {
-    extraPackages = epkgs: [ pkg ] ++ packages;
+    extraPackages = epkgs: packages ++ [ pkg ];
     extraConfig = ''
 ${if require then "(require '${pkg.pname})" else ""}
 ${config}
