@@ -53,6 +53,9 @@ nixpkgs.lib.nixosSystem {
 
     ## Applying recommended hardware settings
     nixos-hardware.nixosModules.tuxedo-pulse-15-gen2
+
+    ## TUXEDO specific modules
+    tuxedo-nixos.nixosModules.default
     
     ## System specific
     ##
@@ -77,6 +80,8 @@ nixpkgs.lib.nixosSystem {
       hardware.enableRedistributableFirmware = true;
       hardware.cpu.amd.updateMicrocode = true;
 
+      hardware.tuxedo-control-center.enable = true;
+      hardware.tuxedo-control-center.package = tuxedo-nixos.packages.x86_64-linux.default;
       hardware.tuxedo-keyboard.enable = true;
       boot.kernelParams = [
         "tuxedo_keyboard.mode=0"
