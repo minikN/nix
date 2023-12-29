@@ -46,7 +46,7 @@
   :group 'db-windows)
 
 (defcustom db-window-bottom-regex
-  "\\*\\(?:shell\\|compilation\\|npm.*\\)\\*"
+  "\\*\\(?:shell\\|compilation\\|npm.*\\| docker compose .*\\)\\*"
   "Regex string matching buffers being shown in bottom side window"
   :type 'string
   :group 'db-windows)
@@ -186,7 +186,7 @@ matching REGEX in order."
 
 (db-cycle-buffer-in-window db-window-right-regex)
 
-          ;;;###autoload
+;;;###autoload
 (defun db-focus-window (regex)
   "Focuses window that has buffers matching REGEX by deleting all other windows.
           Will restore previous window layout on subsequent execution. NOTE: Layout changes
