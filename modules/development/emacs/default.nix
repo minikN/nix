@@ -42,6 +42,7 @@
 
     ./windows.nix
     ./which-key.nix
+    ./term.nix
   ];
   
   config = {
