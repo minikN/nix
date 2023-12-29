@@ -246,7 +246,6 @@
             grim
             slurp
             mako
-            way-displays
           ];
         })
       ];

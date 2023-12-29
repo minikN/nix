@@ -61,32 +61,48 @@
   };
 
   config = {
+    home-manager.users.${config.user} = {
+      home = lib.mkIf (config.os.wayland == true) {
+        packages = with pkgs; [
+          way-displays
+          wdisplays # GUI
+        ];
+      };
+      xdg.configFile."way-displays/cfg.yaml".text = ''
+## ~!yaml!~
+ARRANGE: ROW
+ALIGN: BOTTOM
+ORDER:
+${lib.lists.foldl (all: output:
+  if builtins.stringLength all > 0
+  then "${all}\n  - '${output.left.id}'"
+  else "  - '${output.left.id}'"
+) "" config.os.output.configs}
+  - '${config.os.output.primary.name}'
+${lib.lists.foldl (all: output:
+  if builtins.stringLength all > 0
+  then "${all}\n  - '${output.right.id}'"
+  else "  - '${output.right.id}'"
+) "" config.os.output.configs}
+SCALING: FALSE
+AUTO_SCALE: FALSE
+'';
 
-    ## Forcing kanshi service to restart in order to correctly match new profile
-    services.acpid.handlers.outputEvent.event = "jack/videoout.*";
-    services.acpid.handlers.outputEvent.action = "systemctl --machine ${config.user}@.host --user restart kanshi.service";
+      ## Configure wdisplays windows to be floating
+      wayland.windowManager.sway.config.window = {
+        commands = lib.mkIf (config.os.wm == "sway") [
+          {
+            command = "floating enable, border pixel 0";
+            criteria = {
+              app_id = "wdisplays";
+            };
+          }
+        ];
+      };
 
-    ## Kanshi configuration
-    home-manager.users.${config.user}.services.kanshi = {
-      enable = true;
-      profiles = lib.lists.foldl (all: output: lib.attrsets.mergeAttrsList [
-        all
-        {
-          "${output.name}-clamshell" = {
-            outputs = [
-              { criteria = "${output.left.id}"; position = "0,0"; }
-              { criteria = "${output.right.id}"; position = "${toString output.left.width},0"; }
-            ];
-          };
-          "${output.name}-open" = lib.mkIf (config.os.output.primary != null) {
-            outputs = [
-              { criteria = "${config.os.output.primary.name}"; position = "${toString output.left.width},0"; }
-              { criteria = "${output.left.id}"; position = "0,0"; }
-              { criteria = "${output.right.id}"; position = "${toString (output.left.width + config.os.output.primary.width)},0"; }
-            ];
-          };
-        }
-      ]) {} config.os.output.configs;
+      wayland.windowManager.sway.extraConfig = ''
+exec ${pkgs.way-displays}/bin/way-displays > /tmp/way-displays.$XDG_VTNR.$USER.log 2>&1
+'';
     };
   };
 }
