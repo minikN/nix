@@ -80,14 +80,14 @@
         
           ## Assigning workspaces to outputs
           workspaceOutputAssign = [
-            { workspace = "1"; output = utils.outputs.concat {}; }
-            { workspace = "2"; output = utils.outputs.concat { left = false; }; }
-            { workspace = "3"; output = utils.outputs.concat { left = false; }; }
-            { workspace = "4"; output = utils.outputs.concat {}; }
-            { workspace = "5"; output = utils.outputs.concat {}; }
-            { workspace = "6"; output = utils.outputs.concat { left = false; }; }
-            { workspace = "7"; output = utils.outputs.concat {}; }
-            { workspace = "8"; output = utils.outputs.concat {}; }
+            { workspace = "1"; output = utils.outputs.mapAttr { attr = "id"; }; }
+            { workspace = "2"; output = utils.outputs.mapAttr { attr = "id"; left = false; }; }
+            { workspace = "3"; output = utils.outputs.mapAttr { attr = "id"; left = false; }; }
+            { workspace = "4"; output = utils.outputs.mapAttr { attr = "id"; }; }
+            { workspace = "5"; output = utils.outputs.mapAttr { attr = "id"; }; }
+            { workspace = "6"; output = utils.outputs.mapAttr { attr = "id"; left = false; }; }
+            { workspace = "7"; output = utils.outputs.mapAttr { attr = "id"; }; }
+            { workspace = "8"; output = utils.outputs.mapAttr { attr = "id"; }; }
           ];
 
           ## Fonts
