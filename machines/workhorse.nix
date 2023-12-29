@@ -95,10 +95,43 @@ nixpkgs.lib.nixosSystem {
       };
 
       ## Display settings
-      os.output.primary.name = "LVDS-1";
+      os.output.primary.name = "eDP-1";
+      os.output.primary.width = 2560;
+      os.output.primary.height = 1440;
       os.output.primary.hidpi = false;
-      os.output.left = ["DP-5"];
-      os.output.right = ["DP-6"];
+
+      os.output.configs = [
+        {
+          name = "home";
+          left = {
+            name = "DP-3";
+            id = "Philips Consumer Electronics Company PHL 245E1 0x0000630A";
+            width = 2560;
+            height = 1440;
+          };
+          right = {
+            name = "DP-2";
+            id = "Philips Consumer Electronics Company PHL 245E1 0x0000631B";
+            width = 2560;
+            height = 1440;
+          };
+        }
+        {
+          name = "work";
+          left = {
+            name = "HDMI-A-1";
+            id = "HDMI-A-1";
+            width = 1920;
+            height = 1080;
+          };
+          right = {
+            name = "HDMI-A-2";
+            id = "HDMI-A-2";
+            width = 1920;
+            height = 1080;
+          };
+        }
+      ];
 
       ## Declaring this machine to be a laptop
       os.machine.isLaptop = true;
