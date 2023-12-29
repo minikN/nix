@@ -26,7 +26,9 @@
 { config, lib, pkgs, ... }:
 
 {
-  config = {
+  config = let
+    utils = import ./../../../utils.nix { inherit lib pkgs config; };
+  in {
 
     virtualisation.docker = {
       enable = true;
@@ -34,6 +36,19 @@
     };
     
     users.users.${config.user}.extraGroups = [ "docker" ];
+
+    home-manager.users.${config.user}.programs.emacs = utils.emacsPkg {
+      name = "db-docker";
+      description = "Docker configuration";
+      require = true;
+      packages = [ pkgs.emacsPackages.docker ];
+      code = ''
+;; ~!emacs-lisp!~
+(define-key mode-specific-map (kbd "d") '("Docker" . docker))
+(with-eval-after-load 'docker
+  (setq docker-compose-command "docker compose"))
+'';
+    };
   };
 }
 
