@@ -50,6 +50,8 @@
       "editor.fontFamily" = "'${config.os.fonts.mono.regular}', 'monospace', monospace";
       "editor.fontSize" = config.os.fonts.size + 2;
       "editor.fontLigatures" = true;
+
+      "typescript.tsserver.log" = "verbose";
     };
   };
 }
