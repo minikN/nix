@@ -82,7 +82,7 @@
 
 ;; This removes the linebreak character and also makes text
 ;; in narrow windows better to read.
-(global-visual-line-mode 1)
+(add-hook 'help-mode-hook 'visual-line-mode)
 
 ;; Set some defaults for the startup behaviour.
 (setq use-dialog-box t
