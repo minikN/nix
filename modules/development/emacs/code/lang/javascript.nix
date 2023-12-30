@@ -54,91 +54,99 @@
           epkgs.corfu ## Move
         ];
         extraConfig = ''
-          ;; Tell emacs to use treesitter modes
-          (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
-          (add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
-          (add-to-list 'major-mode-remap-alist `(javascript-mode . js-ts-mode))
+;; ~!emacs-lisp!~
+;; Tell emacs to use treesitter modes
+(add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
+(add-to-list 'major-mode-remap-alist `(javascript-mode . js-ts-mode))
 
-          ;; dape
-          (with-eval-after-load
-            'dape
-            (setq dape-configs-adapter-dir (file-name-as-directory (concat user-emacs-directory "dape-debuggers")))
-            (setq dape-configs-port 8123)
+;; dape
+(with-eval-after-load
+    'dape
+  (setq dape-configs-adapter-dir (file-name-as-directory (concat user-emacs-directory "dape-debuggers")))
+  (setq dape-configs-port 8123)
 
-            (add-to-list 'dape-configs
-             `(js-debug-chrome
-               modes (js-mode js-ts-mode)
-	             command "${pkgs.vscode-js-debug}/bin/dapDebugServer"
-               command-cwd ,(concat dape-configs-adapter-dir "js-debug")
-               command-args (,(format "%d" dape-configs-port))
-               port dape-configs-port
-               :type "pwa-chrome"
-               :trace t
-               :url ,(lambda ()
-                       (read-string "Url: "
-                                    "http://localhost:3000"))
-               :webRoot dape-cwd-fn
-               :outputCapture "console")))
+  (add-to-list 'dape-configs
+	       `(js-debug-chrome
+		 modes (js-mode js-ts-mode)
+		 command "${pkgs.vscode-js-debug}/bin/dapDebugServer"
+		 command-cwd ,(concat dape-configs-adapter-dir "js-debug")
+		 command-args (,(format "%d" dape-configs-port))
+		 port dape-configs-port
+		 :userDataDir nil
+		 :type "pwa-chrome"
+		 :trace t
+		 :url ,(lambda ()
+			 (read-string "Url: "
+				      "http://localhost:3000"))
+		 :webRoot dape-cwd-fn
+		 :outputCapture "console")))
 
-          (defun db--javascript-setup-electric-pairs-for-jsx-tsx ()
-            (electric-pair-local-mode)
-            (setq-local electric-pair-pairs
-                        (append electric-pair-pairs
-                                '((60 . 62)))) ;; <, >
-            (setq-local electric-pair-text-pairs electric-pair-pairs))
+(defun db--javascript-setup-electric-pairs-for-jsx-tsx ()
+  (electric-pair-local-mode)
+  (setq-local electric-pair-pairs
+	      (append electric-pair-pairs
+		      '((60 . 62)))) ;; <, >
+  (setq-local electric-pair-text-pairs electric-pair-pairs))
 
-          ;; Configure js-ts-mode
-          (setq js-indent-level 2
-                js-chain-indent t)
+;; Configure js-ts-mode
+(setq js-indent-level 2
+      js-chain-indent t)
 
-          ;; npm-mode
-          ;; TODO: Add which-key descriptions
-          ;; TODO: Make npm-mode run with isolated npm runtime
-          (with-eval-after-load
-           'npm-mode
-           (fset 'npm-mode-command-keymap npm-mode-command-keymap)
-           (define-key npm-mode-keymap (kbd "C-c n") '("npm" . npm-mode-command-keymap)))
+;; npm-mode
+;; TODO: Add which-key descriptions
+;; TODO: Make npm-mode run with isolated npm runtime
+(with-eval-after-load
+    'npm-mode
+  (fset 'npm-mode-command-keymap npm-mode-command-keymap)
+  (define-key npm-mode-keymap (kbd "C-c n") '("npm" . npm-mode-command-keymap)))
 
-          ;; nodejs-repl
-          ;; TODO: Add which-key descriptions
-          (defun db--javascript-setup-nodejs-repl ()
-            (defvar nodejs-repl-mode-command-map
-              (let ((map (make-sparse-keymap)))
-                (define-key map (kbd "e") 'nodejs-repl-send-last-expression)
-                (define-key map (kbd "j") 'nodejs-repl-send-line)
-                (define-key map (kbd "r") 'nodejs-repl-send-region)
-                (define-key map (kbd "C-c") 'nodejs-repl-send-buffer)
-                (define-key map (kbd "C-l") 'nodejs-repl-load-file)
-                (define-key map (kbd "C-z") 'nodejs-repl-switch-to-repl)
-                map))
-            (fset 'nodejs-repl-mode-command-map nodejs-repl-mode-command-map)
-            (define-key js-ts-mode-map (kbd "C-c r")
-              '("repl" . nodejs-repl-mode-command-map)))
+;; nodejs-repl
+(defun db--javascript-setup-nodejs-repl ()
+  (defvar nodejs-repl-mode-command-map
+    (let ((map (make-sparse-keymap)))
+      (define-key map (kbd "e") '("Send last expression" . nodejs-repl-send-last-expression))
+      (define-key map (kbd "j") '("Send line" . nodejs-repl-send-line))
+      (define-key map (kbd "r") '("Send region" . nodejs-repl-send-region))
+      (define-key map (kbd "C-c") '("Send buffer" . nodejs-repl-send-buffer))
+      (define-key map (kbd "C-l") '("Load file" . nodejs-repl-load-file))
+      (define-key map (kbd "C-z") '("Switch to REPL" . nodejs-repl-switch-to-repl))
+      map))
+  (fset 'nodejs-repl-mode-command-map nodejs-repl-mode-command-map)
+  (define-key js-ts-mode-map (kbd "C-c r")
+	      '("repl" . nodejs-repl-mode-command-map)))
 
-          (with-eval-after-load
-              'nodejs-repl
-            (setq nodejs-repl-command "${pkgs.nodejs}/bin/node"))
+(with-eval-after-load
+    'nodejs-repl
+  (setq nodejs-repl-command "${pkgs.nodejs}/bin/node"))
 
-          ;; Configure eglot
-          (with-eval-after-load
-           'eglot
-           (add-to-list
-            'eglot-server-programs
-            '((javascript-mode
-               typescript-ts-mode
-               tsx-ts-mode) . ("${pkgs.nodePackages.typescript-language-server}/bin/typescript-language-server" "--stdio"))))
+;; (eval-when-compile
+;;   (require 'eglot)
+;;   (eglot--code-action eglot-code-action-organize-imports-ts "source.organizeImports.ts")
+;;   (eglot--code-action eglot-code-action-add-missing-imports-ts "source.addMissingImports.ts")
+;;   (eglot--code-action eglot-code-action-removed-unused-ts "source.removedUnused.ts"))
 
-          (dolist
-           (hook
-            '(js-ts-mode-hook
-              typescript-ts-mode-hook
-              tsx-ts-mode-hook))
-            (add-hook hook
-                      (lambda ()
-                       (eglot-ensure)
-                       (npm-mode)
-                       (db--javascript-setup-nodejs-repl)
-                       (db--javascript-setup-electric-pairs-for-jsx-tsx))))
+;; Configure eglot
+(with-eval-after-load
+    'eglot
+
+  (add-to-list
+   'eglot-server-programs
+   '((javascript-mode
+      typescript-ts-mode
+      tsx-ts-mode) . ("${pkgs.nodePackages.typescript-language-server}/bin/typescript-language-server" "--tsserver-path" "${pkgs.nodePackages.typescript}/lib/" "--stdio"))))
+
+(dolist
+    (hook
+     '(js-ts-mode-hook
+       typescript-ts-mode-hook
+       tsx-ts-mode-hook))
+  (add-hook hook
+	    (lambda ()
+	      (eglot-ensure)
+	      (npm-mode)
+	      (db--javascript-setup-nodejs-repl)
+	      (db--javascript-setup-electric-pairs-for-jsx-tsx))))
         '';
       };
     };
