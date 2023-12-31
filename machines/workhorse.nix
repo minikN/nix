@@ -80,11 +80,12 @@ nixpkgs.lib.nixosSystem {
       hardware.enableRedistributableFirmware = true;
       hardware.cpu.amd.updateMicrocode = true;
 
+      ## NOTE: Package marked as broken, disabled for now
       ## Also works for wayland, but needs:
       ## Download file from https://www.synaptics.com/products/displaylink-graphics/downloads/ubuntu-5.8?filetype=exe
       ## Rename file to 'displaylink-580.zip'
       ## nix-prefetch-url file:///$PWD/displaylink.zip
-      services.xserver.videoDrivers = [ "displaylink" "modesetting" ];
+      ##services.xserver.videoDrivers = [ "displaylink" "modesetting" ];
 
       hardware.tuxedo-control-center.enable = true;
       hardware.tuxedo-control-center.package = tuxedo-nixos.packages.x86_64-linux.default;
