@@ -74,7 +74,7 @@ nixpkgs.lib.nixosSystem {
         # "evdi" "usb_storage" "sd_mod" "sr_mod" "sdhci_pci"
       ];
       
-      boot.kernelModules = [ "kvm-amd" "evdi" ];
+      boot.kernelModules = [ "kvm-amd" ];
       boot.kernelPackages = pkgs.linuxPackagesFor pkgs.linux_latest;
       
       hardware.enableRedistributableFirmware = true;
