@@ -56,6 +56,11 @@
           export QT_WAYLAND_DISABLE_WINDOWDECORATIONS=1
           export _JAVA_AWT_WM_NOPARENTING=1
         '';
+
+        ## Enable tabbed layout on coding workspace
+          extraConfig = ''
+exec swaymsg "workspace 3; layout tabbed;"
+          '';
   
         config = let
           utils = import ./../../../utils.nix { inherit pkgs lib config; };
