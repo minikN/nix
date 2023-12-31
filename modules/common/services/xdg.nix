@@ -32,7 +32,7 @@
     xdg.portal = {
       enable = true;
       wlr.enable = config.os.wayland;
-      extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+      configPackages = [ pkgs.xdg-desktop-portal-gtk ];
     };
 
     ## Needed so that the user dirs get exported as env vars
