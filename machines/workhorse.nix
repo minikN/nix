@@ -176,6 +176,9 @@ nixpkgs.lib.nixosSystem {
     ## Hardware specific modules
     ../modules/hardware/backlight.nix
 
+    ## Filesystems
+    ../modules/common/system/filesystems/synology.nix
+
     ## Features
     ## Sets of modules for a specific purpose
     ../features/development.nix
