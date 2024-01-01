@@ -29,8 +29,20 @@
 { 
   config = {
     home-manager.users.${config.user} = {
-      programs.emacs = {
-        extraPackages = epkgs: [ epkgs.consult-eglot ];
+      programs.emacs = let
+        ## TODO: Remove after 1.16 has been merged in nixpkgs
+        eglot = pkgs.emacsPackages.trivialBuild {
+          pname = "eglot";
+	        version = "1.16";
+          src = pkgs.fetchFromGitHub {
+            owner = "joaotavora";
+            repo = "eglot";
+            rev = "db91d58374627a195b731a61bead9b4f84a7e4bc";
+            sha256 = "sha256-AfX43ke7LXTsam53IP24HkCbz12WNWjq8b6eMXN7PXI=";
+          }; 
+        };
+      in {
+        extraPackages = epkgs: [ eglot epkgs.consult-eglot ];
         extraConfig = ''
 ;; ~!emacs-lisp!~
 (with-eval-after-load
@@ -44,37 +56,37 @@
   
   (setq eldoc-echo-area-use-multiline-p nil)
   (setq eglot-confirm-server-initiated-edits nil)
-  ;; (add-hook 'eglot-managed-mode-hook
-  ;; 	    (lambda ()
-  ;; 	      (setq consult-imenu--cache nil)
-  ;;             (defvar eglot-mode-command-map
-  ;; 		(let ((map (make-sparse-keymap)))
-  ;; 		  (define-key map (kbd "c") '("Actions" . eglot-code-actions))
-  ;; 		  (define-key map (kbd "d") '("Find definition" . xref-find-definitions))
-  ;; 		  (define-key map (kbd "D") '("Find declaration" . eglot-find-declaration))
-  ;; 		  (define-key map (kbd "I") '("Find implementation" . eglot-find-implementation))
-  ;; 		  (define-key map (kbd "R") '("Find references" . xref-find-references))
-  ;; 		  (define-key map (kbd "S") '("Apropos symbol" . xref-find-apropos))
-  ;; 		  (when (featurep 'consult)
-  ;; 		    (define-key map (kbd "s") '("Search symbol" . consult-eglot-symbols)))
-  ;; 		  (define-key map (kbd "t") '("Find type definition" . eglot-find-typeDefinition))
-  ;; 		  (define-key map (kbd "f") '("Format region" . eglot-format))
-  ;; 		  (define-key map (kbd "F") '("Format buffer" . eglot-format-buffer))
-  ;; 		  (define-key map (kbd "o") '("Organize imports" . eglot-code-action-organize-imports))
-  ;; 		  (define-key map (kbd "r") '("Rename" . eglot-rename))
-  ;; 		  (define-key map (kbd "h") '("Show documentation" . eldoc-doc-buffer))
-  ;; 	          (define-key map (kbd "e") '("Diagnostics" . flymake-show-buffer-diagnostics))
-  ;; 		  (define-key map (kbd "e") '("Project diagnostics" . flymake-show-project-diagnostics))
-  ;; 		  map))
-  ;; 	      (fset 'eglot-mode-command-map eglot-mode-command-map)
+  (add-hook 'eglot-managed-mode-hook
+	    (lambda ()
+	      (setq consult-imenu--cache nil)
+              (defvar eglot-mode-command-map
+		(let ((map (make-sparse-keymap)))
+		  (define-key map (kbd "c") '("Actions" . eglot-code-actions))
+		  (define-key map (kbd "d") '("Find definition" . xref-find-definitions))
+		  (define-key map (kbd "D") '("Find declaration" . eglot-find-declaration))
+		  (define-key map (kbd "I") '("Find implementation" . eglot-find-implementation))
+		  (define-key map (kbd "R") '("Find references" . xref-find-references))
+		  (define-key map (kbd "S") '("Apropos symbol" . xref-find-apropos))
+		  (when (featurep 'consult)
+		    (define-key map (kbd "s") '("Search symbol" . consult-eglot-symbols)))
+		  (define-key map (kbd "t") '("Find type definition" . eglot-find-typeDefinition))
+		  (define-key map (kbd "f") '("Format region" . eglot-format))
+		  (define-key map (kbd "F") '("Format buffer" . eglot-format-buffer))
+		  (define-key map (kbd "o") '("Organize imports" . eglot-code-action-organize-imports))
+		  (define-key map (kbd "r") '("Rename" . eglot-rename))
+		  (define-key map (kbd "h") '("Show documentation" . eldoc-doc-buffer))
+	          (define-key map (kbd "e") '("Diagnostics" . flymake-show-buffer-diagnostics))
+		  (define-key map (kbd "e") '("Project diagnostics" . flymake-show-project-diagnostics))
+		  map))
+	      (fset 'eglot-mode-command-map eglot-mode-command-map)
 
-  ;; 	      (define-key eglot-mode-map (kbd "C-c c") '("Code" . eglot-mode-command-map))
-  ;; 	      (define-key eglot-mode-map (kbd "M-RET") 'db--eglot-code-action-on-word)
-  
-  ;; 	      ;; TODO: Move this to own module
-  ;; 	      ;; Add flymake diagnostics to mode bar
-  ;; 	      (add-to-list 'mode-line-misc-info
-  ;; 			   `(flymake-mode (" " flymake-mode-line-counters " ")))))
+	      (define-key eglot-mode-map (kbd "C-c c") '("Code" . eglot-mode-command-map))
+	      (define-key eglot-mode-map (kbd "M-RET") 'db--eglot-code-action-on-word)
+	      
+	      ;; TODO: Move this to own module
+	      ;; Add flymake diagnostics to mode bar
+	      (add-to-list 'mode-line-misc-info
+			   `(flymake-mode (" " flymake-mode-line-counters " ")))))
   
   ;; Potentially can speed up eglot:
   (setq eglot-events-buffer-size 0)
