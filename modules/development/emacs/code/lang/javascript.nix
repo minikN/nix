@@ -24,24 +24,24 @@
 ###
 ### CODE:
 
-{ config, lib, pkgs, inputs, ... }:
+{ config, lib, pkgs ? import <nixpkgs> {
+    inherit system;
+}, system ? builtins.currentSystem, inputs, ... }:
 
 { 
-  config = {
+  config = let
+    customNodePackages = import ../../../../../packages/node/default.nix {
+    inherit pkgs system;
+  };
+  in {
      nixpkgs.overlays = [
       (self: super: {
         vscode-js-debug = super.callPackage ../../../../../packages/node/vscode-js-debug.nix { };
       })
      ];
 
-    home-manager.users.${config.user} = {
-      home.packages = [
-        pkgs.nodejs
-        pkgs.nodePackages.vscode-langservers-extracted
-        pkgs.nodePackages.typescript-language-server
-        pkgs.nodePackages.typescript
-        pkgs.vscode-js-debug
-      ];
+     home-manager.users.${config.user} = {
+      home.packages = [ pkgs.nodejs ];
 
       programs.emacs = {
         extraPackages = epkgs: [
@@ -120,21 +120,16 @@
     'nodejs-repl
   (setq nodejs-repl-command "${pkgs.nodejs}/bin/node"))
 
-;; (eval-when-compile
-;;   (require 'eglot)
-;;   (eglot--code-action eglot-code-action-organize-imports-ts "source.organizeImports.ts")
-;;   (eglot--code-action eglot-code-action-add-missing-imports-ts "source.addMissingImports.ts")
-;;   (eglot--code-action eglot-code-action-removed-unused-ts "source.removedUnused.ts"))
-
 ;; Configure eglot
 (with-eval-after-load
     'eglot
-
   (add-to-list
    'eglot-server-programs
-   '((javascript-mode
+   '((js-ts-mode
       typescript-ts-mode
-      tsx-ts-mode) . ("${pkgs.nodePackages.typescript-language-server}/bin/typescript-language-server" "--tsserver-path" "${pkgs.nodePackages.typescript}/lib/" "--stdio"))))
+      tsx-ts-mode) . ("${pkgs.nodePackages.typescript-language-server}/bin/typescript-language-server" "--stdio"
+      :initializationOptions
+      (:tsserver (:path "${pkgs.nodePackages.typescript}/lib/node_modules/typescript/lib"))))))
 
 (dolist
     (hook
