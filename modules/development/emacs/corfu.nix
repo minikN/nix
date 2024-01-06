@@ -29,7 +29,7 @@
   config = {
     home-manager.users.${config.user} = {
       programs.emacs = {
-        extraPackages = epkgs: [ epkgs.corfu ];
+        extraPackages = epkgs: [ epkgs.corfu epkgs.kind-icon ];
         extraConfig = ''
 ;; ~!emacs-lisp!~
 (use-package corfu
@@ -56,6 +56,14 @@
   ;; Other useful Dabbrev configurations.
   :custom
   (dabbrev-ignored-buffer-regexps '("\\.\\(?:pdf\\|jpe?g\\|png\\)\\'")))
+
+(use-package kind-icon
+  :after corfu
+  ;:custom
+  ; (kind-icon-blend-background t)
+  ; (kind-icon-default-face 'corfu-default) ; only needed with blend-background
+  :config
+  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
         '';
       };
     };
