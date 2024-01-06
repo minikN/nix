@@ -48,6 +48,7 @@
           ## node / npm
           epkgs.npm-mode
           epkgs.nodejs-repl
+          epkgs.jsdoc
 
           epkgs.consult-eglot ## Move
           epkgs.markdown-mode
@@ -58,6 +59,31 @@
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
 (add-to-list 'major-mode-remap-alist `(javascript-mode . js-ts-mode))
+
+;; jsdoc
+(use-package jsdoc
+  :config
+  (defun db-javascript-jsdoc-or-code-actions ()
+    "Inserts JSDoc at point if line matches `/**'.
+Otherwise executes `eglot-code-actions' at given
+point."
+    (interactive)
+    (let ((p (point)))
+      (beginning-of-line)
+      (if (looking-at-p "^[[:blank:]]*/\\*\\*$")
+	  (progn
+	    (kill-line)
+	    (next-line)
+	    (jsdoc)
+	    (goto-char (search-backward-regexp "^/\\*\\*$"))
+	    (next-line)
+	    (end-of-line))
+	(progn
+	  (goto-char p)
+	  (funcall 'eglot-code-actions p nil nil t)))))
+
+  :custom
+  (jsdoc-append-dash nil))
 
 ;; dape
 (with-eval-after-load

@@ -85,7 +85,7 @@
 			      (setq consult-imenu--cache nil)
 			      
 			      (define-key eglot-mode-map (kbd "C-c c") '("Code" . eglot-mode-command-map))
-			      (define-key eglot-mode-map (kbd "M-RET") 'eglot-code-actions)
+			      (define-key eglot-mode-map (kbd "M-RET") 'db-javascript-jsdoc-or-code-actions)
 
 			      ;; Show flymake diagnostics first.
 			      (setq eldoc-documentation-functions
