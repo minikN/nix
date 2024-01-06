@@ -25,22 +25,22 @@
 ### CODE:
 
 { config, lib, pkgs ? import <nixpkgs> {
-    inherit system;
+  inherit system;
 }, system ? builtins.currentSystem, inputs, ... }:
 
 { 
   config = let
     customNodePackages = import ../../../../../packages/node/default.nix {
-    inherit pkgs system;
-  };
+      inherit pkgs system;
+    };
   in {
-     nixpkgs.overlays = [
+    nixpkgs.overlays = [
       (self: super: {
         vscode-js-debug = super.callPackage ../../../../../packages/node/vscode-js-debug.nix { };
       })
-     ];
+    ];
 
-     home-manager.users.${config.user} = {
+    home-manager.users.${config.user} = {
       home.packages = [ pkgs.nodejs ];
 
       programs.emacs = {
@@ -59,6 +59,11 @@
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
 (add-to-list 'major-mode-remap-alist `(javascript-mode . js-ts-mode))
+
+;; Creating a derived-mode for jsx files, so that we can assign the
+;; correct language-id to it in `eglot-server-programs'
+(define-derived-mode jsx-ts-mode js-ts-mode "JavaScript[JSX]")
+(add-to-list 'auto-mode-alist '("\\.jsx\\'" . jsx-ts-mode))
 
 ;; jsdoc
 (use-package jsdoc
@@ -150,9 +155,10 @@ point."
     'eglot
   (add-to-list
    'eglot-server-programs
-   '((js-ts-mode
-      typescript-ts-mode
-      tsx-ts-mode) . ("${pkgs.nodePackages.typescript-language-server}/bin/typescript-language-server" "--stdio"
+   '(((jsx-ts-mode :language-id "javascriptreact") ;; needs to come before js-ts-mode
+      (js-ts-mode :language-id "javascript")
+      (tsx-ts-mode :language-id "typescriptreact") ;; needs to come before typescrip-ts-mode
+      (typescript-ts-mode :language-id "typescript")) . ("${pkgs.nodePackages.typescript-language-server}/bin/typescript-language-server" "--stdio"
       :initializationOptions
       (:tsserver (:path "${pkgs.nodePackages.typescript}/lib/node_modules/typescript/lib"))))))
 
