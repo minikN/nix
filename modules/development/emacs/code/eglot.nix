@@ -29,6 +29,7 @@
 { 
   config = {
     home-manager.users.${config.user} = {
+      home.packages = [ pkgs.ripgrep ];
       programs.emacs = let
         ## TODO: Remove after 1.16 has been merged in nixpkgs
         eglot = pkgs.emacsPackages.trivialBuild {
@@ -55,17 +56,22 @@
   ;; Keymap
   (defvar eglot-mode-command-map
     (let ((map (make-sparse-keymap)))
-      (define-key map (kbd "c") '("Actions" . eglot-code-actions))
+      (define-key map (kbd "<") '("Grep symbol in workspace" . consult-ripgrep))
+      (define-key map (kbd ",") '("Find symbol in workspace" . consult-eglot-symbols))
+      (define-key map (kbd ">") '("Find line in file" . consult-line))
+      (define-key map (kbd ".") '("Find symbol in file" . consult-imenu))
+
       (define-key map (kbd "d") '("Find definition" . xref-find-definitions))
       (define-key map (kbd "D") '("Find declaration" . eglot-find-declaration))
       (define-key map (kbd "I") '("Find implementation" . eglot-find-implementation))
       (define-key map (kbd "R") '("Find references" . xref-find-references))
       (define-key map (kbd "S") '("Apropos symbol" . xref-find-apropos))
-      (when (featurep 'consult)
-	(define-key map (kbd "s") '("Search symbol" . consult-eglot-symbols)))
       (define-key map (kbd "t") '("Find type definition" . eglot-find-typeDefinition))
+
       (define-key map (kbd "f") '("Format region" . eglot-format))
       (define-key map (kbd "F") '("Format buffer" . eglot-format-buffer))
+
+      (define-key map (kbd "c") '("Actions" . eglot-code-actions))
       (define-key map (kbd "o") '("Organize imports" . eglot-code-action-organize-imports))
       (define-key map (kbd "r") '("Rename" . eglot-rename))
       (define-key map (kbd "h") '("Show documentation" . eldoc-doc-buffer))
