@@ -40,7 +40,7 @@
   :group 'db)
 
 (defcustom db-window-right-regex
-  "\\*\\(?:help\\|grep\\|info\\|Completions\\|Buffer list\\)\\*"
+  "\\*\\(?:help\\|grep\\|info\\|Completions\\|Buffer list\\|eglot doc\\|corfu doc:.*\\)\\*"
   "Regex string matching buffers being shown in right side window"
   :type 'string
   :group 'db-windows)

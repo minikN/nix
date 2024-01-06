@@ -35,6 +35,7 @@
 
     ./vertico.nix
     ./completion.nix
+    ./corfu.nix
 
     ./code/lang/nix.nix
 

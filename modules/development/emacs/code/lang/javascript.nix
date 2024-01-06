@@ -51,7 +51,6 @@
 
           epkgs.consult-eglot ## Move
           epkgs.markdown-mode
-          epkgs.corfu ## Move
         ];
         extraConfig = ''
 ;; ~!emacs-lisp!~
