@@ -44,7 +44,7 @@ nixpkgs.lib.nixosSystem {
     ## This module will return a `home-manager' object that can be used
     ## in other modules (including this one).
     home-manager.nixosModules.home-manager {
-      nixpkgs.overlays = [ nur.overlay ] ++ overlays;
+      nixpkgs.overlays = overlays;
     }
 
     ## This module will return a `nur' object that can be used to access
