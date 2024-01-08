@@ -40,7 +40,7 @@
       "files.autoSave" = "onFocusChange";
 
       ## No tabs
-      "workbench.editor.showTabs" = false;
+      "workbench.editor.showTabs" = "none";
 
       ## Indentation
       "editor.tabSize" =  2;
