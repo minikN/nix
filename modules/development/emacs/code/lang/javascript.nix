@@ -24,34 +24,34 @@
 ###
 ### CODE:
 
-{ config, lib, pkgs, inputs, ... }:
+{ config, lib, pkgs ? import <nixpkgs> {
+  inherit system;
+}, system ? builtins.currentSystem, inputs, ... }:
 
 { 
-  config = {
-     nixpkgs.overlays = [
+  config = let
+    customNodePackages = import ../../../../../packages/node/default.nix {
+      inherit pkgs system;
+    };
+  in {
+    nixpkgs.overlays = [
       (self: super: {
         vscode-js-debug = super.callPackage ../../../../../packages/node/vscode-js-debug.nix { };
       })
-     ];
+    ];
 
     home-manager.users.${config.user} = {
-      home.packages = [
-        pkgs.nodejs
-        pkgs.nodePackages.vscode-langservers-extracted
-        pkgs.nodePackages.typescript-language-server
-        pkgs.nodePackages.typescript
-        pkgs.vscode-js-debug
-      ];
+      home.packages = [ pkgs.nodejs ];
 
       programs.emacs = {
         extraPackages = epkgs: [
           ## node / npm
           epkgs.npm-mode
           epkgs.nodejs-repl
+          epkgs.jsdoc
 
           epkgs.consult-eglot ## Move
           epkgs.markdown-mode
-          epkgs.corfu ## Move
         ];
         extraConfig = ''
 ;; ~!emacs-lisp!~
@@ -59,6 +59,36 @@
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
 (add-to-list 'major-mode-remap-alist `(javascript-mode . js-ts-mode))
+
+;; Creating a derived-mode for jsx files, so that we can assign the
+;; correct language-id to it in `eglot-server-programs'
+(define-derived-mode jsx-ts-mode js-ts-mode "JavaScript[JSX]")
+(add-to-list 'auto-mode-alist '("\\.jsx\\'" . jsx-ts-mode))
+
+;; jsdoc
+(use-package jsdoc
+  :config
+  (defun db-javascript-jsdoc-or-code-actions ()
+    "Inserts JSDoc at point if line matches `/**'.
+Otherwise executes `eglot-code-actions' at given
+point."
+    (interactive)
+    (let ((p (point)))
+      (beginning-of-line)
+      (if (looking-at-p "^[[:blank:]]*/\\*\\*$")
+	  (progn
+	    (kill-line)
+	    (next-line)
+	    (jsdoc)
+	    (goto-char (search-backward-regexp "^/\\*\\*$"))
+	    (next-line)
+	    (end-of-line))
+	(progn
+	  (goto-char p)
+	  (funcall 'eglot-code-actions p nil nil t)))))
+
+  :custom
+  (jsdoc-append-dash nil))
 
 ;; dape
 (with-eval-after-load
@@ -120,21 +150,17 @@
     'nodejs-repl
   (setq nodejs-repl-command "${pkgs.nodejs}/bin/node"))
 
-;; (eval-when-compile
-;;   (require 'eglot)
-;;   (eglot--code-action eglot-code-action-organize-imports-ts "source.organizeImports.ts")
-;;   (eglot--code-action eglot-code-action-add-missing-imports-ts "source.addMissingImports.ts")
-;;   (eglot--code-action eglot-code-action-removed-unused-ts "source.removedUnused.ts"))
-
 ;; Configure eglot
 (with-eval-after-load
     'eglot
-
   (add-to-list
    'eglot-server-programs
-   '((javascript-mode
-      typescript-ts-mode
-      tsx-ts-mode) . ("${pkgs.nodePackages.typescript-language-server}/bin/typescript-language-server" "--tsserver-path" "${pkgs.nodePackages.typescript}/lib/" "--stdio"))))
+   '(((jsx-ts-mode :language-id "javascriptreact") ;; needs to come before js-ts-mode
+      (js-ts-mode :language-id "javascript")
+      (tsx-ts-mode :language-id "typescriptreact") ;; needs to come before typescrip-ts-mode
+      (typescript-ts-mode :language-id "typescript")) . ("${pkgs.nodePackages.typescript-language-server}/bin/typescript-language-server" "--stdio"
+      :initializationOptions
+      (:tsserver (:path "${pkgs.nodePackages.typescript}/lib/node_modules/typescript/lib"))))))
 
 (dolist
     (hook

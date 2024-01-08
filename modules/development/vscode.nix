@@ -52,6 +52,7 @@
       "editor.fontLigatures" = true;
 
       "typescript.tsserver.log" = "verbose";
+      "typescript.tsdk" = "${pkgs.nodePackages.typescript}/lib/node_modules/typescript/lib";
     };
   };
 }
