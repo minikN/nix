@@ -36,8 +36,8 @@
           src = pkgs.fetchFromGitHub {
             owner = "svaante";
             repo = "dape";
-            rev = "18dc46cced6564ac3b1072a1409932a866df5b16";
-            sha256 = "sha256-9+VHfzl5XHN78S2CZdzBY2LVClTLg/Vxco/6Mny/9Ck=";
+            rev = "4393b10a53b10c1e73ec13652f69e72a260b2bbe";
+            sha256 = "sha256-rd/yklTWi5N9jrELPeuv4s7WUchllJVc+wJwWuFdhYc=";
           }; 
         };
       in {
