@@ -164,6 +164,8 @@ nixpkgs.lib.nixosSystem {
         extraGroups = [ "wheel" "video" "input" ]; 
         isNormalUser = true;
       };
+
+      home-manager.users.${config.user}.home.packages = [ pkgs.evolution pkgs.libreoffice ];
     })
     
     ## Host agnostic modules
