@@ -51,8 +51,14 @@
       "editor.fontSize" = config.os.fonts.size + 2;
       "editor.fontLigatures" = true;
 
-      "typescript.tsserver.log" = "verbose";
+      #"typescript.tsserver.log" = "verbose";
       "typescript.tsdk" = "${pkgs.nodePackages.typescript}/lib/node_modules/typescript/lib";
+
+      # Vim
+      "vim.handleKeys" = {
+        "<C-e>" = false;
+        "<C-p>" = false;
+      };
     };
   };
 }
