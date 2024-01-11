@@ -60,6 +60,15 @@
         "<C-p>" = false;
       };
     };
+
+    keybindings = [
+      { key = "ctrl+shift+alt+p"; command = "eslint.executeAutofix"; }
+      {
+        key = "ctrl+alt+o";
+        command = "editor.action.organizeImports";
+        when = "textInputFocus && !editorReadonly && supportedCodeAction =~ /(\\s|^)source\\.organizeImports\\b/";
+      }
+    ];
   };
 }
 
