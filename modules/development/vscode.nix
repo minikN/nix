@@ -40,7 +40,7 @@
       "files.autoSave" = "onFocusChange";
 
       ## No tabs
-      "workbench.editor.showTabs" = false;
+      "workbench.editor.showTabs" = "none";
 
       ## Indentation
       "editor.tabSize" =  2;
@@ -52,9 +52,24 @@
       "editor.fontLigatures" = true;
 
       # typscript
-      "typescript.tsserver.log" = "verbose";
+      #"typescript.tsserver.log" = "verbose";
       "typescript.tsdk" = "${pkgs.nodePackages.typescript}/lib/node_modules/typescript/lib";
+
+      # Vim
+      "vim.handleKeys" = {
+        "<C-e>" = false;
+        "<C-p>" = false;
+      };
     };
+
+    keybindings = [
+      { key = "ctrl+shift+alt+p"; command = "eslint.executeAutofix"; }
+      {
+        key = "ctrl+alt+o";
+        command = "editor.action.organizeImports";
+        when = "textInputFocus && !editorReadonly && supportedCodeAction =~ /(\\s|^)source\\.organizeImports\\b/";
+      }
+    ];
   };
 }
 

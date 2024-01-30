@@ -27,42 +27,54 @@
 { config, lib, pkgs, inputs, ... }:
 
 {
-  config = {
+  config = let
+    utils = import ./../../../utils.nix { inherit lib pkgs config; };
+  in {
     home-manager.users.${config.user} = {
-      programs.emacs = {
-        extraPackages = epkgs: [ epkgs.which-key ];
-        extraConfig = ''
-          (require 'which-key)
+      programs.emacs = utils.emacsPkg {
+          name = "db-which-key";
+          description = "which-key configuration";
+          require = true;
+          code = ''
+;; ~!emacs-lisp!~
+(defgroup db-which-key nil
+  "Configuration related to `which-key'."
+  :group 'db)
 
-          (defgroup db-which-key nil
-            "Configuration related to `which-key'."
-            :group 'db)
+(defcustom db-which-key-min-lines 5
+  "The minimum amount of lines which-key should display."
+  :type 'number
+  :group 'db-which-key)
 
-          (defcustom db-which-key-min-lines 5
-            "The minimum amount of lines which-key should display."
-            :type 'number
-            :group 'db-which-key)
-          
-          (defcustom db-which-key-ellipsis "..."
-            "The kind of ellipsis to use."
-            :type 'string
-            :group 'db-which-key)
-          
-          (defcustom db-which-key-idle-delay 0.5
-            "The delay before showing the popup."
-            :type 'number
-            :group 'db-which-key)
+(defcustom db-which-key-ellipsis "..."
+  "The kind of ellipsis to use."
+  :type 'string
+  :group 'db-which-key)
 
-          (setq which-key-min-display-lines db-which-key-min-lines)
-          ;; … takes the space of two characters, which missaligns some popups
-          (setq which-key-ellipsis db-which-key-ellipsis)
-          (setq which-key-idle-delay db-which-key-idle-delay)
+(defcustom db-which-key-idle-delay 0.5
+  "The delay before showing the popup."
+  :type 'number
+  :group 'db-which-key)
+'';
+          config = ''
+;; ~!emacs-lisp!~
+(use-package which-key
+  :init
+  (setq which-key-min-display-lines db-which-key-min-lines)
+  ;; … takes the space of two characters, which missaligns some popups
+  (setq which-key-ellipsis db-which-key-ellipsis)
+  (setq which-key-idle-delay db-which-key-idle-delay)
+  (which-key-mode 1))
 
-          (which-key-mode 1)
-          
-          (define-key global-map (kbd "C-h C-k") 'which-key-show-top-level)
-        '';
-      };
+(use-package which-key-posframe
+  :init
+  (setq which-key-posframe-parameters `((width . ,(frame-width))))
+  :config
+  (setq which-key-posframe-poshandler 'posframe-poshandler-frame-bottom-center)
+  (which-key-posframe-mode))
+'';
+          packages = [ pkgs.emacsPackages.which-key pkgs.emacsPackages.which-key-posframe ];
+        };
     };
   };
 }

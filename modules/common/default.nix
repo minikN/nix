@@ -237,6 +237,7 @@
               mpv
               realvnc-vnc-viewer
               gnome.gnome-system-monitor
+              gnome.file-roller
             ];
         }
         (lib.mkIf config.os.wayland {

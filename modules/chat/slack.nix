@@ -30,18 +30,19 @@
     ## Choosing the correct package in regards to the window system
     slack = if (config.os.wayland)
 
-    ## Wrapping the slack package to enable wayland-specific features
-    then pkgs.slack.overrideAttrs (old: {
-    installPhase = old.installPhase + ''
-      rm $out/bin/slack
+      ## Wrapping the slack package to enable wayland-specific features
+            then pkgs.slack.overrideAttrs (old: {
+              fixupPhase = ''
+    sed -i -e 's/,"WebRTCPipeWireCapturer"/,"LebRTCPipeWireCapturer"/' $out/lib/slack/resources/app.asar
 
-      makeWrapper $out/lib/slack/slack $out/bin/slack \
-        --prefix XDG_DATA_DIRS : $GSETTINGS_SCHEMAS_PATH \
-        --prefix PATH : ${lib.makeBinPath [pkgs.xdg-utils]} \
-        --add-flags "--ozone-platform=wayland --enable-features=UseOzonePlatform,WebRTCPipeWireCapturer"
-    '';
-  })
-    else pkgs.slack;
+    rm $out/bin/slack
+    makeWrapper $out/lib/slack/slack $out/bin/slack \
+      --prefix XDG_DATA_DIRS : $GSETTINGS_SCHEMAS_PATH \
+      --suffix PATH : ${lib.makeBinPath [ pkgs.xdg-utils ]} \
+      --add-flags "--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations,WebRTCPipeWireCapturer"
+  '';
+            })
+            else pkgs.slack;
   in {
     home-manager.users.${config.user}.home.packages = [ slack ];
   };
