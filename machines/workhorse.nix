@@ -137,8 +137,8 @@ nixpkgs.lib.nixosSystem {
             height = 1080;
           };
           right = {
-            name = "HDMI-A-2";
-            id = "HDMI-A-2";
+            name = "DP-1";
+            id = "DP-1";
             width = 1920;
             height = 1080;
           };
