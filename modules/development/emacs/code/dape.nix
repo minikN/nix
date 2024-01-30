@@ -29,19 +29,8 @@
 { 
   config = {
     home-manager.users.${config.user} = {
-      programs.emacs = let
-        dape = pkgs.emacsPackages.trivialBuild {
-          pname = "dape";
-	        version = "0.1";
-          src = pkgs.fetchFromGitHub {
-            owner = "svaante";
-            repo = "dape";
-            rev = "18dc46cced6564ac3b1072a1409932a866df5b16";
-            sha256 = "sha256-9+VHfzl5XHN78S2CZdzBY2LVClTLg/Vxco/6Mny/9Ck=";
-          }; 
-        };
-      in {
-        extraPackages = epkgs: [ dape ];
+      programs.emacs = {
+        extraPackages = epkgs: [ epkgs.dape ];
         extraConfig = ''
 ;; ~!emacs-lisp!~
 (use-package dape
