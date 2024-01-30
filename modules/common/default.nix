@@ -233,6 +233,7 @@
               libnotify
               unzip
               mediaelch
+              kid3 # mp3 tag editor
               mpv
               realvnc-vnc-viewer
               gnome.gnome-system-monitor
