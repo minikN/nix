@@ -51,6 +51,7 @@
       "editor.fontSize" = config.os.fonts.size + 2;
       "editor.fontLigatures" = true;
 
+      # typscript
       "typescript.tsserver.log" = "verbose";
       "typescript.tsdk" = "${pkgs.nodePackages.typescript}/lib/node_modules/typescript/lib";
     };
