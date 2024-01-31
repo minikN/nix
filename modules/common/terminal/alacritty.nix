@@ -177,7 +177,6 @@
 	   { key = "Paste";                   		action = "Paste";                           	}
 	   { key = "Copy";                    		action = "Copy";                            	}
 	   { key = "L";        mods = "Control"; 	action = "ClearLogNotice";                  	}
-	   { key = "L";        mods = "Control"; 	chars = "\\x0c";                           	}
 	   { key = "Home";     mods = "Alt";     	chars = "\\x1b[1;3H";                      	}
 	   { key = "Home";                    		chars = "\\x1bOH";        mode = "AppCursor"; 	}
 	   { key = "Home";                    		chars = "\\x1b[H";        mode = "~AppCursor";	}
