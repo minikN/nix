@@ -65,7 +65,8 @@ chmod -R 775 $data
       patchelf --set-rpath "${lib.makeLibraryPath buildInputs}" "$file"
     done
 
-#wrapProgram $out/bin/amp-locker \
-#  --set LD_LIBRARY_PATH "${lib.makeLibraryPath buildInputs}"
+wrapProgram $out/bin/amp-locker \
+  --set LD_PRELOAD "${pkgs.libredirect}/lib/libredirect.so" \
+  --set NIX_REDIRECTS "/opt=$out/opt"
   '';
 }
