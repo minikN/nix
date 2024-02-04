@@ -61,7 +61,7 @@ nixpkgs.lib.nixosSystem {
       networking.hostName = "geekcave";
      
       ## kernel
-      boot.initrd.kernelModules = [ "amdgpu" ];
+      #boot.initrd.kernelModules = [ "amdgpu" ];
       boot.initrd.availableKernelModules = [
         "xhci_pci" "ahci" "usbhid"
         "usb_storage" "sd_mod"
@@ -83,8 +83,28 @@ nixpkgs.lib.nixosSystem {
       };
 
       ## Display settings
-      os.output.left = ["DP-1"];
-      os.output.right = ["DP-2"];
+      os.output.primary.name = "DP-1";
+      os.output.primary.width = 2560;
+      os.output.primary.height = 1440;
+      os.output.primary.hidpi = false;
+      
+      os.output.configs = [
+        {
+          name = "home";
+          left = {
+            name = "DP-3";
+            id = "Philips Consumer Electronics Company PHL 245E1 0x0000630A";
+            width = 2560;
+            height = 1440;
+          };
+          right = {
+            name = "DP-2";
+            id = "Philips Consumer Electronics Company PHL 245E1 0x0000631B";
+            width = 2560;
+            height = 1440;
+          };
+        }
+      ];
       
       ## Setting keymap to `de' for this machine.
       os.keyboard.layout = "us";
@@ -121,6 +141,7 @@ nixpkgs.lib.nixosSystem {
     ../features/development.nix
     ../features/gaming.nix
     ../features/3d-printing.nix
+    ../features/music.nix
 
     ## Chat
     ../modules/chat/discord.nix
