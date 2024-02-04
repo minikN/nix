@@ -41,6 +41,13 @@
         default = false;
       };
 
+      music = lib.mkOption {
+        type = lib.types.bool;
+        description = "Whether the music feature is enabled";
+        default = false;
+      };
+
+      
       "3d-printing" = lib.mkOption {
         type = lib.types.bool;
         description = "Whether the 3d-printing feature is enabled";
