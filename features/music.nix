@@ -52,6 +52,9 @@
       packages = with pkgs; [
         amp-locker
         amp-locker-desktop
+        carla
+        qjackctl
+        jack2
       ];
 
       file.".vst/Amp Locker vst2.so".source = "${pkgs.amp-locker}/lib/vst/Amp Locker vst2.so";
