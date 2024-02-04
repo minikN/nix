@@ -163,6 +163,7 @@ nixpkgs.lib.nixosSystem {
     ## Features
     ## Sets of modules for a specific purpose
     ../features/development.nix
+    ../features/music.nix
 
     ## Chat
     ../modules/chat/discord.nix
