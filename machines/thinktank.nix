@@ -134,7 +134,6 @@ nixpkgs.lib.nixosSystem {
 
       ## Mail accounts in use on this machine
       mail.primary.enable = true;
-      mail.work.enable = true;
 
       console = {
         font = "Lat2-Terminus16";
