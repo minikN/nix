@@ -59,7 +59,7 @@
 
   ## General mail settings
   config = lib.mkIf config.mail.primary.enable {
-     home-manager.users.${config.user} = {
+    home-manager.users.${config.user} = {
       
       accounts.email.accounts.primary = {
 
@@ -73,7 +73,7 @@
         imap.host = "imap.mailbox.org";
         
         passwordCommand = toString (pkgs.writeShellScript "getPassword" ''
-          ${pkgs.pass}/bin/pass show Mail/mailbox.org/db@minikn.xyz | head -n 1
+           ${pkgs.pass}/bin/pass show Mail/mailbox.org/db@minikn.xyz | head -n 1
         '');
 
         # imapnotify settings
@@ -82,6 +82,11 @@
           boxes = [ "Inbox" ];
           #onNotify = "${pkgs.isync}/bin/mbsync primary";
           onNotify = "${pkgs.libnotify}/bin/notify-send -t 5000 'You received new private mail.'";
+           extraConfig = {
+             passwordCmd = toString (pkgs.writeShellScript "getPassword" ''
+           ${pkgs.pass}/bin/pass show Mail/mailbox.org/db@minikn.xyz | head -n 1
+         '');
+           };
         };
 
         ## Enable features
@@ -155,7 +160,7 @@
       };
 
       programs.emacs = {
-          extraConfig = ''
+        extraConfig = ''
             (if (not (boundp 'notmuch-fcc-dirs))
               (setq notmuch-fcc-dirs '()))
             (if (not (boundp 'notmuch-identities))
