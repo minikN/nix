@@ -1,19 +1,14 @@
 { stdenv, pkgs, lib, ... }:
 
-# Copy zip file to this folder
-# run `nix-store --add Amp+Locker+Linux.zip' manually
-
 stdenv.mkDerivation rec {
   pname = "amp-locker";
   version = "1.0.7";
 
-  src = ./Amp+Locker+Linux.zip;
-
-  #src = pkgs.requireFile {
-  #  message = "run nix-store --add Amp+Locker+Linux.zip";
-  #  name = "Amp+Locker+Linux.zip";
-  #  sha256 = "fcbed9c1a82260e8efa009b4fbe1c5104fa950b50cd2b5e26b4c67ecaf1d494e";
-  #};
+  src = pkgs.requireFile {
+    message = "run nix-store --add-fixed sha256 ./AmpLockerLinux.zip";
+    name = "AmpLockerLinux.zip";
+    sha256 = "fcbed9c1a82260e8efa009b4fbe1c5104fa950b50cd2b5e26b4c67ecaf1d494e";
+  };
 
   nativeBuildInputs = [ pkgs.makeWrapper pkgs.unzip ];
   buildInputs = [
