@@ -31,34 +31,80 @@
     ../features
   ];
 
-  config = {
+  config = let
+    amp-locker-icon =  builtins.fetchurl {
+      url = "https://audioassault.mx/cdn/shop/files/favicon_32x32.jpg";
+      sha256 = "04g37k9blsg7zj553ma1ssijpgih0ldpwnbfxjqw2d7kiksdjii4";
+    };
+  in {
 
     features.music = true;
+
 
     nixpkgs.overlays = [
       (self: super: {
         amp-locker = super.callPackage ../packages/audio/amp-locker.nix { };
         amp-locker-desktop = super.writeTextDir "share/applications/amp-locker.desktop" ''
           [Desktop Entry]
-          Version=0.1.0
+          Version=${pkgs.amp-locker.version}
           Type=Application
           Name=Amp Locker
+          Icon=${toString amp-locker-icon}
           Exec=${pkgs.amp-locker}/bin/amp-locker
+        '';
+        audioassault-blacksun = super.callPackage ../packages/audio/audioassault-blacksun.nix { };
+        audioassault-blacksun-desktop = super.writeTextDir "share/applications/audioassault-blacksun.desktop" ''
+          [Desktop Entry]
+          Version=${pkgs.audioassault-blacksun.version}
+          Type=Application
+          Name=Audio Assault Blacksun
+          Icon=${toString amp-locker-icon}
+          Exec=${pkgs.audioassault-blacksun}/bin/audioassault-blacksun
         '';
       })
     ];
 
+    # enabling musnix
+    musnix = {
+     enable = true;
+
+      # Setting kernel related parameters
+      kernel = {
+        realtime = true;
+        packages = pkgs.linuxPackages_latest_rt;
+      };
+    };
+
+    # Enabling the jack service
+    services.jack = {
+      jackd.enable = true;
+      alsa.enable = true;
+    };
+
+    users.users.${config.user}.extraGroups = [ "jackaudio" "pro-audio" "vst-plugins" ];
+
     home-manager.users.${config.user}.home = {
       packages = with pkgs; [
+        ardour
+        carla
+
+        # guitar plugins
         amp-locker
         amp-locker-desktop
-        carla
+        audioassault-blacksun
+        audioassault-blacksun-desktop
+
+        # jack-related
         qjackctl
-        jack2
+        jack2Full
+        jack_capture
       ];
 
+      # Copying guitar plugins to their respective plugin dir, so other apps can pick them up
+      # ~/.vst, ~/.vst3
       file.".vst/Amp Locker vst2.so".source = "${pkgs.amp-locker}/lib/vst/Amp Locker vst2.so";
       file.".vst3/Amp Locker.vst3".source = "${pkgs.amp-locker}/lib/vst3/Amp Locker.vst3";
+      file.".vst/Blacksunvst2.so".source = "${pkgs.audioassault-blacksun}/lib/vst/Blacksunvst2.so";
     };
   };
 }
