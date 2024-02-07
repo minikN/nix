@@ -87,12 +87,12 @@ nixpkgs.lib.nixosSystem {
       os.output.primary.width = 2560;
       os.output.primary.height = 1440;
       os.output.primary.hidpi = false;
-      
+ 
       os.output.configs = [
         {
           name = "home";
           left = {
-            name = "DP-3";
+            name = "DP-1";
             id = "Philips Consumer Electronics Company PHL 245E1 0x0000630A";
             width = 2560;
             height = 1440;
