@@ -51,6 +51,9 @@ nixpkgs.lib.nixosSystem {
     ## NUR packages.
     nur.nixosModules.nur
 
+    ## Needed for rt-kernel and music related stuff.
+    inputs.musnix.nixosModules.musnix
+
     ## System specific
     ##
     ## Closure that returns the module containing configuration specific
@@ -68,7 +71,7 @@ nixpkgs.lib.nixosSystem {
       ];
       
       boot.kernelModules = [ "kvm-intel" ];
-      boot.kernelPackages = pkgs.linuxPackagesFor pkgs.linux_latest;
+      boot.kernelPackages = (lib.mkDefault pkgs.linux_latest);
       
       hardware.enableRedistributableFirmware = true;
       hardware.cpu.intel.updateMicrocode = true;
