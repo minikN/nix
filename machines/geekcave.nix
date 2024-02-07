@@ -61,7 +61,7 @@ nixpkgs.lib.nixosSystem {
       networking.hostName = "geekcave";
      
       ## kernel
-      #boot.initrd.kernelModules = [ "amdgpu" ];
+      boot.initrd.kernelModules = [ "amdgpu" ];
       boot.initrd.availableKernelModules = [
         "xhci_pci" "ahci" "usbhid"
         "usb_storage" "sd_mod"
