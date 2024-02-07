@@ -31,6 +31,7 @@
     home-manager.url = "github:nix-community/home-manager/master";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    musnix  = { url = "github:musnix/musnix"; };
     nur.url = "github:nix-community/NUR";
     tuxedo-nixos = {
       url = "github:blitz/tuxedo-nixos";
