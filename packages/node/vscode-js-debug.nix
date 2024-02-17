@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 let
-  version = "1.84.0";
+  version = "1.86.1";
 in
 pkgs.stdenv.mkDerivation rec {
   pname = "vscode-js-debug";
@@ -9,7 +9,7 @@ pkgs.stdenv.mkDerivation rec {
 
   src = pkgs.fetchzip {
     url = "https://github.com/microsoft/vscode-js-debug/releases/download/v${version}/js-debug-dap-v${version}.tar.gz";
-    sha256 = "sha256-NDtilES5YNa5x4RurJw3vmM2wch+hssgLP4jP+VuPe8=";
+    sha256 = "sha256-POPj3jPxSuAz91lgH474R1Sfo9U1qX5H1RHdT3+DXsA=";
   };
 
   buildInputs = [ pkgs.nodejs ];
@@ -30,3 +30,4 @@ pkgs.stdenv.mkDerivation rec {
       chmod a+x $exe
     '';
 }
+
