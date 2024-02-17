@@ -111,7 +111,12 @@
 (setq backup-directory-alist
       `(,(cons "." "${config.home-manager.users.${config.user}.xdg.cacheHome}/emacs/backup")))
 
-          ;;; recentf
+;; Autosave
+;; Save autosave files to temp dir
+(setq auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
+
+;;; recentf
 (recentf-mode 1)
 (run-with-idle-timer 30 t 'recentf-save-list)
 (setq recentf-save-file "${config.home-manager.users.${config.user}.xdg.cacheHome}/emacs/recentf")
