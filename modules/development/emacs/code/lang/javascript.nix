@@ -172,6 +172,7 @@ point."
        tsx-ts-mode-hook))
   (add-hook hook
 	    (lambda ()
+              (setq indent-tabs-mode nil)
 	      (eglot-ensure)
 	      (npm-mode)
 	      (db--javascript-setup-nodejs-repl)
