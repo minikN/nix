@@ -50,7 +50,12 @@
           epkgs.nodejs-repl
           epkgs.jsdoc
 
+          epkgs.flymake-eslint
+          epkgs.eslint-fix
+
           epkgs.consult-eglot ## Move
+
+          ## Needed for eldoc to show MD previews
           epkgs.markdown-mode
         ];
         extraConfig = ''
@@ -153,6 +158,16 @@ point."
     'nodejs-repl
   (setq nodejs-repl-command "${pkgs.nodejs}/bin/node"))
 
+;; flymake-eslint
+;; TODO: Supress no-unused-vars error from either eslint or tsserver
+(with-eval-after-load
+    'flymake-eslint
+  (setq flymake-eslint-executable-name "${pkgs.nodePackages_latest.eslint}/bin/eslint"))
+
+(with-eval-after-load
+    'eslint-fix
+  (setq eslint-fix-executable "${pkgs.nodePackages_latest.eslint}/bin/eslint"))
+
 ;; Configure eglot
 (with-eval-after-load
     'eglot
@@ -163,7 +178,9 @@ point."
       (tsx-ts-mode :language-id "typescriptreact") ;; needs to come before typescrip-ts-mode
       (typescript-ts-mode :language-id "typescript")) . ("${pkgs.nodePackages.typescript-language-server}/bin/typescript-language-server" "--stdio"
       :initializationOptions
-      (:tsserver (:path "${pkgs.nodePackages.typescript}/lib/node_modules/typescript/lib"))))))
+      (:tsserver (:path "${pkgs.nodePackages.typescript}/lib/node_modules/typescript/lib")))))
+
+  (add-hook 'eglot-managed-mode-hook (lambda () (flymake-mode t))))
 
 (dolist
     (hook
@@ -172,7 +189,16 @@ point."
        tsx-ts-mode-hook))
   (add-hook hook
 	    (lambda ()
-              (setq indent-tabs-mode nil)
+	      ;; Don't use tabs
+	      (setq indent-tabs-mode nil)
+
+	      ;; Set up flymake correctly
+	      (setq-local eglot-stay-out-of '(flymake))
+
+	      (add-hook 'flymake-diagnostic-functions 'eglot-flymake-backend nil t)
+	      (flymake-eslint-enable)
+	      (local-set-key (kbd "C-M-S-p") #'eslint-fix)
+
 	      (eglot-ensure)
 	      (npm-mode)
 	      (db--javascript-setup-nodejs-repl)
