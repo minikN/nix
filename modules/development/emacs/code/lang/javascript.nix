@@ -103,14 +103,17 @@ point."
 		 command-cwd ,(concat dape-configs-adapter-dir "js-debug")
 		 command-args (,(format "%d" dape-configs-port))
 		 port dape-configs-port
+		 :name "DEBUG"
 		 :userDataDir nil
 		 :type "pwa-chrome"
-		 :trace t
+					;:outputCapture "console"
+		 :trace nil
 		 :url ,(lambda ()
 			 (read-string "Url: "
 				      "http://localhost:3000"))
-		 :webRoot dape-cwd-fn
-		 :outputCapture "console")))
+		 :webRoot ,(lambda ()
+			     (read-string "Root: "
+					  (funcall dape-cwd-fn))))))
 
 (defun db--javascript-setup-electric-pairs-for-jsx-tsx ()
   (electric-pair-local-mode)
