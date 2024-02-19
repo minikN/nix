@@ -28,7 +28,7 @@
 
 {
   config = let
-    utils = import ./../../../utils.nix { inherit lib pkgs config; };
+    utils = import ./../../../../utils.nix { inherit lib pkgs config; };
   in {
     home-manager.users.${config.user} = {
       programs.emacs = utils.emacsPkg {

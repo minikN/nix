@@ -34,16 +34,19 @@
     ./code/eglot.nix
     ./code/dape.nix
 
-    ./vertico.nix
-    ./completion.nix
-    ./corfu.nix
-
+    ./completion/vertico.nix
+    ./completion/consult.nix
+    ./completion/corfu.nix
+    ./completion/marginalia.nix
+    ./completion/which-key.nix
+    ./completion/embark.nix
+    ./completion/orderless.nix
+    
     ./code/lang/nix.nix
 
     ./edit/edit-indirect.nix
 
-    ./windows.nix
-    ./which-key.nix
+    #./windows.nix
     ./term.nix
   ];
   
