@@ -40,18 +40,18 @@
   :group 'db)
 
 (defcustom db-window-right-regex
-  "\\*\\(?:help\\|grep\\|info\\|Completions\\|Buffer list\\|eglot doc\\|corfu doc:.*\\)\\*"
+  "\\*\\(?:help\\|grep\\|info\\|Completions\\|Buffer list\\|eglot doc\\|corfu doc:.*\\|eldoc\\)\\*"
   "Regex string matching buffers being shown in right side window"
   :type 'string
   :group 'db-windows)
 
-(defcustom db-window-bottom-regex
+(defcustom db-window-bottom-left-regex
   "\\*\\(?:shell\\|compilation\\|npm.*\\| docker compose .*\\)\\*"
   "Regex string matching buffers being shown in bottom side window"
   :type 'string
   :group 'db-windows)
 
-(defcustom db-window-bottom-left-regex
+(defcustom db-window-bottom-right-regex
   "\\*dape-\\(debug\\|repl\\|processes\\)\\*"
   "Regex string matching buffers being shown in bottom left side window"
   :type 'string
@@ -79,26 +79,19 @@
 
 (setq display-buffer-alist
       ;; RIGHT
-      `((,db-window-right-regex display-buffer-in-side-window
-				(side . right) (slot . 0) (window-width . 50)
+      `((,db-window-right-regex display-buffer-in-side-window 
+				(side . right) (slot . -10) (window-width . 50)
 				(preserve-size . (t . nil)) ,parameters)
 	;; BOTTOM
-        (,db-window-bottom-regex display-buffer-in-side-window
-				 (side . bottom) (slot . 0) (preserve-size . (nil . t))
-				 ,parameters)
+	(,db-window-bottom-right-regex display-buffer-in-side-window
+				       (side . bottom) (slot . 1) (preserve-size . (t . nil))
+				       (even-window-sizes t)
+				       ,parameters)
 	(,db-window-bottom-left-regex display-buffer-in-side-window
-				      (side . bottom) (slot . -1) (preserve-size . (nil . t))
-				      ,parameters)
-	;; LEFT DEBUG
-	;;; TOP
-	(,db-window-debug-top-regex display-buffer-in-side-window
-				    (side . left) (slot . -1) (preserve-size . (nil . t))
-				    ,parameters)
-		;;; BOTTOM
-
-	(,db-window-debug-bottom-regex display-buffer-in-side-window
-				       (side . left) (slot . -2) (preserve-size . (nil . t))
-				       ,parameters)))
+				      (side . bottom) (slot . -1) (preserve-size . (t . nil))
+				      (even-window-sizes t)
+				      (window-width 0.5)
+				      ,parameters)))
 
 (defun db--get-with-matching-buffer (target regex list)
   "Returns the first TARGET that has (or is) a buffer
