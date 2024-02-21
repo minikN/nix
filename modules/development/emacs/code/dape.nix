@@ -29,48 +29,45 @@
 { 
   config = {
     home-manager.users.${config.user} = {
-      programs.emacs = {
-        extraPackages = epkgs: [ epkgs.dape ];
+      programs.emacs = let
+        jsonrpc = pkgs.emacsPackages.trivialBuild {
+          pname = "jsonrpc";
+	        version = "0.1";
+          src = pkgs.fetchFromGitHub {
+            owner = "svaante";
+            repo = "jsonrpc";
+            rev = "7155e2ad12adb9820300cec339141f09e3e67a7b";
+            sha256 = "sha256-3o8qPOPraiyr4iJWlv2h92NIC/dQKTMRfoPpGwFhyiE=";
+          }; 
+        };
+      in {
+        extraPackages = epkgs: [ epkgs.dape jsonrpc ];
         extraConfig = ''
 ;; ~!emacs-lisp!~
 (use-package dape
   :config
   ;; Enables ability to click on fringe to create breakpoints
-  ;;(dape-info-breakpoints-mode 1)
+  (dape-info-breakpoints-mode)
   
-  ;; Add inline variable hints, this feature is highly experimental
-  ;; (setq dape-inline-variables t)
+  (setq dape-buffer-window-arrangement 'right)
 
-  ;; To remove info buffer on startup
-  ;; (remove-hook 'dape-on-start-hooks 'dape-info)
+  ;; To not display info and/or buffers on startup
+  (remove-hook 'dape-on-start-hooks 'dape-info)
+  (remove-hook 'dape-on-start-hooks 'dape-repl)
 
-  ;; To remove repl buffer on startup
-  ;; (remove-hook 'dape-on-start-hooks 'dape-repl)
+  ;; To display info and/or repl buffers on stopped
+  (add-hook 'dape-on-stopped-hooks 'dape-info)
+  (add-hook 'dape-on-stopped-hooks 'dape-repl)
 
-  ;; By default dape uses gdb keybinding prefix
-  ;; (setq dape-key-prefix "\C-x\C-a")
-
-  ;; Kill compile buffer on build success
-  ;; (add-hook 'dape-compile-compile-hooks 'kill-buffer)
-
-  ;; Customize actions in info buffer
-  (setq dape-info-buttons
-        '(("→" . dape-next)
-          ("↘" . dape-step-in)
-          ("↗" . dape-step-out)
-          ("⯈" . dape-continue)
-          ("⏸" . dape-pause)
-          ("⭯" . dape-restart)
-          ("x" . dape-quit))))
-
-;; TODO: Fix dape font size
-;; (dolist
-;;     (hook
-;;      '(dape-info-mode-hook
-;;        dape-repl-mode-hook))
-;;   (add-hook hook
-;;             (lambda ()
-;;               (face-remap-add-relative 'default :height 0.75))))
+  ;; TODO: Fix dape font size
+  ;; (dolist
+  ;;     (hook
+  ;;      '(dape-info-mode-hook
+  ;;        dape-repl-mode-hook))
+  ;;   (add-hook hook
+  ;;             (lambda ()
+  ;;               (face-remap-add-relative 'default :height 0.75))))
+  )
         '';
       };
     };

@@ -95,9 +95,13 @@ point."
   :custom
   (jsdoc-append-dash nil))
 
-;; dape
 (with-eval-after-load
     'dape
+  ;; Fixes freezing problem
+  ;; TODO: Remove after fixed upstream.
+  (cl-defmethod dape-handle-event
+    (conn (_event (eql loadedSource)) body) nil)
+  
   (setq dape-configs-adapter-dir (file-name-as-directory (concat user-emacs-directory "dape-debuggers")))
   (setq dape-configs-port 8123)
 
@@ -111,7 +115,6 @@ point."
 		 :name "DEBUG"
 		 :userDataDir nil
 		 :type "pwa-chrome"
-					;:outputCapture "console"
 		 :trace nil
 		 :url ,(lambda ()
 			 (read-string "Url: "
