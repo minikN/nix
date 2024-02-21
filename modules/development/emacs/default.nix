@@ -31,8 +31,12 @@
     ./keymaps.nix
     ./magit.nix
     ./denote.nix
+    
     ./code/eglot.nix
     ./code/dape.nix
+    ./code/lang/nix.nix
+
+    ./treemacs.nix
 
     ./completion/vertico.nix
     ./completion/consult.nix
@@ -42,11 +46,11 @@
     ./completion/embark.nix
     ./completion/orderless.nix
     
-    ./code/lang/nix.nix
+
 
     ./edit/edit-indirect.nix
 
-    #./windows.nix
+    ./windows.nix
     ./term.nix
   ];
   
