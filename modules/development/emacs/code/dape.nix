@@ -47,7 +47,7 @@
 (use-package dape
   :config
   ;; Enables ability to click on fringe to create breakpoints
-  (dape-info-breakpoints-mode)
+  (dape-breakpoint-global-mode)
   
   (setq dape-buffer-window-arrangement 'right)
 
