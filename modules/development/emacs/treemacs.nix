@@ -44,10 +44,12 @@ it will close the Treemacs window if one is displayed
 already"
   (interactive)
   (if (project-current)
-      (progn
-	(treemacs-add-and-display-current-project-exclusively)
-	(other-window 1))
-    (if (eq (treemacs-current-visibility) 'visible)
+      (if (db--get-matching-window "\\*Treemacs.*")
+	  (delete-window (treemacs-get-local-window))
+	(progn
+	  (treemacs-add-and-display-current-project-exclusively)
+	  (other-window 1)))
+    (if (db--get-matching-window "\\*Treemacs.*")
 	(delete-window (treemacs-get-local-window)))))
 
 ;;; TODO: Add Git branch / list of staged/unstaged files to header-line
@@ -70,6 +72,7 @@ the currently displayed project's name."
 ;; ~!emacs-lisp!~
 (use-package treemacs
   :bind (("M-1" . db-treemacs-open-project))
+  :after (db-windows)
   :config
   (advice-add
    'treemacs--follow-after-buffer-list-update
