@@ -26,10 +26,15 @@
 { config, lib, pkgs, inputs, ... }:
 
 {
-  config = {
+  config = let
+    utils = import ./../../../utils.nix { inherit lib pkgs config; };
+  in {
     home-manager.users.${config.user} = {
-      programs.emacs = {
-        extraConfig = ''
+      programs.emacs = utils.emacsPkg {
+        name = "db-windows";
+        description = "Window configuration";
+        require = true;
+        code = ''
 ;; ~!emacs-lisp!~
 ;; TODO: Add shrink (font-size function)
 ;; TODO: Add proper toggle-all-windows function
