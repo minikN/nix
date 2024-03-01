@@ -55,11 +55,11 @@ already"
   "Sets the header-line-format of the Treemacs buffer to
 the currently displayed project's name."
   (interactive)
-      (let ((header-line (setq treemacs-user-header-line-format
-			       (format "%s"
-				       (treemacs-workspace->name
-					(car (treemacs-workspace->projects
-					      (treemacs-current-workspace))))))))
+  (let ((header-line (setq treemacs-user-header-line-format
+			   (format "%s"
+				   (treemacs-workspace->name
+				    (car (treemacs-workspace->projects
+					  (treemacs-current-workspace))))))))
     (setf
      (buffer-local-value
       'header-line-format
