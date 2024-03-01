@@ -106,6 +106,10 @@ nixpkgs.lib.nixosSystem {
        ];
       };
 
+      ## VPN settings
+      services.zerotierone.enable = true;
+      services.zerotierone.joinNetworks = [ "35c192ce9b0284e3" ];
+
       ## Display settings
       os.output.primary.name = "eDP-1";
       os.output.primary.width = 2560;
@@ -165,7 +169,10 @@ nixpkgs.lib.nixosSystem {
         isNormalUser = true;
       };
 
-      home-manager.users.${config.user}.home.packages = [ pkgs.evolution pkgs.libreoffice ];
+      home-manager.users.${config.user}.home.packages = [
+        pkgs.evolution
+        pkgs.libreoffice
+      ];
     })
     
     ## Host agnostic modules
