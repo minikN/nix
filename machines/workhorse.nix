@@ -157,7 +157,9 @@ nixpkgs.lib.nixosSystem {
 
       ## Mail accounts in use on this machine
       mail.primary.enable = true;
-      #mail.work.enable = true;
+      
+      mail.work.enable = true;
+      mail.work.clients = ["thunderbird"];
 
       console = {
         font = "Lat2-Terminus16";
@@ -170,7 +172,6 @@ nixpkgs.lib.nixosSystem {
       };
 
       home-manager.users.${config.user}.home.packages = [
-        pkgs.evolution
         pkgs.libreoffice
       ];
     })

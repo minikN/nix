@@ -45,6 +45,22 @@
         '';
       };
 
+      clients = lib.mkOption {
+        type = lib.types.listOf lib.types.str;
+        description = "List of clients to use for this account";
+        default = [];
+      };
+
+      imap-host = lib.mkOption {
+        type = lib.types.str;
+        default = "imap.mailbox.org";
+      };
+      
+      imap-port = lib.mkOption {
+        type = lib.types.int;
+        default = 993;
+      };
+
       smtp-host = lib.mkOption {
         type = lib.types.str;
         default = "smtp.mailbox.org";
@@ -52,16 +68,30 @@
       
       smtp-port = lib.mkOption {
         type = lib.types.int;
-        default = 587;
+        default = 465;
       };
     };
   };
 
   ## General mail settings
   config = lib.mkIf config.mail.primary.enable {
+
+    ## Enabling configurations for email clients if specified
+    mail.clients.thunderbird.enable = lib.mkIf (builtins.elem "thunderbird" config.mail.primary.clients) true;
+    mail.clients.emacs.enable = lib.mkIf (builtins.elem "emacs" config.mail.primary.clients) true;
+    
     home-manager.users.${config.user} = {
+
+      # Enabling thunderbird for this profile if specified
+      programs.thunderbird = lib.mkIf (builtins.elem "thunderbird" config.mail.primary.clients) {
+        profiles.primary = {
+          isDefault = true;
+          withExternalGnupg = true;
+        };
+      };
       
       accounts.email.accounts.primary = {
+        thunderbird.enable = lib.mkIf (builtins.elem "thunderbird" config.mail.primary.clients) true;
 
         maildir.path = "accounts/${config.mail.primary.address}";
 
@@ -70,7 +100,8 @@
         address = config.mail.primary.address;
         userName = config.mail.primary.address;
         realName = config.fullName;
-        imap.host = "imap.mailbox.org";
+        imap.host = config.mail.primary.imap-host;
+        imap.port = config.mail.primary.imap-port;
         
         passwordCommand = toString (pkgs.writeShellScript "getPassword" ''
            ${pkgs.pass}/bin/pass show Mail/mailbox.org/db@minikn.xyz | head -n 1
@@ -82,11 +113,11 @@
           boxes = [ "Inbox" ];
           #onNotify = "${pkgs.isync}/bin/mbsync primary";
           onNotify = "${pkgs.libnotify}/bin/notify-send -t 5000 'You received new private mail.'";
-           extraConfig = {
-             passwordCmd = toString (pkgs.writeShellScript "getPassword" ''
+          extraConfig = {
+            passwordCmd = toString (pkgs.writeShellScript "getPassword" ''
            ${pkgs.pass}/bin/pass show Mail/mailbox.org/db@minikn.xyz | head -n 1
          '');
-           };
+          };
         };
 
         ## Enable features
@@ -159,15 +190,12 @@
         '';
       };
 
-      programs.emacs = {
+      programs.emacs = lib.mkIf (builtins.elem "emacs" config.mail.work.clients) {
         extraConfig = ''
-            (if (not (boundp 'notmuch-fcc-dirs))
-              (setq notmuch-fcc-dirs '()))
-            (if (not (boundp 'notmuch-identities))
-              (setq notmuch-identities '()))
-                
-            (add-to-list 'notmuch-fcc-dirs '("${config.mail.primary.address}" . "accounts/${config.mail.primary.address}/sent"))
-            (add-to-list 'notmuch-identities "${config.mail.primary.address}")
+;; ~!emacs-lisp!~
+(with-eval-after-load 'db-mail
+  (add-to-list 'notmuch-fcc-dirs '("${config.mail.primary.address}" . "accounts/${config.mail.primary.address}/sent"))
+  (add-to-list 'notmuch-identities "${config.mail.primary.address}"))
           '';
       };
     };

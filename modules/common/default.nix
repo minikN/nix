@@ -238,6 +238,7 @@
               realvnc-vnc-viewer
               gnome.gnome-system-monitor
               gnome.file-roller
+              gpgme
             ];
         }
         (lib.mkIf config.os.wayland {

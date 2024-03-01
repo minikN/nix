@@ -46,8 +46,6 @@
     ./completion/embark.nix
     ./completion/orderless.nix
     
-
-
     ./edit/edit-indirect.nix
 
     ./windows.nix

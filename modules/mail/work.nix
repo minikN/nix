@@ -46,6 +46,12 @@
         '';
       };
 
+      clients = lib.mkOption {
+        type = lib.types.listOf lib.types.str;
+        description = "List of clients to use for this account";
+        default = [];
+      };
+
       imap-host = lib.mkOption {
         type = lib.types.str;
         default = "wp168.webpack.hosteurope.de";
@@ -70,8 +76,25 @@
 
   ## General mail settings
   config = lib.mkIf config.mail.work.enable {
-     home-manager.users.${config.user} = {
+
+    ## Enabling configurations for email clients if specified
+    mail.clients.thunderbird.enable = lib.mkIf (builtins.elem "thunderbird" config.mail.work.clients) true;
+    mail.clients.emacs.enable = lib.mkIf (builtins.elem "emacs" config.mail.work.clients) true;
+
+    home-manager.users.${config.user} = {
+
+      # Enabling thunderbird for this profile if specified
+      programs.thunderbird = lib.mkIf (builtins.elem "thunderbird" config.mail.work.clients) {
+        profiles.work = {
+          ## If thunderbird is set as a mail client in the primary account, this one should be set
+          ## as default
+          isDefault = lib.mkIf (builtins.elem "thunderbird" config.mail.primary.clients == false) true;
+          withExternalGnupg = true;
+        };
+      };
+      
       accounts.email.accounts.work = {
+        thunderbird.enable = lib.mkIf (builtins.elem "thunderbird" config.mail.work.clients) true;
 
         maildir.path = "accounts/${config.mail.work.address}";
 
@@ -81,10 +104,9 @@
         userName = "wp10718698-balbach";
         realName = config.fullName;
         imap.host = config.mail.work.imap-host;
+        imap.port = config.mail.work.imap-port;
 
         ## We need to expose these vars so the mbsync service knows of them
-        #passwordCommand = "GNUPGHOME=${config.home-manager.users.${config.user}.programs.gpg.homedir} PASSWORD_STORE_DIR=${config.const.passDir} ${pkgs.pass}/bin/pass show Mail/apprologic.de/demis.balbach@apprologic.de";
-        #passwordCommand = "${pkgs.pass}/bin/pass show Mail/apprologic.de/demis.balbach@apprologic.de";
         passwordCommand = "${pkgs.coreutils}/bin/env GNUPGHOME=${config.home-manager.users.${config.user}.programs.gpg.homedir} PASSWORD_STORE_DIR=${config.const.passDir} ${pkgs.pass}/bin/pass show Mail/apprologic.de/demis.balbach@apprologic.de";
 
         # imapnotify settings
@@ -160,15 +182,12 @@
         '';
       };
 
-            programs.emacs = {
-          extraConfig = ''
-            (if (not (boundp 'notmuch-fcc-dirs))
-              (setq notmuch-fcc-dirs '()))
-            (if (not (boundp 'notmuch-identities))
-              (setq identities '()))
-
-            (add-to-list 'notmuch-fcc-dirs '("${config.mail.work.address}" . "accounts/${config.mail.work.address}/sent"))
-            (add-to-list 'notmuch-identities "${config.mail.work.address}")
+      programs.emacs = lib.mkIf (builtins.elem "emacs" config.mail.work.clients) {
+        extraConfig = ''
+;; ~!emacs-lisp!~
+(with-eval-after-load 'db-mail
+  (add-to-list 'notmuch-fcc-dirs '("${config.mail.work.address}" . "accounts/${config.mail.work.address}/sent"))
+  (add-to-list 'notmuch-identities "${config.mail.work.address}"))
           '';
       };
     };
