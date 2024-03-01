@@ -50,6 +50,7 @@ already"
     (if (eq (treemacs-current-visibility) 'visible)
 	(delete-window (treemacs-get-local-window)))))
 
+;;; TODO: Add Git branch / list of staged/unstaged files to header-line
 (defun db-treemacs-set-header-line ()
   "Sets the header-line-format of the Treemacs buffer to
 the currently displayed project's name."
