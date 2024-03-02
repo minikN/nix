@@ -70,16 +70,9 @@
       
       services.mbsync = {
         enable = true;
-        preExec = toString (pkgs.writeShellScript "mbsync-pre" ''
-## ~!shell!~
-mkdir -p ${config.const.mailDir}
-for f in $(ls ${config.const.mailDir}/accounts); do
-    mkdir -p ${config.const.mailDir}/$f
-done
-          '');
         postExec = "${pkgs.notmuch}/bin/notmuch new";
       };
-
+      
       programs.notmuch = {
         enable = true;
         new = {
@@ -91,6 +84,7 @@ done
             ".mbsyncstate.journal"
           ];
         };
+        
         search.excludeTags = [ "trash"  "spam"  "deleted" ];
       };
     };

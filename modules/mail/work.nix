@@ -150,26 +150,32 @@
           enable = true;
           groups.work.channels = {
             inbox = {
+              extraConfig = { Create = "both"; };
               farPattern = "INBOX";
               nearPattern = "inbox";
             };
             sent = {
+              extraConfig = { Create = "both"; };
               farPattern = "Sent";
               nearPattern = "sent";
             };
             drafts = {
+              extraConfig = { Create = "both"; };
               farPattern = "Drafts";
               nearPattern = "drafts";
             };
             trash = {
+              extraConfig = { Create = "both"; };
               farPattern = "Trash";
               nearPattern = "trash";
             };
             spam = {
+              extraConfig = { Create = "both"; };
               farPattern = "Spam";
               nearPattern = "spam";
             };
             archive = {
+              extraConfig = { Create = "both"; };
               farPattern = "All";
               nearPattern = "archive";
             };
