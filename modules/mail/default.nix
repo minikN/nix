@@ -70,7 +70,12 @@
       
       services.mbsync = {
         enable = true;
-        postExec = "${pkgs.notmuch}/bin/notmuch new";
+        frequency = "*:0/1";
+        postExec = toString (pkgs.writeShellScript "mbsync-post" ''
+## ~!shell!~
+## TODO: Use path from nix; add nmbug path
+NOTMUCH_CONFIG=/home/db/.config/notmuch/default/config ${pkgs.notmuch}/bin/notmuch new
+'');
       };
       
       programs.notmuch = {
