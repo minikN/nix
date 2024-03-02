@@ -156,8 +156,6 @@ nixpkgs.lib.nixosSystem {
       os.keyboard.layout = "us";
 
       ## Mail accounts in use on this machine
-      mail.primary.enable = true;
-      
       mail.work.enable = true;
       mail.work.clients = ["thunderbird"];
 

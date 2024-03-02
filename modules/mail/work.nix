@@ -77,9 +77,16 @@
   ## General mail settings
   config = lib.mkIf config.mail.work.enable {
 
+    ## Setting this account as primary system wide
+    mail.address = lib.mkDefault config.mail.work.address;
+    mail.signature = lib.mkDefault config.mail.work.signature;
+
     ## Enabling configurations for email clients if specified
     mail.clients.thunderbird.enable = lib.mkIf (builtins.elem "thunderbird" config.mail.work.clients) true;
+    mail.clients.thunderbird.primary = lib.mkDefault (lib.mkIf (builtins.elem "thunderbird" config.mail.work.clients) config.mail.private.address);
+    
     mail.clients.emacs.enable = lib.mkIf (builtins.elem "emacs" config.mail.work.clients) true;
+    mail.clients.emacs.primary = lib.mkDefault (lib.mkIf (builtins.elem "emacs" config.mail.work.clients) config.mail.private.address);
 
     home-manager.users.${config.user} = {
 
@@ -88,10 +95,13 @@
         profiles.work = {
           ## If thunderbird is set as a mail client in the primary account, this one should be set
           ## as default
-          isDefault = lib.mkIf (builtins.elem "thunderbird" config.mail.primary.clients == false) true;
+          isDefault = lib.mkIf (builtins.elem "thunderbird" config.mail.private.clients == false) true;
           withExternalGnupg = true;
         };
       };
+
+      systemd.user.services.imapnotify-work.Service.ExecStart =
+        lib.mkForce "${lib.getExe config.home-manager.users.${config.user}.services.imapnotify.package} -debug -conf '${config.home-manager.users.${config.user}.xdg.configHome}/imapnotify/imapnotify-work-config.json'";
       
       accounts.email.accounts.work = {
         thunderbird.enable = lib.mkIf (builtins.elem "thunderbird" config.mail.work.clients) true;
@@ -99,7 +109,7 @@
         maildir.path = "accounts/${config.mail.work.address}";
 
         ## General settings for the mail account
-        primary = false;
+        primary = lib.mkIf (config.mail.address == config.mail.work.address) true;
         address = config.mail.work.address;
         userName = "wp10718698-balbach";
         realName = config.fullName;
@@ -111,8 +121,15 @@
 
         # imapnotify settings
         imapnotify = {
-          enable = false;
-          boxes = [ "Inbox" ];
+          enable = true;
+          boxes = [ "inbox" ];
+          #onNotify = "${pkgs.isync}/bin/mbsync primary";
+          onNotify = "${pkgs.libnotify}/bin/notify-send -t 5000 'You received new work mail.'";
+          extraConfig = {
+            passwordCmd = toString (pkgs.writeShellScript "getPassword" ''
+           ${pkgs.pass}/bin/pass show Mail/apprologic.de/demis.balbach@apprologic.de | head -n 1
+         '');
+          };
         };
 
         ## Enable features

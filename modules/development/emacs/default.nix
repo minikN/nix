@@ -109,7 +109,7 @@
 
 ;; User information
 (setq user-full-name "${config.fullName}"
-      user-mail-address "${config.mail.primary.address}")
+      user-mail-address "${config.mail.address}")
 
 ;; Directories
           ;;; Backup

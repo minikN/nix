@@ -34,7 +34,7 @@
       
       ## Set username and email according to predefined options
       git.userName = "${config.fullName}";
-      git.userEmail = "${config.mail.primary.address}";
+      git.userEmail = "${config.mail.address}";
 
       ## Set up signing key and auto-sign commits
       git.signing.key = "${config.const.signingKey}";

@@ -28,12 +28,25 @@
 {
   options = {
     mail = {
+     address = lib.mkOption {
+        type = lib.types.str;
+        default = "";
+      };
+
+      signature = lib.mkOption {
+        type = lib.types.lines;
+        description = "Primary signature";
+        default = '''';
+      };
+      
       clients = {
         thunderbird = {
-          enable = lib.mkEnableOption "test";
+          enable = lib.mkEnableOption "Enable thunderbird as a mail client";
+          primary = lib.mkOption {default = ""; };
         };
         emacs = {
-          enable = lib.mkEnableOption "test";
+          enable = lib.mkEnableOption "Enable emacs as a mail client";
+          primary = lib.mkOption {default = ""; };
         };
       };
     };
@@ -50,11 +63,7 @@
   ## General mail settings
   config = {
     home-manager.users.${config.user} = {
-      systemd.user.services.imapnotify-primary.Service.ExecStart =
-        lib.mkForce "${lib.getExe config.home-manager.users.${config.user}.services.imapnotify.package} -debug -conf '${config.home-manager.users.${config.user}.xdg.configHome}/imapnotify/imapnotify-primary-config.json'";
-      
       accounts.email.maildirBasePath = config.const.mailDir;
-
       services.imapnotify.enable = true;
       programs.mbsync.enable = true;
       programs.msmtp.enable = true;

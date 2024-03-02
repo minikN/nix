@@ -28,8 +28,8 @@
 {
   ## Options related to this mail account
   options = {
-    mail.primary = {
-      enable = lib.mkEnableOption "Enable primary email account";
+    mail.private = {
+      enable = lib.mkEnableOption "Enable private email account";
 
       address = lib.mkOption {
         type = lib.types.str;
@@ -74,34 +74,45 @@
   };
 
   ## General mail settings
-  config = lib.mkIf config.mail.primary.enable {
+  config = lib.mkIf config.mail.private.enable {
+
+    ## Setting this account as primary system wide
+    mail.address = lib.mkForce config.mail.private.address;
+    mail.signature = lib.mkForce config.mail.private.signature;
 
     ## Enabling configurations for email clients if specified
-    mail.clients.thunderbird.enable = lib.mkIf (builtins.elem "thunderbird" config.mail.primary.clients) true;
-    mail.clients.emacs.enable = lib.mkIf (builtins.elem "emacs" config.mail.primary.clients) true;
+    mail.clients.thunderbird.enable = lib.mkIf (builtins.elem "thunderbird" config.mail.private.clients) true;
+    mail.clients.thunderbird.primary = lib.mkForce (lib.mkIf (builtins.elem "thunderbird" config.mail.private.clients) config.mail.private.address);
     
+    mail.clients.emacs.enable = lib.mkIf (builtins.elem "emacs" config.mail.private.clients) true;
+    mail.clients.emacs.primary = lib.mkForce (lib.mkIf (builtins.elem "emacs" config.mail.private.clients) config.mail.private.address);
+
     home-manager.users.${config.user} = {
 
       # Enabling thunderbird for this profile if specified
-      programs.thunderbird = lib.mkIf (builtins.elem "thunderbird" config.mail.primary.clients) {
-        profiles.primary = {
+      programs.thunderbird = lib.mkIf (builtins.elem "thunderbird" config.mail.private.clients) {
+        profiles.private = {
           isDefault = true;
           withExternalGnupg = true;
         };
       };
-      
-      accounts.email.accounts.primary = {
-        thunderbird.enable = lib.mkIf (builtins.elem "thunderbird" config.mail.primary.clients) true;
 
-        maildir.path = "accounts/${config.mail.primary.address}";
+      systemd.user.services.imapnotify-private.Service.ExecStart =
+        lib.mkForce "${lib.getExe config.home-manager.users.${config.user}.services.imapnotify.package} -debug -conf '${config.home-manager.users.${config.user}.xdg.configHome}/imapnotify/imapnotify-primary-config.json'";
+      
+      
+      accounts.email.accounts.private = {
+        thunderbird.enable = lib.mkIf (builtins.elem "thunderbird" config.mail.private.clients) true;
+
+        maildir.path = "accounts/${config.mail.private.address}";
 
         ## General settings for the mail account
         primary = true;
-        address = config.mail.primary.address;
-        userName = config.mail.primary.address;
+        address = config.mail.private.address;
+        userName = config.mail.private.address;
         realName = config.fullName;
-        imap.host = config.mail.primary.imap-host;
-        imap.port = config.mail.primary.imap-port;
+        imap.host = config.mail.private.imap-host;
+        imap.port = config.mail.private.imap-port;
         
         passwordCommand = toString (pkgs.writeShellScript "getPassword" ''
            ${pkgs.pass}/bin/pass show Mail/mailbox.org/db@minikn.xyz | head -n 1
@@ -139,7 +150,7 @@
           create = "both";
           expunge = "both";
           
-          groups.primary.channels = {
+          groups.private.channels = {
             inbox = {
               farPattern = "INBOX";
               nearPattern = "inbox";
@@ -169,14 +180,14 @@
 
         ## Signature settings
         signature = {
-          text = config.mail.primary.signature;
+          text = config.mail.private.signature;
           showSignature = "append";
         };
 
         ## smtp settings
         smtp = {
-          host = config.mail.primary.smtp-host;
-          port = config.mail.primary.smtp-port;
+          host = config.mail.private.smtp-host;
+          port = config.mail.private.smtp-port;
           tls = {
             enable = true;
             useStartTls = true;
@@ -186,16 +197,16 @@
 
       programs.notmuch.hooks = {
         postNew = lib.mkOrder 100 ''
-          notmuch tag +personal -- path:accounts/${config.mail.primary.address}/** and tag:new
+          notmuch tag +personal -- path:accounts/${config.mail.private.address}/** and tag:new
         '';
       };
 
-      programs.emacs = lib.mkIf (builtins.elem "emacs" config.mail.work.clients) {
+      programs.emacs = lib.mkIf (builtins.elem "emacs" config.mail.private.clients) {
         extraConfig = ''
 ;; ~!emacs-lisp!~
 (with-eval-after-load 'db-mail
-  (add-to-list 'notmuch-fcc-dirs '("${config.mail.primary.address}" . "accounts/${config.mail.primary.address}/sent"))
-  (add-to-list 'notmuch-identities "${config.mail.primary.address}"))
+  (add-to-list 'notmuch-fcc-dirs '("${config.mail.private.address}" . "accounts/${config.mail.private.address}/sent"))
+  (add-to-list 'notmuch-identities "${config.mail.private.address}"))
           '';
       };
     };

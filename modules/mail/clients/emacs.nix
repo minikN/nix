@@ -45,27 +45,10 @@
   (require 'message)
   (require 'sendmail))
 
-;; message    
-(with-eval-after-load 'message
-  (setq message-hidden-headers '()
-        message-kill-buffer-on-exit t
-        message-signature "${config.mail.primary.signature}"))
-
 ;; msmtp
 (setq message-send-mail-function 'message-send-mail-with-sendmail
       message-sendmail-f-is-evil t
       message-sendmail-extra-arguments '("--read-envelope-from"))
-
-;; SMTP settings
-(with-eval-after-load 'smtpmail
-  (setq smtpmail-smtp-user "${config.mail.primary.address}"
-        smtpmail-smtp-service "${builtins.toString config.mail.primary.smtp-port}"
-        smtpmail-smtp-server "${config.mail.primary.smtp-host}"
-        smtpmail-default-smtp-server "${config.mail.primary.smtp-host}"
-        
-        smtpmail-stream-type 'starttls
-        smtpmail-queue-dir "${config.home-manager.users.${config.user}.xdg.cacheHome}/emacs/smtpmail/queued-mail"
-        smtpmail-debug-info t))
 
 ;; sign mails
 (setq mml-secure-openpgp-signers '("${config.const.signingKey}"))
