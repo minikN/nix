@@ -100,15 +100,20 @@ nixpkgs.lib.nixosSystem {
       ## Not using built in GPU in this machine. Make sure discrete graphics are turned off in BIOS!
 
       hardware.opengl = {
-       extraPackages = with pkgs; [
-         vaapiVdpau
-         libvdpau-va-gl
-       ];
+        extraPackages = with pkgs; [
+          vaapiVdpau
+          libvdpau-va-gl
+        ];
       };
 
       ## VPN settings
       services.zerotierone.enable = true;
       services.zerotierone.joinNetworks = [ "35c192ce9b0284e3" ];
+      ## This is needed for jenkins to be reachable
+      networking.networkmanager.insertNameservers = [ "8.8.8.8" ];
+      networking.extraHosts = ''
+172.30.173.241 jenkins.apprologic.com
+'';
 
       ## Display settings
       os.output.primary.name = "eDP-1";
