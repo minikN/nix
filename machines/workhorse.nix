@@ -198,5 +198,6 @@ nixpkgs.lib.nixosSystem {
 
     ## Chat
     ../modules/chat/slack.nix
+    ../modules/chat/discord.nix
   ];
 }
