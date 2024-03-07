@@ -100,9 +100,6 @@
         };
       };
 
-      systemd.user.services.imapnotify-work.Service.ExecStart =
-        lib.mkForce "${lib.getExe config.home-manager.users.${config.user}.services.imapnotify.package} -debug -conf '${config.home-manager.users.${config.user}.xdg.configHome}/imapnotify/imapnotify-work-config.json'";
-      
       accounts.email.accounts.work = {
         thunderbird.enable = lib.mkIf (builtins.elem "thunderbird" config.mail.work.clients) true;
 
@@ -117,20 +114,12 @@
         imap.port = config.mail.work.imap-port;
 
         ## We need to expose these vars so the mbsync service knows of them
-        passwordCommand = "${pkgs.coreutils}/bin/env GNUPGHOME=${config.home-manager.users.${config.user}.programs.gpg.homedir} PASSWORD_STORE_DIR=${config.const.passDir} ${pkgs.pass}/bin/pass show Mail/apprologic.de/demis.balbach@apprologic.de";
-
-        # imapnotify settings
-        imapnotify = {
-          enable = true;
-          boxes = [ "inbox" ];
-          #onNotify = "${pkgs.isync}/bin/mbsync primary";
-          onNotify = "${pkgs.libnotify}/bin/notify-send -t 5000 'You received new work mail.'";
-          extraConfig = {
-            passwordCmd = toString (pkgs.writeShellScript "getPassword" ''
-           ${pkgs.pass}/bin/pass show Mail/apprologic.de/demis.balbach@apprologic.de | head -n 1
-         '');
-          };
-        };
+        passwordCommand = toString (pkgs.writeShellScript "get-work-password" ''
+## ~!shell!~
+export GNUPGHOME=${config.home-manager.users.${config.user}.programs.gpg.homedir}
+export PASSWORD_STORE_DIR=${config.const.passDir}
+${pkgs.pass}/bin/pass show Mail/apprologic.de/demis.balbach@apprologic.de | ${pkgs.coreutils}/bin/head -n 1
+'');
 
         ## Enable features
         msmtp.enable = true;
@@ -150,32 +139,32 @@
           enable = true;
           groups.work.channels = {
             inbox = {
-              extraConfig = { Create = "both"; };
+              extraConfig = { Create = "both"; Expunge = "both"; };
               farPattern = "INBOX";
               nearPattern = "inbox";
             };
             sent = {
-              extraConfig = { Create = "both"; };
+              extraConfig = { Create = "both"; Expunge = "both"; };
               farPattern = "Sent";
               nearPattern = "sent";
             };
             drafts = {
-              extraConfig = { Create = "both"; };
+              extraConfig = { Create = "both"; Expunge = "both"; };
               farPattern = "Drafts";
               nearPattern = "drafts";
             };
             trash = {
-              extraConfig = { Create = "both"; };
+              extraConfig = { Create = "both"; Expunge = "both"; };
               farPattern = "Trash";
               nearPattern = "trash";
             };
             spam = {
-              extraConfig = { Create = "both"; };
+              extraConfig = { Create = "both"; Expunge = "both"; };
               farPattern = "Spam";
               nearPattern = "spam";
             };
             archive = {
-              extraConfig = { Create = "both"; };
+              extraConfig = { Create = "both"; Expunge = "both"; };
               farPattern = "All";
               nearPattern = "archive";
             };
@@ -197,12 +186,6 @@
             useStartTls = true;
           };
         };
-      };
-
-      programs.notmuch.hooks = {
-        postNew = lib.mkOrder 100 ''
-          notmuch tag +work -- path:accounts/${config.mail.work.address}/** and tag:new
-        '';
       };
 
       programs.emacs = lib.mkIf (builtins.elem "emacs" config.mail.work.clients) {

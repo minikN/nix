@@ -97,10 +97,6 @@
         };
       };
 
-      systemd.user.services.imapnotify-private.Service.ExecStart =
-        lib.mkForce "${lib.getExe config.home-manager.users.${config.user}.services.imapnotify.package} -debug -conf '${config.home-manager.users.${config.user}.xdg.configHome}/imapnotify/imapnotify-primary-config.json'";
-      
-      
       accounts.email.accounts.private = {
         thunderbird.enable = lib.mkIf (builtins.elem "thunderbird" config.mail.private.clients) true;
 
@@ -113,23 +109,15 @@
         realName = config.fullName;
         imap.host = config.mail.private.imap-host;
         imap.port = config.mail.private.imap-port;
-        
-        passwordCommand = toString (pkgs.writeShellScript "getPassword" ''
-           ${pkgs.pass}/bin/pass show Mail/mailbox.org/db@minikn.xyz | head -n 1
-        '');
 
-        # imapnotify settings
-        imapnotify = {
-          enable = true;
-          boxes = [ "Inbox" ];
-          #onNotify = "${pkgs.isync}/bin/mbsync primary";
-          onNotify = "${pkgs.libnotify}/bin/notify-send -t 5000 'You received new private mail.'";
-          extraConfig = {
-            passwordCmd = toString (pkgs.writeShellScript "getPassword" ''
-           ${pkgs.pass}/bin/pass show Mail/mailbox.org/db@minikn.xyz | head -n 1
-         '');
-          };
-        };
+
+        ## We need to expose these vars so the mbsync service knows of them
+        passwordCommand = toString (pkgs.writeShellScript "get-private-password" ''
+## ~!shell!~
+export GNUPGHOME=${config.home-manager.users.${config.user}.programs.gpg.homedir}
+export PASSWORD_STORE_DIR=${config.const.passDir}
+${pkgs.pass}/bin/pass show Mail/mailbox.org/db@minikn.xyz | ${pkgs.coreutils}/bin/head -n 1
+'');
 
         ## Enable features
         msmtp.enable = true;
@@ -149,32 +137,32 @@
           enable = true;
           groups.private.channels = {
             inbox = {
-              extraConfig = { Create = "both"; };
+              extraConfig = { Create = "both"; Expunge = "both"; };
               farPattern = "INBOX";
               nearPattern = "inbox";
             };
             sent = {
-              extraConfig = { Create = "both"; };
+              extraConfig = { Create = "both"; Expunge = "both"; };
               farPattern = "Sent";
               nearPattern = "sent";
             };
             drafts = {
-              extraConfig = { Create = "both"; };
+              extraConfig = { Create = "both"; Expunge = "both"; };
               farPattern = "Drafts";
               nearPattern = "drafts";
             };
             trash = {
-              extraConfig = { Create = "both"; };
+              extraConfig = { Create = "both"; Expunge = "both"; };
               farPattern = "Trash";
               nearPattern = "trash";
             };
             spam = {
-              extraConfig = { Create = "both"; };
+              extraConfig = { Create = "both"; Expunge = "both"; };
               farPattern = "Junk";
               nearPattern = "spam";
             };
             archive = {
-              extraConfig = { Create = "both"; };
+              extraConfig = { Create = "both"; Expunge = "both"; };
               farPattern = "Archive";
               nearPattern = "archive";
             };
@@ -196,12 +184,6 @@
             useStartTls = true;
           };
         };
-      };
-
-      programs.notmuch.hooks = {
-        postNew = lib.mkOrder 100 ''
-          notmuch tag +personal -- path:accounts/${config.mail.private.address}/** and tag:new
-        '';
       };
 
       programs.emacs = lib.mkIf (builtins.elem "emacs" config.mail.private.clients) {

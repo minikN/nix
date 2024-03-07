@@ -107,13 +107,13 @@ nixpkgs.lib.nixosSystem {
       };
 
       ## VPN settings
-      services.zerotierone.enable = true;
-      services.zerotierone.joinNetworks = [ "35c192ce9b0284e3" ];
-      ## This is needed for jenkins to be reachable
-      networking.networkmanager.insertNameservers = [ "8.8.8.8" ];
-      networking.extraHosts = ''
-172.30.173.241 jenkins.apprologic.com
-'';
+      #services.zerotierone.enable = true;
+      #services.zerotierone.joinNetworks = [ "35c192ce9b0284e3" ];
+      ### This is needed for jenkins to be reachable
+      #networking.networkmanager.insertNameservers = [ "8.8.8.8" ];
+      #networking.extraHosts = ''
+#172.30.173.241 jenkins.apprologic.com
+#'';
 
       ## Display settings
       os.output.primary.name = "eDP-1";
@@ -161,8 +161,10 @@ nixpkgs.lib.nixosSystem {
       os.keyboard.layout = "us";
 
       ## Mail accounts in use on this machine
+      mail.private.enable = true;
+      mail.private.clients = [ "thunderbird" "emacs" ];
       mail.work.enable = true;
-      mail.work.clients = ["thunderbird"];
+      mail.work.clients = [ "thunderbird" "emacs"];
 
       console = {
         font = "Lat2-Terminus16";
