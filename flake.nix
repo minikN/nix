@@ -34,6 +34,8 @@
     musnix  = { url = "github:musnix/musnix"; };
     audio.url = "github:polygon/audio.nix";
     nur.url = "github:nix-community/NUR";
+    #ordenada.url = "github:migalmoreno/ordenada";
+    ordenada.url = "git+file:///home/db/ordenada";
     tuxedo-nixos = {
       url = "github:blitz/tuxedo-nixos";
    };
@@ -50,7 +52,7 @@
     globals = rec {
       user = "db";
       fullName = "Demis Balbach";
-      stateVersion = "23.05";
+      stateVersion = "24.05";
     };
 
     overlays = [
