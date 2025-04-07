@@ -29,57 +29,9 @@
 
 {
   imports = [
-    ./git.nix
-
-    # Repositories
-    ../repositories/dotfiles.nix
-
-    # WM / GUI
-    ./wm/sway.nix
-    ./wm/cursor.nix
-    ./wm/launcher/rofi.nix
-    ./wm/bar/waybar.nix
-    ./image/screenshot/swappy.nix
-
-    ## Scripts
-    ./scripts/screenshot.nix
-
-    ## Terminal
-    ./terminal/alacritty.nix
-    ./shell/zsh.nix
-
-    ## File manager
-    ./file-manager/thunar.nix
-
-    ## Services
-    ./services
-    ./services/xdg.nix
-    ./services/pipewire.nix
-    ./services/bluetooth.nix
-    ./services/printer.nix
-    ./services/flatpak.nix
-
-    ## Security
-    ./security/gpg.nix
-    ./security/pass.nix
-    ./security/tessen.nix
-
-    ## System
+    # ## System
     ./system/boot.nix
     ./system/filesystem.nix
-    ./system/networking.nix
-    ./system/fonts.nix
-
-    ## Hardware
-    ../hardware/color-temperature.nix
-    ../hardware/outputs.nix
-
-    ## Emacs
-    ../development/emacs
-
-    ## Mail
-    ../mail
-
   ];
 
   
@@ -107,16 +59,6 @@
       description = "State version of nixos and home-manager";
     };
 
-    ## Constants
-    ##
-    ## Object of options that can be set throughout the configuration.
-    ## Meant for options that get set by any module once, and never again.
-    const = {
-      signingKey = mkConst "F17DDB98CC3C405C";
-      passDir = mkConst "${config.users.users.${config.user}.home}/.local/var/lib/password-store";
-      mailDir = mkConst "${config.users.users.${config.user}.home}/.local/var/lib/mail";
-    };
-
     ## Namespacing some options so they don't interfere with
     ## other nix options.
     os = {
@@ -133,31 +75,6 @@
           default = ''
             ctrl:nocaps
           '';
-        };
-      };
-
-      wayland = lib.mkOption {
-        type = lib.types.bool;
-        default = false;
-        description = "Whether wayland is used on the system";
-      };
-
-      passwordManager = lib.mkOption {
-        type = lib.types.path;
-        description = "The password manager in use";
-      };
-
-      machine = {
-        isLaptop = lib.mkOption {
-          type = lib.types.bool;
-          description = "Whether the machine is a laptop";
-          default = false;
-        };
-
-        temperaturePath = lib.mkOption {
-          type = lib.types.path;
-          description = "Machine specific path to the core temp class";
-          default = "/sys/class/hwmon/hwmon4/temp1_input";
         };
       };
     };
@@ -203,18 +120,12 @@
 
     ## Allow unfree packages
     nixpkgs.config.allowUnfree = true;
-
-    ## Setting correct application settings if we're running wayland
-    environment.sessionVariables = lib.mkIf config.os.wayland {
-      NIXOS_OZONE_WL = "1";
-      GTK_USE_PORTAL = "1";
-    };
 	
     ## Global packages
     ##
     ## Packages should be managed with home-manager whereever
     ## possible. Only use a set of barebones applications here.
-    environment.systemPackages = with pkgs; [ git vim wget curl ];
+    #environment.systemPackages = with pkgs; [ git vim wget curl ];
 
     ## Home manager settings
     home-manager.useGlobalPkgs = true;
@@ -227,30 +138,7 @@
         {
           ## Setting state version for home-manager
           stateVersion = "${config.stateVersion}";
-
-          ## Global home packages
-          packages = with pkgs; [
-              libnotify
-              unzip
-              mediaelch
-              kid3 # mp3 tag editor
-              mpv
-              realvnc-vnc-viewer
-              gnome.gnome-system-monitor
-              gnome.file-roller
-              gpgme
-            ];
         }
-        (lib.mkIf config.os.wayland {
-
-          ## Wayland specific packages
-          packages = with pkgs; [
-            wl-clipboard
-            grim
-            slurp
-            mako
-          ];
-        })
       ];
     };
 

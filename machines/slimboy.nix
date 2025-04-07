@@ -86,14 +86,11 @@ nixpkgs.lib.nixosSystem {
        ];
       };
 
-      ## Declaring this machine to be a laptop
-      os.machine.isLaptop = true;
-
       ## Setting keymap to `de' for this machine.
-      os.keyboard.layout = "de";
+      os.keyboard.layout = "us";
 
       ## Mail accounts in use on this machine
-      mail.work.enable = true;
+      #mail.work.enable = true;
 
       console = {
         font = "Lat2-Terminus16";
@@ -106,23 +103,11 @@ nixpkgs.lib.nixosSystem {
       };
     })
     
-    ## Host agnostic modules
-    ##
-    ## A list of file paths containing modules that should be used on this
-    ## machine. They are not specific to this machine and can be used on
-    ## other machines too as long as it fits their purpose.
+    # ## Host agnostic modules
+    # ##
+    # ## A list of file paths containing modules that should be used on this
+    # ## machine. They are not specific to this machine and can be used on
+    # ## other machines too as long as it fits their purpose.
     ../modules/common
-
-    ## Hardware specific modules
-    ../modules/hardware/backlight.nix
-
-    ## Features
-    ## Sets of modules for a specific purpose
-    ../features/development.nix
-
-    ## Chat
-    ../modules/chat/discord.nix
-    ../modules/chat/slack.nix
-    ../modules/chat/signal.nix
   ];
 }
