@@ -108,7 +108,7 @@
     ## OpenGL support
     hardware.opengl = {
       enable = true;
-      driSupport = true;
+      #driSupport = true;
       driSupport32Bit = true;
     };
 
@@ -127,24 +127,22 @@
     ## possible. Only use a set of barebones applications here.
     #environment.systemPackages = with pkgs; [ git vim wget curl ];
 
-    ## Home manager settings
-    home-manager.useGlobalPkgs = true;
-    home-manager.useUserPackages = true;
-
-    ## Setting the `stateVersion' for both home-manager and system.
-    home-manager.users.${config.user} = {
-
-      home = lib.mkMerge [
-        {
-          ## Setting state version for home-manager
-          stateVersion = "${config.stateVersion}";
-        }
-      ];
-    };
-
-
     ## Setting state version for system
     system.stateVersion = "${config.stateVersion}";
+
+    ordenada = {
+      users = {
+        db = {};
+      };
+      features = {
+        userInfo = { username = "${config.os.user}"; };
+        home = {
+          enable = true;
+          extraGroups = [ "video" "input" ];
+        };
+      };
+    };
+
   };
 }
 

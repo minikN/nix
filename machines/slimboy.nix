@@ -53,6 +53,9 @@ nixpkgs.lib.nixosSystem {
 
     ## Applying recommended hardware settings
     nixos-hardware.nixosModules.dell-latitude-7430
+
+    ## Ordenada
+    ordenada.nixosModules.ordenada
     
     ## System specific
     ##
@@ -97,9 +100,15 @@ nixpkgs.lib.nixosSystem {
         keyMap = config.os.keyboard.layout;
       };
 
-      users.users.${config.user} = {
-        extraGroups = [ "wheel" "video" "input" ]; 
-        isNormalUser = true;
+      # users.users.${config.user} = {
+      #   extraGroups = [ "wheel" "video" "input" ]; 
+      #   isNormalUser = true;
+      # };
+
+      ordenada = {
+        features = {
+          #sway.enable = true;
+        };
       };
     })
     
