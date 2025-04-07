@@ -34,7 +34,7 @@
       enable = true;
       enableSshSupport = true;
       enableZshIntegration = config.os.shell == "zsh";
-      pinentryFlavor = "qt";
+      pinentryPackage = pkgs.pinentry-qt;
      };
 
      ## Add SSH key

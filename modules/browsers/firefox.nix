@@ -45,7 +45,7 @@
         package = firefoxPkg;
 
         ## Enabling some extensions by default
-        profiles.${config.user}.extensions = with config.nur.repos.rycee.firefox-addons; [
+        profiles.${config.user}.extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [
           ublock-origin
         ];
       };

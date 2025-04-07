@@ -30,7 +30,7 @@
     enable = true;
     package = pkgs.vscode;
     
-    userSettings = {
+    profiles.default.userSettings = {
       "window.titleBarStyle" = "custom"; 
 
       ## No auto-sync
@@ -62,7 +62,7 @@
       };
     };
 
-    keybindings = [
+    profiles.default.keybindings = [
       { key = "ctrl+shift+alt+p"; command = "eslint.executeAutofix"; }
       {
         key = "ctrl+alt+o";

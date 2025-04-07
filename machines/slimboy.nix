@@ -49,7 +49,7 @@ nixpkgs.lib.nixosSystem {
 
     ## This module will return a `nur' object that can be used to access
     ## NUR packages.
-    nur.nixosModules.nur
+    nur.modules.nixos.default
 
     ## Applying recommended hardware settings
     nixos-hardware.nixosModules.dell-latitude-7430
@@ -77,14 +77,38 @@ nixpkgs.lib.nixosSystem {
       hardware.enableRedistributableFirmware = true;
       hardware.cpu.intel.updateMicrocode = true;
 
-      hardware.opengl = {
-       extraPackages = with pkgs; [
-         intel-media-driver # LIBVA_DRIVER_NAME=iHD
-         vaapiIntel         # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
-         vaapiVdpau
-         libvdpau-va-gl
-       ];
-      };
+      # hardware.graphics = {
+      #  extraPackages = with pkgs; [
+      #    intel-media-driver # LIBVA_DRIVER_NAME=iHD
+      #    vaapiIntel         # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
+      #    vaapiVdpau
+      #    libvdpau-va-gl
+      #  ];
+      # };
+
+      ## Display settings
+      os.output.primary.name = "DP-1";
+      os.output.primary.width = 2560;
+      os.output.primary.height = 1440;
+      os.output.primary.hidpi = false;
+ 
+      os.output.configs = [
+        {
+          name = "home";
+          left = {
+            name = "DP-1";
+            id = "Philips Consumer Electronics Company PHL 245E1 0x0000630A";
+            width = 2560;
+            height = 1440;
+          };
+          right = {
+            name = "DP-2";
+            id = "Philips Consumer Electronics Company PHL 245E1 0x0000631B";
+            width = 2560;
+            height = 1440;
+          };
+        }
+      ];
 
       ## Declaring this machine to be a laptop
       os.machine.isLaptop = true;

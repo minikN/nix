@@ -54,7 +54,7 @@
     };
 
     overlays = [
-      inputs.nur.overlay
+      inputs.nur.overlays.default
       inputs.emacs-overlay.overlay
       inputs.audio.overlays.default
     ];

@@ -189,11 +189,11 @@
     };
 
     ## OpenGL support
-    hardware.opengl = {
-      enable = true;
-      driSupport = true;
-      driSupport32Bit = true;
-    };
+    # hardware.graphics = {
+    #   enable = true;
+    #   #driSupport = true;
+    #   enable32Bit = true;
+    # };
 
     ## Timezone and locales
     ##
@@ -236,8 +236,8 @@
               kid3 # mp3 tag editor
               mpv
               realvnc-vnc-viewer
-              gnome.gnome-system-monitor
-              gnome.file-roller
+              gnome-system-monitor
+              file-roller
               gpgme
             ];
         }

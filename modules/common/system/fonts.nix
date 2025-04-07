@@ -84,9 +84,10 @@
         };
       };
       packages = with pkgs; [
-        (nerdfonts.override { fonts = [ "Iosevka" ]; })
-        (iosevka-bin.override { variant = "aile"; })
-        (iosevka-bin.override { variant = "etoile"; })
+        nerd-fonts.iosevka
+        #(nerdfonts.override { fonts = [ "Iosevka" ]; })
+        (iosevka-bin.override { variant = "Aile"; })
+        (iosevka-bin.override { variant = "Etoile"; })
         noto-fonts-emoji
       ];
     };

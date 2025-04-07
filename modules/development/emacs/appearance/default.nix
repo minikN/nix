@@ -36,7 +36,7 @@
 
   config = {
     home-manager.users.${config.user} = {
-      imports = with config.nur.repos.rycee.hmModules; [ emacs-init ];
+      imports = with pkgs.nur.repos.rycee.hmModules; [ emacs-init ];
       programs.emacs.init = {
         enable = true;
         earlyInit = ''
