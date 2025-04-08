@@ -43,16 +43,19 @@ nixpkgs.lib.nixosSystem {
 
     ## This module will return a `home-manager' object that can be used
     ## in other modules (including this one).
-    home-manager.nixosModules.home-manager {
-      nixpkgs.overlays = overlays;
-    }
+    #home-manager.nixosModules.home-manager {
+    #  nixpkgs.overlays = overlays;
+    #}
 
     ## This module will return a `nur' object that can be used to access
     ## NUR packages.
-    nur.modules.nixos.default
+    #nur.modules.nixos.default
 
     ## Applying recommended hardware settings
     nixos-hardware.nixosModules.dell-latitude-7430
+
+    ## Common modules
+    ../modules/common
     
     ## System specific
     ##
@@ -86,42 +89,9 @@ nixpkgs.lib.nixosSystem {
       #  ];
       # };
 
-      ## Display settings
-      os.output.primary.name = "DP-1";
-      os.output.primary.width = 2560;
-      os.output.primary.height = 1440;
-      os.output.primary.hidpi = false;
- 
-      os.output.configs = [
-        {
-          name = "home";
-          left = {
-            name = "DP-1";
-            id = "Philips Consumer Electronics Company PHL 245E1 0x0000630A";
-            width = 2560;
-            height = 1440;
-          };
-          right = {
-            name = "DP-2";
-            id = "Philips Consumer Electronics Company PHL 245E1 0x0000631B";
-            width = 2560;
-            height = 1440;
-          };
-        }
-      ];
-
-      ## Declaring this machine to be a laptop
-      os.machine.isLaptop = true;
-
-      ## Setting keymap to `de' for this machine.
-      os.keyboard.layout = "de";
-
-      ## Mail accounts in use on this machine
-      mail.work.enable = true;
-
       console = {
         font = "Lat2-Terminus16";
-        keyMap = config.os.keyboard.layout;
+        keyMap = "us";
       };
 
       users.users.${config.user} = {
@@ -129,24 +99,5 @@ nixpkgs.lib.nixosSystem {
         isNormalUser = true;
       };
     })
-    
-    ## Host agnostic modules
-    ##
-    ## A list of file paths containing modules that should be used on this
-    ## machine. They are not specific to this machine and can be used on
-    ## other machines too as long as it fits their purpose.
-    ../modules/common
-
-    ## Hardware specific modules
-    ../modules/hardware/backlight.nix
-
-    ## Features
-    ## Sets of modules for a specific purpose
-    ../features/development.nix
-
-    ## Chat
-    ../modules/chat/discord.nix
-    ../modules/chat/slack.nix
-    ../modules/chat/signal.nix
-  ];
+    ];
 }
