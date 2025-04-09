@@ -95,6 +95,9 @@
     ## Allow unfree packages
     nixpkgs.config.allowUnfree = true;
 
+    ## TODO: Needed for sway
+    hardware.graphics.enable = true;
+
     ## Global packages
     ##
     ## Packages should be managed with home-manager whereever
@@ -103,6 +106,9 @@
 
 
     ## Setting the `stateVersion' for both home-manager and system.
+    home-manager.users.${config.user} = {
+     home = {};
+    };
 
     ## Setting state version for system
     system.stateVersion = "${config.stateVersion}";

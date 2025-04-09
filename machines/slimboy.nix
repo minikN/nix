@@ -23,7 +23,7 @@
 ###
 ### CODE:
 
-{ inputs, globals, overlays, ... }:
+{ inputs, globals, overlays, ordenada, ... }:
 
 with inputs;
 
@@ -43,9 +43,9 @@ nixpkgs.lib.nixosSystem {
 
     ## This module will return a `home-manager' object that can be used
     ## in other modules (including this one).
-    #home-manager.nixosModules.home-manager {
-    #  nixpkgs.overlays = overlays;
-    #}
+    home-manager.nixosModules.home-manager {
+      nixpkgs.overlays = overlays;
+    }
 
     ## This module will return a `nur' object that can be used to access
     ## NUR packages.
@@ -53,6 +53,9 @@ nixpkgs.lib.nixosSystem {
 
     ## Applying recommended hardware settings
     nixos-hardware.nixosModules.dell-latitude-7430
+
+    ## Ordenada
+    ordenada.nixosModules.ordenada
 
     ## Common modules
     ../modules/common
@@ -94,10 +97,44 @@ nixpkgs.lib.nixosSystem {
         keyMap = "us";
       };
 
-      users.users.${config.user} = {
-        extraGroups = [ "wheel" "video" "input" ]; 
-        isNormalUser = true;
+      ordenada = {
+	users = { ${config.user} = {}; };
+	features = {
+	  userInfo = {
+	    username = "${config.user}";
+	    fullName = "${config.fullName}";
+	    ## TODO: Set dynamically
+	    email = "db@minikn.xyz";
+	    gpgPrimaryKey = "F17DDB98CC3C40C";
+	  };
+	  home = {
+	    enable = true;
+	    extraGroups = [ "video" "input" ];
+	  };
+	  sway = {
+	    enable = true;
+	    autoStartTty = "2";
+	  };
+
+	  gnupg = {
+	    enable = true;
+	    pinentryPackage = pkgs.pinentry-qt;
+	    sshKeys = [ "E3FFA5A1B444A4F099E594758008C1D8845EC7C0" ];
+	  };
+	  git = {
+	    enable = true;
+	    signCommits = true;
+	  };
+	  gtk.enable = true;
+	  xdg.enable = true;
+	  bash.enable = true;
+	};
       };
+
+      #users.users.${config.user} = {
+      #  extraGroups = [ "wheel" "video" "input" ]; 
+      #  isNormalUser = true;
+      #};
     })
     ];
 }
