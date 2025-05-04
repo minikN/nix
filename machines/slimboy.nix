@@ -1,4 +1,4 @@
-### NixOS Configuration
+# ## NixOS Configuration
 ###
 ### Copyright © 2023 Demis Balbach <db@minikn.xyz>
 ###
@@ -43,7 +43,8 @@ nixpkgs.lib.nixosSystem {
 
     ## This module will return a `home-manager' object that can be used
     ## in other modules (including this one).
-    home-manager.nixosModules.home-manager {
+    home-manager.nixosModules.home-manager
+    {
       nixpkgs.overlays = overlays;
     }
 
@@ -59,7 +60,7 @@ nixpkgs.lib.nixosSystem {
 
     ## Common modules
     ../modules/common
-    
+
     ## System specific
     ##
     ## Closure that returns the module containing configuration specific
@@ -69,10 +70,10 @@ nixpkgs.lib.nixosSystem {
       ## networking
       networking.hostName = "slimboy";
       networking.interfaces.wlp0s20f3.useDHCP = false; # WiFi
-      
+
       boot.kernelModules = [ "kvm-intel" ];
       boot.kernelPackages = pkgs.linuxPackagesFor pkgs.linux_latest;
-      
+
       hardware.enableRedistributableFirmware = true;
       hardware.cpu.intel.updateMicrocode = true;
 
@@ -82,38 +83,37 @@ nixpkgs.lib.nixosSystem {
       };
 
       ordenada = {
-	users = { ${config.user} = {}; };
-	features = {
-	  userInfo = {
-	    username = "${config.user}";
-	    fullName = "${config.fullName}";
-	    ## TODO: Set dynamically
-	    email = "db@minikn.xyz";
-	    gpgPrimaryKey = "F17DDB98CC3C405C";
-	  };
-	  home = {
-	    enable = true;
-	    extraGroups = [ "wheel" "video" "input" ];
-	  };
-	  sway = {
-	    enable = true;
-	    autoStartTty = "2";
-	  };
+        users = { ${config.user} = { }; };
+        features = {
+          userInfo = {
+            username = "${config.user}";
+            fullName = "${config.fullName}";
+            email = "${config.email}";
+            gpgPrimaryKey = "${config.gpgKey}";
+          };
+          home = {
+            enable = true;
+            extraGroups = [ "wheel" "video" "input" ];
+          };
+          sway = {
+            enable = true;
+            autoStartTty = "2";
+          };
 
-	  gnupg = {
-	    enable = true;
-	    pinentryPackage = pkgs.pinentry-qt;
-	    sshKeys = [ "E3FFA5A1B444A4F099E594758008C1D8845EC7C0" ];
-	  };
-	  git = {
-	    enable = true;
-	    signCommits = true;
-	  };
-	  gtk.enable = true;
-	  xdg.enable = true;
-	  bash.enable = true;
-	};
+          gnupg = {
+            enable = true;
+            pinentryPackage = pkgs.pinentry-qt;
+            sshKeys = [ "E3FFA5A1B444A4F099E594758008C1D8845EC7C0" ];
+          };
+          git = {
+            enable = true;
+            signCommits = true;
+          };
+          gtk.enable = true;
+          xdg.enable = true;
+          bash.enable = true;
+        };
       };
     })
-    ];
+  ];
 }

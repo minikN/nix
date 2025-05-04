@@ -51,6 +51,16 @@
       type = lib.types.str;
       description = "Full name of the user";
     };
+
+    email = lib.mkOption { # is defined in flake.nix
+      type = lib.types.str;
+      description = "Primary email of the user";
+    };
+
+    gpgKey = lib.mkOption { # is defined in flake.nix
+      type = lib.types.str;
+      description = "GPG key of the user";
+    };
     
     stateVersion = lib.mkOption { # is defined in flake.nix
       type = lib.types.str;
