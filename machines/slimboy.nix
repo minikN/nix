@@ -97,8 +97,9 @@ nixpkgs.lib.nixosSystem {
           };
           sway = {
             enable = true;
-            autoStartTty = "2";
+            autoStartTty = "/dev/tty2";
           };
+          waybar.enable = true;
 
           gnupg = {
             enable = true;
@@ -112,6 +113,7 @@ nixpkgs.lib.nixosSystem {
           gtk.enable = true;
           xdg.enable = true;
           bash.enable = true;
+          pipewire.enable = true;
         };
       };
     })
