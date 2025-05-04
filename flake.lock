@@ -542,15 +542,15 @@
       "locked": {
         "lastModified": 1744587022,
         "narHash": "sha256-K1wlW+aDnYB8xljjsOAYyhl0YNgG/U7+RV6RINJIfAw=",
-        "owner": "migalmoreno",
-        "repo": "ordenada",
+        "ref": "refs/heads/master",
         "rev": "efa92ee60e2587b87aae5cee837e666bc732c1db",
-        "type": "github"
+        "revCount": 156,
+        "type": "git",
+        "url": "file:///home/db/.local/share/git/ordenada"
       },
       "original": {
-        "owner": "migalmoreno",
-        "repo": "ordenada",
-        "type": "github"
+        "type": "git",
+        "url": "file:///home/db/.local/share/git/ordenada"
       }
     },
     "pre-commit": {
