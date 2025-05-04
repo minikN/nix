@@ -145,7 +145,6 @@
 
         gnupg = {
           enable = true;
-          pinentryPackage = pkgs.pinentry-qt;
           sshKeys = [ "E3FFA5A1B444A4F099E594758008C1D8845EC7C0" ];
         };
         git = {
