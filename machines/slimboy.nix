@@ -52,7 +52,7 @@ nixpkgs.lib.nixosSystem {
     #nur.modules.nixos.default
 
     ## Applying recommended hardware settings
-    nixos-hardware.nixosModules.dell-latitude-7430
+    nixos-hardware.nixosModules.lenovo-thinkpad-t460
 
     ## Ordenada
     ordenada.nixosModules.ordenada
@@ -68,29 +68,13 @@ nixpkgs.lib.nixosSystem {
     ({ lib, config, pkgs, ... }: {
       ## networking
       networking.hostName = "slimboy";
-      networking.interfaces.wlp0s20f3.useDHCP = true; # WiFi
-
-      ## kernel
-      boot.initrd.kernelModules = [ "vmd" ];
-      boot.initrd.availableKernelModules = [
-        "xhci_pci" "thunderbolt" "vmd"
-        "nvme" "usb_storage" "sd_mod"
-      ];
+      networking.interfaces.wlp0s20f3.useDHCP = false; # WiFi
       
       boot.kernelModules = [ "kvm-intel" ];
       boot.kernelPackages = pkgs.linuxPackagesFor pkgs.linux_latest;
       
       hardware.enableRedistributableFirmware = true;
       hardware.cpu.intel.updateMicrocode = true;
-
-      # hardware.graphics = {
-      #  extraPackages = with pkgs; [
-      #    intel-media-driver # LIBVA_DRIVER_NAME=iHD
-      #    vaapiIntel         # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
-      #    vaapiVdpau
-      #    libvdpau-va-gl
-      #  ];
-      # };
 
       console = {
         font = "Lat2-Terminus16";
@@ -105,11 +89,11 @@ nixpkgs.lib.nixosSystem {
 	    fullName = "${config.fullName}";
 	    ## TODO: Set dynamically
 	    email = "db@minikn.xyz";
-	    gpgPrimaryKey = "F17DDB98CC3C40C";
+	    gpgPrimaryKey = "F17DDB98CC3C405C";
 	  };
 	  home = {
 	    enable = true;
-	    extraGroups = [ "video" "input" ];
+	    extraGroups = [ "wheel" "video" "input" ];
 	  };
 	  sway = {
 	    enable = true;
@@ -130,11 +114,6 @@ nixpkgs.lib.nixosSystem {
 	  bash.enable = true;
 	};
       };
-
-      #users.users.${config.user} = {
-      #  extraGroups = [ "wheel" "video" "input" ]; 
-      #  isNormalUser = true;
-      #};
     })
     ];
 }
