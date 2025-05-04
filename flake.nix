@@ -29,8 +29,8 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
-    #ordenada.url = "github:migalmoreno/ordenada";
-    ordenada.url = "git+file:///home/db/ordenada";
+    ordenada.url = "github:migalmoreno/ordenada";
+    #ordenada.url = "git+file:///home/db/ordenada";
 
     home-manager.url = "github:nix-community/home-manager/master";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";

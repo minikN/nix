@@ -540,17 +540,17 @@
         "systems": "systems_3"
       },
       "locked": {
-        "lastModified": 1744108514,
-        "narHash": "sha256-nWgcxVnh2KyNkmr4uW9UAZQRBlmiuu32fdNDPiA6Yig=",
-        "ref": "refs/heads/master",
-        "rev": "79f2d2927d90eb5e709eb1ef06c19af85100b9cf",
-        "revCount": 151,
-        "type": "git",
-        "url": "file:///home/db/ordenada"
+        "lastModified": 1744587022,
+        "narHash": "sha256-K1wlW+aDnYB8xljjsOAYyhl0YNgG/U7+RV6RINJIfAw=",
+        "owner": "migalmoreno",
+        "repo": "ordenada",
+        "rev": "efa92ee60e2587b87aae5cee837e666bc732c1db",
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "file:///home/db/ordenada"
+        "owner": "migalmoreno",
+        "repo": "ordenada",
+        "type": "github"
       }
     },
     "pre-commit": {
