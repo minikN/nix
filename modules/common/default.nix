@@ -147,6 +147,13 @@
           enable = true;
           sshKeys = [ "E3FFA5A1B444A4F099E594758008C1D8845EC7C0" ];
         };
+        ## TODO: Talk to Miguel about global options (shell, launcher, ...)
+        ## If we decide to add them, add one `passwordManager`. Then add a
+        ## tessen module, which will set that option. Sway should prepare
+        ## a keybinding for it and use whatever program was set to that option.
+        ## The tessen feature should use `launcher` opt to figure out the program to use
+        password-store.enable = true;
+
         git = {
           enable = true;
           signCommits = true;
@@ -169,6 +176,7 @@
           vscode
           nixfmt
           nixd
+          tessen
         ];
       };
     };
