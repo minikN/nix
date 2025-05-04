@@ -117,7 +117,17 @@
 
     ## Setting the `stateVersion' for both home-manager and system.
     home-manager.users.${config.user} = {
-     home = {};
+     home = {
+      packages = with pkgs; [
+        ## TODO: Remove these and set them somewhere else
+        vim
+        wdisplays
+        firefox
+        vscode
+        nixfmt
+        nixd
+      ];
+     };
     };
 
     ## Setting state version for system
