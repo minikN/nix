@@ -1,4 +1,4 @@
-### NixOS Configuration
+# ## NixOS Configuration
 ###
 ### Copyright © 2023 Demis Balbach <db@minikn.xyz>
 ###
@@ -24,23 +24,18 @@
 ###
 ### CODE:
 
-
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, ordanada, ... }:
 
 {
-  imports = [
-    ./system/boot.nix
-    ./system/filesystem.nix
-  ];
-  
+  imports = [ ./system/boot.nix ./system/filesystem.nix ];
+
   ## Global options
   ##
   ## These can be used throughout the configuration. If a value
   ## with the same name has been declared in `globals', its
   ## value will be set as default for the respective option.
-  options = let
-    mkConst = const: (lib.mkOption { default = const; });
-   in {
+  options = let mkConst = const: (lib.mkOption { default = const; });
+  in {
 
     user = lib.mkOption { # is defined in flake.nix
       type = lib.types.str;
@@ -61,7 +56,7 @@
       type = lib.types.str;
       description = "GPG key of the user";
     };
-    
+
     stateVersion = lib.mkOption { # is defined in flake.nix
       type = lib.types.str;
       description = "State version of nixos and home-manager";
@@ -108,26 +103,75 @@
     ## TODO: Needed for sway
     hardware.graphics.enable = true;
 
+    ## Console font
+    console = {
+      font = "Lat2-Terminus16";
+      ## TODO: Don't hardcode this
+      keyMap = "us";
+    };
+
     ## Global packages
     ##
     ## Packages should be managed with home-manager whereever
     ## possible. Only use a set of barebones applications here.
     #environment.systemPackages = with pkgs; [ git vim wget curl ];
+    ordenada = {
+      users = { ${config.user} = { }; };
+      features = {
+        userInfo = {
+          username = "${config.user}";
+          fullName = "${config.fullName}";
+          email = "${config.email}";
+          gpgPrimaryKey = "${config.gpgKey}";
+        };
+        home = {
+          enable = true;
+          extraGroups = [ "video" "input" ];
+        };
+        sway = {
+          enable = true;
+          autoStartTty = "/dev/tty2";
+        };
+        waybar.enable = true;
+        bemenu.enable = true;
+        fontutils = {
+          enable = true;
+          fonts.monospace = {
+            size = 15;
+            name = "Iosevka";
+            package = pkgs.iosevka;
+          };
+        };
 
+        gnupg = {
+          enable = true;
+          pinentryPackage = pkgs.pinentry-qt;
+          sshKeys = [ "E3FFA5A1B444A4F099E594758008C1D8845EC7C0" ];
+        };
+        git = {
+          enable = true;
+          signCommits = true;
+        };
+        gtk.enable = true;
+        xdg.enable = true;
+        bash.enable = true;
+        pipewire.enable = true;
+      };
+    };
 
     ## Setting the `stateVersion' for both home-manager and system.
     home-manager.users.${config.user} = {
-     home = {
-      packages = with pkgs; [
-        ## TODO: Remove these and set them somewhere else
-        vim
-        wdisplays
-        firefox
-        vscode
-        nixfmt
-        nixd
-      ];
-     };
+      home = {
+        packages = with pkgs; [
+          ## TODO: Remove these and set them somewhere else
+          vim
+          wdisplays
+          firefox
+          vscode
+          nixfmt
+          nixd
+        ];
+      };
     };
 
     ## Setting state version for system

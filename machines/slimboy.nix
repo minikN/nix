@@ -76,46 +76,6 @@ nixpkgs.lib.nixosSystem {
 
       hardware.enableRedistributableFirmware = true;
       hardware.cpu.intel.updateMicrocode = true;
-
-      console = {
-        font = "Lat2-Terminus16";
-        keyMap = "us";
-      };
-
-      ordenada = {
-        users = { ${config.user} = { }; };
-        features = {
-          userInfo = {
-            username = "${config.user}";
-            fullName = "${config.fullName}";
-            email = "${config.email}";
-            gpgPrimaryKey = "${config.gpgKey}";
-          };
-          home = {
-            enable = true;
-            extraGroups = [ "wheel" "video" "input" ];
-          };
-          sway = {
-            enable = true;
-            autoStartTty = "/dev/tty2";
-          };
-          waybar.enable = true;
-
-          gnupg = {
-            enable = true;
-            pinentryPackage = pkgs.pinentry-qt;
-            sshKeys = [ "E3FFA5A1B444A4F099E594758008C1D8845EC7C0" ];
-          };
-          git = {
-            enable = true;
-            signCommits = true;
-          };
-          gtk.enable = true;
-          xdg.enable = true;
-          bash.enable = true;
-          pipewire.enable = true;
-        };
-      };
     })
   ];
 }
