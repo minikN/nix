@@ -127,11 +127,9 @@
         home = {
           enable = true;
           extraGroups = [ "video" "input" ];
+          autoStartWmOnTty = "/dev/tty2";
         };
-        sway = {
-          enable = true;
-          autoStartTty = "/dev/tty2";
-        };
+        sway = { enable = true; };
         waybar.enable = true;
         bemenu.enable = true;
         fontutils = {
