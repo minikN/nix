@@ -41,12 +41,11 @@ nixpkgs.lib.nixosSystem {
     ## config-wide as long as we declare them as options using `mkOption'.
     globals
 
-    ## This module will return a `home-manager' object that can be used
-    ## in other modules (including this one).
-    home-manager.nixosModules.home-manager
-    {
-      nixpkgs.overlays = overlays;
-    }
+    # TODO: Managed by ordenada now? See commit ee15fb8
+    # home-manager.nixosModules.home-manager
+    # {
+    #   nixpkgs.overlays = overlays;
+    # }
 
     ## This module will return a `nur' object that can be used to access
     ## NUR packages.
