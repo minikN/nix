@@ -100,9 +100,6 @@
     ## Allow unfree packages
     nixpkgs.config.allowUnfree = true;
 
-    ## TODO: Needed for sway
-    hardware.graphics.enable = true;
-
     ## Console font
     console = {
       font = "Lat2-Terminus16";
