@@ -27,8 +27,6 @@
 { config, lib, pkgs, ordanada, ... }:
 
 {
-  imports = [ ./system/boot.nix ./system/filesystem.nix ];
-
   ## Global options
   ##
   ## These can be used throughout the configuration. If a value
@@ -73,6 +71,7 @@
   ## extracted into their own module.
   config = {
     nix = {
+      enable = false;
 
       ## Enabling flakes
       extraOptions = ''
@@ -81,12 +80,17 @@
       '';
 
       ## Store optimization
-      optimise.automatic = true;
+      #optimise.automatic = true;
 
       ## Automatic garbage collection
       gc = {
-        automatic = true;
-        dates = "weekly";
+        #automatic = true;
+        #dates = "weekly";
+        interval = {
+          Hour = 3;
+          Minute = 15;
+          Weekday = 7;
+        };
         options = "--delete-older-than 7d";
       };
     };
@@ -95,17 +99,19 @@
     ##
     ## I don't travel
     time.timeZone = "Europe/Berlin";
-    i18n.defaultLocale = "en_US.UTF-8";
+    
+    # Not on macOS
+    #i18n.defaultLocale = "en_US.UTF-8";
 
     ## Allow unfree packages
     nixpkgs.config.allowUnfree = true;
 
     ## Console font
-    console = {
-      font = "Lat2-Terminus16";
-      ## TODO: Don't hardcode this
-      keyMap = "us";
-    };
+    #console = {
+    #  font = "Lat2-Terminus16";
+    #  ## TODO: Don't hardcode this
+    #  keyMap = "us";
+    #};
 
     ## Global packages
     ##
@@ -113,7 +119,7 @@
     ## possible. Only use a set of barebones applications here.
     #environment.systemPackages = with pkgs; [ git vim wget curl ];
     ordenada = {
-      users = { ${config.user} = { }; };
+      users = { ${config.user} = {}; };
       features = {
         userInfo = {
           username = "${config.user}";
@@ -126,38 +132,38 @@
           extraGroups = [ "video" "input" ];
           autoStartWmOnTty = "/dev/tty2";
         };
-        sway = { enable = true; };
-        waybar.enable = true;
-        bemenu.enable = true;
-        fontutils = {
-          enable = true;
-          fonts.monospace = {
-            size = 15;
-            name = "Iosevka";
-            package = pkgs.iosevka;
-          };
-        };
-        gnupg = {
-          enable = true;
-          sshKeys = [ "E3FFA5A1B444A4F099E594758008C1D8845EC7C0" ];
-        };
-        ## TODO: Talk to Miguel about global options (shell, launcher, ...)
-        ## If we decide to add them, add one `passwordManager`. Then add a
-        ## tessen module, which will set that option. Sway should prepare
-        ## a keybinding for it and use whatever program was set to that option.
-        ## The tessen feature should use `launcher` opt to figure out the program to use
-        password-store.enable = true;
+        # sway = { enable = false; };
+        # waybar.enable = true;
+        # bemenu.enable = true;
+        # fontutils = {
+        #   enable = true;
+        #   fonts.monospace = {
+        #     size = 15;
+        #     name = "Iosevka";
+        #     package = pkgs.iosevka;
+        #   };
+        # };
+        # gnupg = {
+        #   enable = true;
+        #   sshKeys = [ "E3FFA5A1B444A4F099E594758008C1D8845EC7C0" ];
+        # };
+        # ## TODO: Talk to Miguel about global options (shell, launcher, ...)
+        # ## If we decide to add them, add one `passwordManager`. Then add a
+        # ## tessen module, which will set that option. Sway should prepare
+        # ## a keybinding for it and use whatever program was set to that option.
+        # ## The tessen feature should use `launcher` opt to figure out the program to use
+        # password-store.enable = true;
 
-        git = {
-          enable = true;
-          signCommits = true;
-        };
-        gtk.enable = true;
-        xdg.enable = true;
-        bash.enable = true;
-        pipewire.enable = true;
-        # emacs.enable = true;
-        scripts.screenshot.enable = true;
+        # git = {
+        #   enable = true;
+        #   signCommits = true;
+        # };
+        # gtk.enable = true;
+        # xdg.enable = true;
+        # bash.enable = true;
+        # pipewire.enable = true;
+        # # emacs.enable = true;
+        # scripts.screenshot.enable = true;
       };
     };
 
@@ -166,19 +172,20 @@
       home = {
         packages = with pkgs; [
           ## TODO: Remove these and set them somewhere else
-          vim
-          wdisplays
-          firefox
-          vscode
-          nixfmt
-          nixd
-          tessen
+          # vim
+          # wdisplays
+          # firefox
+          # vscode
+          # nixfmt
+          # nixd
+          # tessen
         ];
       };
     };
 
     ## Setting state version for system
-    system.stateVersion = "${config.stateVersion}";
+    #system.stateVersion = "${config.stateVersion}";
+    system.stateVersion = 6;
   };
 }
 

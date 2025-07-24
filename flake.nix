@@ -29,8 +29,12 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+
+    darwin.url = "github:lnl7/nix-darwin/master";
+    darwin.inputs.nixpkgs.follows = "nixpkgs";
+
     #ordenada.url = "github:migalmoreno/ordenada";
-    ordenada.url = "git+file:///home/db/.local/share/git/ordenada";
+    ordenada.url = "git+file:./../ordenada";
 
     home-manager.url = "github:nix-community/home-manager/master";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
@@ -65,7 +69,7 @@
       #inputs.audio.overlays.default
     ];
 
-    supportedSystems = [ "x86_64-linux" ];
+    supportedSystems = [ "x86_64-linux" "aarch64-darwin" ];
     forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
 
   in rec {
@@ -74,10 +78,14 @@
     nixosConfigurations = {
       slimboy = import ./machines/slimboy.nix { inherit inputs globals nixpkgs nixos-hardware ordenada overlays; };
     };
+    darwinConfigurations = {
+      workhorse = import ./machines/workhorse.nix { inherit inputs globals nixpkgs ordenada overlays; };
+    };
 
     ## Home configurations
    homeConfigurations = {
       slimboy = nixosConfigurations.slimboy.config.home-manager.users.${globals.user}.home;
+      workhorse = darwinConfigurations.workhorse.config.home-manager.users.${globals.user}.home;
    };
   };
 }
