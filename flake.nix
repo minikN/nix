@@ -38,7 +38,7 @@
 
     home-manager.url = "github:nix-community/home-manager/master";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    
+
     #musnix  = { url = "github:musnix/musnix"; };
     #audio.url = "github:polygon/audio.nix";
     #nur.url = "github:nix-community/NUR";
@@ -51,41 +51,68 @@
     #};
   };
 
-  outputs = { nixpkgs, nixos-hardware, ordenada, ... }@inputs:
-  let
+  outputs =
+    {
+      nixpkgs,
+      nixos-hardware,
+      ordenada,
+      ...
+    }@inputs:
+    let
 
-    ## Global variables used throughout the configuration
-    globals = rec {
-      user = "db";
-      fullName = "Demis Balbach";
-      email = "db@minikn.xyz";
-      gpgKey = "F17DDB98CC3C405C";
-      stateVersion = "24.11";
+      ## Global variables used throughout the configuration
+      globals = rec {
+        user = "db";
+        fullName = "Demis Balbach";
+        email = "db@minikn.xyz";
+        gpgKey = "F17DDB98CC3C405C";
+        stateVersion = "24.11";
+      };
+
+      overlays = [
+        #inputs.nur.overlays.default
+        #inputs.emacs-overlay.overlay
+        #inputs.audio.overlays.default
+      ];
+
+      supportedSystems = [
+        "x86_64-linux"
+        "aarch64-darwin"
+      ];
+      forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
+
+    in
+    rec {
+
+      ## System configurations
+      nixosConfigurations = {
+        slimboy = import ./machines/slimboy.nix {
+          inherit
+            inputs
+            globals
+            nixpkgs
+            nixos-hardware
+            ordenada
+            overlays
+            ;
+        };
+      };
+      darwinConfigurations = {
+        workhorse = import ./machines/workhorse.nix {
+          inherit
+            inputs
+            globals
+            nixpkgs
+            ordenada
+            overlays
+            ;
+        };
+      };
+
+      ## Home configurations
+      homeConfigurations = {
+        slimboy = nixosConfigurations.slimboy.config.home-manager.users.${globals.user}.home;
+        workhorse = darwinConfigurations.workhorse.config.home-manager.users.${globals.user}.home;
+      };
     };
-
-    overlays = [
-      #inputs.nur.overlays.default
-      #inputs.emacs-overlay.overlay
-      #inputs.audio.overlays.default
-    ];
-
-    supportedSystems = [ "x86_64-linux" "aarch64-darwin" ];
-    forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
-
-  in rec {
-
-    ## System configurations
-    nixosConfigurations = {
-      slimboy = import ./machines/slimboy.nix { inherit inputs globals nixpkgs nixos-hardware ordenada overlays; };
-    };
-    darwinConfigurations = {
-      workhorse = import ./machines/workhorse.nix { inherit inputs globals nixpkgs ordenada overlays; };
-    };
-
-    ## Home configurations
-   homeConfigurations = {
-      slimboy = nixosConfigurations.slimboy.config.home-manager.users.${globals.user}.home;
-      workhorse = darwinConfigurations.workhorse.config.home-manager.users.${globals.user}.home;
-   };
-  };
 }

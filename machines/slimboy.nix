@@ -23,14 +23,22 @@
 ###
 ### CODE:
 
-{ inputs, globals, overlays, ordenada, ... }:
+{
+  inputs,
+  globals,
+  overlays,
+  ordenada,
+  ...
+}:
 
 with inputs;
-
-nixpkgs.lib.nixosSystem {
-
+let
   ## Setting system architecture.
   system = "x86_64-linux";
+in
+nixpkgs.lib.nixosSystem {
+  inherit system;
+  specialArgs = { inherit system; };
 
   ## Modules
   ##
@@ -59,24 +67,32 @@ nixpkgs.lib.nixosSystem {
 
     ## Common modules
     ../modules/common
-    ../modules/system/boot.nix
-    ../modules/system/filesystem.nix
+    ../modules/common/system/boot.nix
+    ../modules/common/system/filesystem.nix
 
     ## System specific
     ##
     ## Closure that returns the module containing configuration specific
     ## to this machine. In order to make it a function we need to wrap it
     ## in ().
-    ({ lib, config, pkgs, ... }: {
-      ## networking
-      networking.hostName = "slimboy";
-      networking.interfaces.wlp0s20f3.useDHCP = false; # WiFi
+    (
+      {
+        lib,
+        config,
+        pkgs,
+        ...
+      }:
+      {
+        ## networking
+        networking.hostName = "slimboy";
+        networking.interfaces.wlp0s20f3.useDHCP = false; # WiFi
 
-      boot.kernelModules = [ "kvm-intel" ];
-      boot.kernelPackages = pkgs.linuxPackagesFor pkgs.linux_latest;
+        boot.kernelModules = [ "kvm-intel" ];
+        boot.kernelPackages = pkgs.linuxPackagesFor pkgs.linux_latest;
 
-      hardware.enableRedistributableFirmware = true;
-      hardware.cpu.intel.updateMicrocode = true;
-    })
+        hardware.enableRedistributableFirmware = true;
+        hardware.cpu.intel.updateMicrocode = true;
+      }
+    )
   ];
 }

@@ -23,14 +23,21 @@
 ###
 ### CODE:
 
-{ inputs, globals, overlays, ordenada, ... }:
+{
+  inputs,
+  globals,
+  overlays,
+  ordenada,
+  ...
+}:
 
 with inputs;
 
 let
   ## Setting system architecture.
   system = "aarch64-darwin";
-in inputs.darwin.lib.darwinSystem {
+in
+inputs.darwin.lib.darwinSystem {
   inherit system;
   specialArgs = { inherit system; };
 
@@ -54,7 +61,14 @@ in inputs.darwin.lib.darwinSystem {
     ## Closure that returns the module containing configuration specific
     ## to this machine. In order to make it a function we need to wrap it
     ## in ().
-    ({ lib, config, pkgs, ... }: {
-    })
+    (
+      {
+        lib,
+        config,
+        pkgs,
+        ...
+      }:
+      { }
+    )
   ];
 }

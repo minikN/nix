@@ -26,7 +26,12 @@
 ###
 ### CODE:
 
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   ## Main partition

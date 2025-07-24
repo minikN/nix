@@ -23,7 +23,12 @@
 ###
 ### CODE:
 
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   boot.loader = {
@@ -39,11 +44,10 @@
       useOSProber = true;
 
       ## Don't install grub, required for UEFI?
-      device = "nodev";      
+      device = "nodev";
     };
-    
+
     ## Allow bootloader to alter the UEFI
     efi.canTouchEfiVariables = true;
   };
 }
-
