@@ -81,18 +81,9 @@
         ## CORE
         password-store.enable = true;
         firefox.enable = true;
-
-        git = {
-          enable = true;
-          signCommits = true;
-        };
         gtk.enable = true;
         xdg.enable = true;
         bash.enable = true;
-        gnupg = {
-          enable = true;
-          sshKeys = [ "E3FFA5A1B444A4F099E594758008C1D8845EC7C0" ];
-        };
         # emacs.enable = true;
         scripts.screenshot.enable = true;
       };

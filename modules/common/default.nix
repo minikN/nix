@@ -124,6 +124,14 @@
           email = "${config.email}";
           gpgPrimaryKey = "${config.gpgKey}";
         };
+        gnupg = {
+          enable = true;
+          sshKeys = [ "E3FFA5A1B444A4F099E594758008C1D8845EC7C0" ];
+        };
+        git = {
+          enable = true;
+          signCommits = true;
+        };
       };
     };
 
