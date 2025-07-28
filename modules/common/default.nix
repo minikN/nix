@@ -124,6 +124,17 @@
           email = "${config.email}";
           gpgPrimaryKey = "${config.gpgKey}";
         };
+
+        keyboard.enable = true;
+        fontutils = {
+          enable = true;
+          fonts.monospace = {
+            size = 15;
+            name = "Iosevka";
+            package = pkgs.iosevka;
+          };
+        };
+        
         gnupg = {
           enable = true;
           sshKeys = [ "E3FFA5A1B444A4F099E594758008C1D8845EC7C0" ];
@@ -132,6 +143,7 @@
           enable = true;
           signCommits = true;
         };
+        alacritty.enable = true;
       };
     };
 

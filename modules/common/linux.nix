@@ -28,13 +28,6 @@
     ## Allow unfree packages
     nixpkgs.config.allowUnfree = true;
 
-    ## Console font
-    console = {
-      font = "Lat2-Terminus16";
-      ## TODO: Don't hardcode this
-      keyMap = "us";
-    };
-
     ## Global packages
     ##
     ## Packages should be managed with home-manager whereever
@@ -61,14 +54,6 @@
           nameservers = [ "8.8.8.8" ];
         };
         pipewire.enable = true;
-        fontutils = {
-          enable = true;
-          fonts.monospace = {
-            size = 15;
-            name = "Iosevka";
-            package = pkgs.iosevka;
-          };
-        };
 
         ## UI
         sway = {
