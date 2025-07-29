@@ -64,14 +64,43 @@
       features = {
         home.enable = true;
         homebrew.enable = true;
+        emacs = {
+          enable = true;
+          exec-path.enable = true;
+
+          appearance.enable = true;
+          all-the-icons.enable = true;
+          completion.enable = true;
+          consult.enable = true;
+          corfu.enable = true;
+          dired.enable = true;
+          embark.enable = true;
+          help.enable = true;
+          keymaps.enable = true;
+          marginalia.enable = true;
+          modus-themes.enable = true;
+          orderless.enable = true;
+          
+          rainbow-delimiters.enable = true;
+          apheleia.enable = true;
+          eglot.enable = true;
+          flymake.enable = true;
+
+          project.enable = true;
+          shell.enable = true;
+          vertico.enable = true;
+          vterm.enable = true;
+          which-key.enable = true;
+        };
       };
     };
 
     ## User packages
     home-manager.users.${config.user} = {
-      home.packages = with pkgs; [ ];
+      home.packages = with pkgs; [
+        jetbrains.idea-ultimate
+      ];
     };
-    homebrew.casks = [ "intellij-idea" ];
 
     ## Setting state version for system
     system.stateVersion = 6;
