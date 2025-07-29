@@ -146,6 +146,9 @@
           enable = true;
           # polymode = true;
         };
+        json.enable = true;
+        json5.enable = true;
+        javascript.enable = true;
 
         emacs = {
           enable = true;
