@@ -25,18 +25,13 @@
     ## Timezone and locales
     i18n.defaultLocale = "en_US.UTF-8";
 
-    ## Allow unfree packages
-    nixpkgs.config.allowUnfree = true;
-
     ## Global packages
-    ##
-    ## Packages should be managed with home-manager whereever
-    ## possible. Only use a set of barebones applications here.
     environment.systemPackages = with pkgs; [
       pciutils
       usbutils
     ];
 
+    ## Ordenada
     ordenada = {
       features = {
         home = {
@@ -74,12 +69,11 @@
       };
     };
 
+    ## User packages
     home-manager.users.${config.user} = {
-      home = {
-        packages = with pkgs; [
-          wdisplays
-        ];
-      };
+      home.packages = with pkgs; [
+        wdisplays
+      ];
     };
 
     ## Setting state version for system

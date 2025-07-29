@@ -101,16 +101,11 @@
     nixpkgs.config.allowUnfree = true;
 
     ## Global packages
-    ##
-    ## Packages should be managed with home-manager whereever
-    ## possible. Only use a set of barebones applications here.
     environment.systemPackages = with pkgs; [
       git
       vim
       wget
       curl
-      nixfmt
-      nixd
     ];
 
     ordenada = {
@@ -143,7 +138,9 @@
           enable = true;
           signCommits = true;
         };
+
         alacritty.enable = true;
+        nix.enable = true;
       };
     };
 

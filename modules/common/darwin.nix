@@ -56,26 +56,22 @@
       };
     };
 
-    ## Allow unfree packages
-    nixpkgs.config.allowUnfree = true;
-
     ## Global packages
-    ##
-    ## Packages should be managed with home-manager whereever
-    ## possible. Only use a set of barebones applications here.
-    #environment.systemPackages = with pkgs; [ git vim wget curl ];
+    environment.systemPackages = with pkgs; [];
 
+    ## Ordenada
     ordenada = {
       features = {
         home.enable = true;
+        homebrew.enable = true;
       };
     };
 
+    ## User packages
     home-manager.users.${config.user} = {
-      home = {
-        packages = with pkgs; [ ];
-      };
+      home.packages = with pkgs; [ ];
     };
+    homebrew.casks = [ "intellij-idea" ];
 
     ## Setting state version for system
     system.stateVersion = 6;
