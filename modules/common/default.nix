@@ -106,6 +106,7 @@
       vim
       wget
       curl
+      vesktop # # discord
     ];
 
     ordenada = {
@@ -129,7 +130,7 @@
             package = pkgs.iosevka;
           };
         };
-        
+
         gnupg = {
           enable = true;
           sshKeys = [ "E3FFA5A1B444A4F099E594758008C1D8845EC7C0" ];
@@ -140,7 +141,41 @@
         };
 
         alacritty.enable = true;
-        nix.enable = true;
+
+        nix = {
+          enable = true;
+          # polymode = true;
+        };
+
+        emacs = {
+          enable = true;
+          exec-path.enable = true;
+
+          appearance.enable = true;
+          all-the-icons.enable = true;
+          completion.enable = true;
+          consult.enable = true;
+          corfu.enable = true;
+          dired.enable = true;
+          embark.enable = true;
+          evil.enable = true;
+          help.enable = true;
+          keymaps.enable = true;
+          marginalia.enable = true;
+          modus-themes.enable = true;
+          orderless.enable = true;
+
+          rainbow-delimiters.enable = true;
+          apheleia.enable = true;
+          eglot.enable = true;
+          flymake.enable = true;
+
+          project.enable = true;
+          shell.enable = true;
+          vertico.enable = true;
+          vterm.enable = true;
+          which-key.enable = true;
+        };
       };
     };
 
