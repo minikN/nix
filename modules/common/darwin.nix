@@ -64,6 +64,18 @@
       features = {
         home.enable = true;
         homebrew.enable = true;
+        ios = {
+          enable = true;
+          xcodeVersions = [ "16.4" ];
+          xcodeActiveVersion = "16.4";
+          simulators = [
+            {
+              device = "iPhone-16-Pro";
+              os = "iOS 18.5";
+              bootOnLogin = true;
+            }
+          ];
+        };
       };
     };
 
