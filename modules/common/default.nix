@@ -152,6 +152,8 @@
 
         emacs = {
           enable = true;
+          advancedUser = true;
+
           exec-path.enable = true;
 
           appearance.enable = true;
