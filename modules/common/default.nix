@@ -180,7 +180,9 @@
           vterm.enable = true;
           which-key.enable = true;
         };
+
         xdg.enable = true;
+        password-store.enable = true;
       };
     };
 
