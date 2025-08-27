@@ -99,6 +99,13 @@
             }
           ];
         };
+        aerospace = {
+          enable = true;
+          up = "i";
+          left = "j";
+          down = "k";
+          right = "l";
+        };
       };
     };
 
