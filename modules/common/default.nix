@@ -171,7 +171,6 @@
           orderless.enable = true;
 
           rainbow-delimiters.enable = true;
-          apheleia.enable = true;
           eglot.enable = true;
           flymake.enable = true;
 
