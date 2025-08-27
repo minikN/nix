@@ -64,6 +64,29 @@
       features = {
         home.enable = true;
         homebrew.enable = true;
+        android = {
+          enable = true;
+          emulators = [
+            {
+              name = "smallPhone";
+              platformVersion = "35";
+              abiVersion = "arm64-v8a";
+            }
+          ];
+          activeSdk = "35";
+          sdks = [
+            {
+              identifier = "35";
+              packages = [
+                "platform-tools"
+                "platforms;android-35"
+                "build-tools;35.0.0"
+                "cmdline-tools;latest"
+                "system-images;android-35;google_apis_playstore;arm64-v8a"
+              ];
+            }
+          ];
+        };
         ios = {
           enable = true;
           xcodeVersions = [ "16.4" ];
