@@ -180,6 +180,7 @@
           vterm.enable = true;
           which-key.enable = true;
         };
+        xdg.enable = true;
       };
     };
 
