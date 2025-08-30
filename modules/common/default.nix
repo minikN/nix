@@ -160,7 +160,10 @@
           all-the-icons.enable = true;
           completion.enable = true;
           consult.enable = true;
-          corfu.enable = true;
+          corfu = {
+            enable = true;
+            autoShow = false;
+          };
           dired.enable = true;
           embark.enable = true;
           evil.enable = true;
