@@ -5,6 +5,11 @@
 }:
 
 {
+  imports = [
+    ./system/boot.nix
+    ./system/filesystem.nix
+  ];
+
   config = {
     nix = {
       enable = true;
