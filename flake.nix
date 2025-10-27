@@ -57,7 +57,7 @@
         };
 
         nixosConfigurations = {
-          workhorse = import ./machines/slimboy.nix {
+          slimboy = import ./machines/slimboy.nix {
             inherit
               inputs
               globals
