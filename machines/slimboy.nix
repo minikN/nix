@@ -1,8 +1,8 @@
 {
   inputs,
+  globals,
   ...
 }:
-
 
 inputs.nixpkgs.lib.nixosSystem {
   system = "x86_64-linux";
@@ -10,10 +10,10 @@ inputs.nixpkgs.lib.nixosSystem {
     inputs.home-manager.nixosModules.home-manager
     inputs.ordenada.nixosModules.ordenada
     (
-      { pkgs, ... }:
+      { pkgs, lib, ... }:
       {
         imports = [
-          ../modules/common
+          (import ../modules/common { inherit globals lib pkgs; })
           ../modules/common/linux.nix
         ];
 
