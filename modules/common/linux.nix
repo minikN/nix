@@ -1,8 +1,6 @@
 {
   config,
-  lib,
   pkgs,
-  ordanada,
   ...
 }:
 
@@ -31,50 +29,12 @@
       usbutils
     ];
 
-    ## Ordenada
-    ordenada = {
-      features = {
-        home = {
-          enable = true;
-          extraGroups = [
-            "video"
-            "input"
-          ];
-          autoStartWmOnTty = "/dev/tty2";
-        };
-
-        ## SYSTEM
-        networking = {
-          enable = true;
-          nameservers = [ "8.8.8.8" ];
-        };
-        pipewire.enable = true;
-
-        ## UI
-        sway = {
-          enable = true;
-        };
-        waybar.enable = true;
-        rofi.enable = true;
-        # bemenu.enable = true;
-
-        ## CORE
-        password-store.enable = true;
-        firefox.enable = true;
-        gtk.enable = true;
-        xdg.enable = true;
-        bash.enable = true;
-        # emacs.enable = true;
-        scripts.screenshot.enable = true;
-      };
-    };
-
     ## User packages
-    home-manager.users.${config.user} = {
-      home.packages = with pkgs; [
-        wdisplays
-      ];
-    };
+    # home-manager.users.${config.user} = {
+    #   home.packages = with pkgs; [
+    #     wdisplays
+    #   ];
+    # };
 
     ## Setting state version for system
     system.stateVersion = "${config.stateVersion}";
