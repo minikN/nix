@@ -34,12 +34,16 @@
       usbutils
     ];
 
-    ## User packages
-    # home-manager.users.${config.user} = {
-    #   home.packages = with pkgs; [
-    #     wdisplays
-    #   ];
-    # };
+    ordenada.features = {
+      sway = {
+        enable = true;
+        keybindings = { ... }: {};
+      };
+      waybar.enable = true;
+      bemenu.enable = true;
+      pipewire.enable = true;
+      networking.enable = true;
+    };
 
     ## Setting state version for system
     system.stateVersion = "${config.stateVersion}";
