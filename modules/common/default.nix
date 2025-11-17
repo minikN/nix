@@ -49,8 +49,6 @@
 
     ordenada = {
       features = {
-        home.enable = true;
-        bash.enable = true;
         userInfo = {
           enable = true;
           username = "${globals.user}";
@@ -59,6 +57,15 @@
           gpgPrimaryKey = "${globals.gpgKey}";
           extraGroups = [ "wheel" ];
         };
+
+        home = {
+          enable = true;
+          autoStartWmOnTty = "/dev/tty1";
+        };
+
+        bash.enable = true;
+        alacritty.enable = true;
+
         keyboard.enable = true;
         fontutils = {
           enable = true;
@@ -79,15 +86,15 @@
           signingKey = globals.gpgKey;
         };
 
-        #alacritty.enable = true;
+        firefox.enable = true;
 
         nix = {
           enable = true;
-          # polymode = true;
+          enablePolymode = true;
         };
-        # json.enable = true;
-        # json5.enable = true;
-        # javascript.enable = true;
+        json.enable = true;
+        javascript.enable = true;
+        compile.enable = true;
 
         emacs = {
           enable = true;
@@ -101,11 +108,11 @@
           consult.enable = true;
           corfu = {
             enable = true;
-            #autoShow = false;
+            autoShow = false;
           };
           dired.enable = true;
           embark.enable = true;
-          #evil.enable = true;
+          evil.enable = true;
           help.enable = true;
           keymaps.enable = true;
           marginalia.enable = true;
