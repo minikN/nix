@@ -8,6 +8,7 @@
   imports = [
     ./system/boot.nix
     ./system/filesystem.nix
+    ./system/filesystem/nas.nix
   ];
 
   config = {
@@ -37,10 +38,10 @@
     ordenada.features = {
       sway = {
         enable = true;
-        keybindings = { ... }: {};
+        extraKeybindings = { ... }: {};
       };
       waybar.enable = true;
-      bemenu.enable = true;
+      rofi.enable = true;
       pipewire.enable = true;
       networking.enable = true;
     };
