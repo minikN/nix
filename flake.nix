@@ -38,7 +38,7 @@
         fullName = "Demis Balbach";
         email = "db@minikn.xyz";
         gpgKey = "F17DDB98CC3C405C";
-        stateVersion = "24.11";
+        stateVersion = "25.11";
       };
     in
     flake-parts.lib.mkFlake { inherit inputs; } {
