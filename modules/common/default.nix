@@ -66,6 +66,7 @@
         bash.enable = true;
         alacritty.enable = true;
 
+        networking.enable = true;
         keyboard.enable = true;
         fontutils = {
           enable = true;
@@ -73,6 +74,11 @@
             size = 15;
             name = "Iosevka";
             package = pkgs.iosevka;
+          };
+          fonts.unicode = {
+            name = "Noto Color Emoji";
+            package = pkgs.noto-fonts-color-emoji;
+            size = 11;
           };
         };
 
