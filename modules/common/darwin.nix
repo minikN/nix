@@ -1,4 +1,6 @@
 {
+  pkgs,
+  globals,
   ...
 }:
 
@@ -21,11 +23,18 @@
       };
     };
 
-    # home-manager.users.${config.user} = {
-    #   home.packages = with pkgs; [
-    #     jetbrains.idea-ultimate
-    #   ];
-    # };
+    ordenada.features = {
+      homebrew.enable = true;
+      emacs.exec-path.enable = true;
+      gnupg.keychainInteraction = false;
+    };
+
+    home-manager.users.${globals.user} = {
+      home.packages = with pkgs; [
+        nodejs
+        jetbrains.idea-ultimate
+      ];
+    };
 
     ## Setting state version for system
     system.stateVersion = 6;
