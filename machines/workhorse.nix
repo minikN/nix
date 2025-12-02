@@ -10,10 +10,17 @@ inputs.darwin.lib.darwinSystem {
     inputs.home-manager.darwinModules.home-manager
     inputs.ordenada.darwinModules.ordenada
     (
-      { pkgs, ... }:
+      { pkgs, lib, ... }:
       {
         imports = [
-          ../modules/common
+          (import ../modules/common {
+            inherit
+              inputs
+              globals
+              lib
+              pkgs
+              ;
+          })
           ../modules/common/darwin.nix
         ];
         # system.stateVersion = 6;
