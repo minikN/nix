@@ -68,11 +68,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1764643486,
-        "narHash": "sha256-1tEyS6zCQbAAokK/VWG0bZ74nqIGybROx6J9XqNYe7M=",
+        "lastModified": 1764729851,
+        "narHash": "sha256-9gtigu1v+bneAM+yNuGcphMZFPJdm/NNdK1Oitg5W10=",
         "owner": "nix-giant",
         "repo": "nix-darwin-emacs",
-        "rev": "1b60c4bde00441904e390f93e78601fcfdacbeae",
+        "rev": "37cb5b26aad3d2ccbe2e9dc8c42701d61a5a99cd",
         "type": "github"
       },
       "original": {
@@ -749,11 +749,11 @@
         "systems": "systems_6"
       },
       "locked": {
-        "lastModified": 1764706436,
-        "narHash": "sha256-nRNPiohDuwsBCggPHngDmiQaWZ6A1gkelMlcMLcJdVk=",
+        "lastModified": 1764721465,
+        "narHash": "sha256-g5fPJEpgNd8qGhbcS0pN56GDOFVqJ0i41iS9qlPD4HE=",
         "ref": "refs/heads/minikn-additions-3",
-        "rev": "272a56425ac9bc6d3105fd6ce444691b1d67cea0",
-        "revCount": 366,
+        "rev": "b36abb708a845f1fafb32ccb95767716d57364b1",
+        "revCount": 376,
         "type": "git",
         "url": "file:./../ordenada"
       },
