@@ -21,7 +21,14 @@ inputs.darwin.lib.darwinSystem {
               pkgs
               ;
           })
-          ../modules/common/darwin.nix
+          (import ../modules/common/darwin.nix {
+            inherit
+              inputs
+              globals
+              lib
+              pkgs
+              ;
+          })
         ];
         # system.stateVersion = 6;
         # ordenada.features = {
