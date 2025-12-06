@@ -68,11 +68,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1764729851,
-        "narHash": "sha256-9gtigu1v+bneAM+yNuGcphMZFPJdm/NNdK1Oitg5W10=",
+        "lastModified": 1764816328,
+        "narHash": "sha256-/t3vCzQU/VH2g0hio4B1UUT8GsuVm465zwsK6xLCleM=",
         "owner": "nix-giant",
         "repo": "nix-darwin-emacs",
-        "rev": "37cb5b26aad3d2ccbe2e9dc8c42701d61a5a99cd",
+        "rev": "250e59de6878a193fcec2bd6e6a8447296602e72",
         "type": "github"
       },
       "original": {
@@ -328,11 +328,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1764636297,
-        "narHash": "sha256-S41K55kw+hWgDfgKmZ9/fMZ3F0BQDMvqFfE120fMHeE=",
+        "lastModified": 1764998300,
+        "narHash": "sha256-fZatn/KLfHLDXnF0wy7JxXqGaZmGDTVufT4o/AOlj44=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "ff067cfc619fdf6f82d50344e7d19ff2323f0827",
+        "rev": "27a6182347ccae90a88231ae0dc5dfa7d15815bb",
         "type": "github"
       },
       "original": {
@@ -402,11 +402,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1764517877,
-        "narHash": "sha256-pp3uT4hHijIC8JUK5MEqeAWmParJrgBVzHLNfJDZxg4=",
+        "lastModified": 1764950072,
+        "narHash": "sha256-BmPWzogsG2GsXZtlT+MTcAWeDK5hkbGRZTeZNW42fwA=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "2d293cbfa5a793b4c50d17c05ef9e385b90edf6c",
+        "rev": "f61125a668a320878494449750330ca58b78c557",
         "type": "github"
       },
       "original": {
@@ -749,11 +749,11 @@
         "systems": "systems_6"
       },
       "locked": {
-        "lastModified": 1764721465,
-        "narHash": "sha256-g5fPJEpgNd8qGhbcS0pN56GDOFVqJ0i41iS9qlPD4HE=",
+        "lastModified": 1765018671,
+        "narHash": "sha256-Vlk9Fqcj9ElwGeiG/xdYgNEQVzqKg98dWmG0nzlLqtI=",
         "ref": "refs/heads/minikn-additions-3",
-        "rev": "b36abb708a845f1fafb32ccb95767716d57364b1",
-        "revCount": 376,
+        "rev": "7c3da30067b82598b44b366dc51f9b84bd07e610",
+        "revCount": 388,
         "type": "git",
         "url": "file:./../ordenada"
       },
