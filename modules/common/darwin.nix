@@ -24,7 +24,17 @@
     };
 
     ordenada.features = {
-      homebrew.enable = true;
+      aerospace.enable = true;
+      homebrew = {
+        enable = true;
+        # packages = [
+        #   "rofi"
+        #   "quartz-wm"
+        # ];
+        # casks = [
+        #   "xquartz"
+        # ];
+      };
       emacs.exec-path.enable = true;
       gnupg.keychainInteraction = false;
     };
@@ -32,6 +42,7 @@
     home-manager.users.${globals.user} = {
       home.packages = with pkgs; [
         nodejs
+        android-tools
         jetbrains.idea-ultimate
       ];
     };
