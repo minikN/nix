@@ -1,4 +1,5 @@
 {
+  lib,
   pkgs,
   globals,
   ...
@@ -27,23 +28,23 @@
       aerospace.enable = true;
       homebrew = {
         enable = true;
-        # packages = [
-        #   "rofi"
-        #   "quartz-wm"
-        # ];
+        packages = [
+          "cocoapods"
+        ];
         # casks = [
         #   "xquartz"
         # ];
       };
-      emacs.exec-path.enable = true;
+      fontutils.fonts.monospace.size = lib.mkForce 16;
       gnupg.keychainInteraction = false;
     };
 
     home-manager.users.${globals.user} = {
       home.packages = with pkgs; [
         nodejs
-        android-tools
-        jetbrains.idea-ultimate
+        jetbrains.idea
+        javaPackages.compiler.openjdk17
+        raycast
       ];
     };
 
