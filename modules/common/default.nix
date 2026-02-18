@@ -162,7 +162,10 @@
           shell.enable = true;
           vertico.enable = true;
           vterm.enable = true;
-          which-key.enable = true;
+          which-key = {
+            enable = true;
+            minHeight = 5;
+          };
         };
 
         xdg.enable = true;
