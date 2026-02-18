@@ -59,6 +59,28 @@
         "type": "github"
       }
     },
+    "darwin_2": {
+      "inputs": {
+        "nixpkgs": [
+          "ordenada",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1766524813,
+        "narHash": "sha256-N/sxS27+t9nGvGWqwwAceSMW/Y5ddcypS/aiTnZ7ScA=",
+        "owner": "lnl7",
+        "repo": "nix-darwin",
+        "rev": "c2b36207f2c396c79dbed9d40536db221bd4e363",
+        "type": "github"
+      },
+      "original": {
+        "owner": "lnl7",
+        "ref": "master",
+        "repo": "nix-darwin",
+        "type": "github"
+      }
+    },
     "emacs-darwin": {
       "inputs": {
         "flake-utils": "flake-utils",
@@ -730,6 +752,7 @@
       "inputs": {
         "arkenfox-nixos": "arkenfox-nixos",
         "base16": "base16",
+        "darwin": "darwin_2",
         "emacs-darwin": "emacs-darwin",
         "flake-parts": "flake-parts_2",
         "home-manager": [
@@ -749,11 +772,11 @@
         "systems": "systems_6"
       },
       "locked": {
-        "lastModified": 1765018671,
-        "narHash": "sha256-Vlk9Fqcj9ElwGeiG/xdYgNEQVzqKg98dWmG0nzlLqtI=",
-        "ref": "refs/heads/minikn-additions-3",
-        "rev": "7c3da30067b82598b44b366dc51f9b84bd07e610",
-        "revCount": 388,
+        "lastModified": 1770590653,
+        "narHash": "sha256-C27OulfXW30G8VbiYMIb/uI238lXLeHKPZIT2Q+q4oM=",
+        "ref": "refs/heads/qol1",
+        "rev": "84d16be36bf443405fb2a5a886443a923b8f0edc",
+        "revCount": 493,
         "type": "git",
         "url": "file:./../ordenada"
       },
