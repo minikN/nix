@@ -136,15 +136,13 @@
           enable = true;
           advancedUser = true;
 
-          #exec-path.enable = true;
-
           appearance.enable = true;
           all-the-icons.enable = true;
           completion.enable = true;
           consult.enable = true;
           corfu = {
             enable = true;
-            autoShow = false;
+            autoShow = true;
           };
           hideshow.enable = true;
           dired.enable = true;
