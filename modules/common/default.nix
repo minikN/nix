@@ -94,6 +94,13 @@
           signingKey = globals.gpgKey;
         };
 
+        docker = {
+          enable = true;
+          colimaFlags = {
+            cpu = 4;
+            memory = 8;
+          };
+        };
         firefox.enable = true;
 
         nix = {
