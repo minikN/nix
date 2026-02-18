@@ -155,7 +155,7 @@
           orderless.enable = true;
 
           #rainbow-delimiters.enable = true;
-          #eglot.enable = true;
+          eglot.enable = true;
           #flymake.enable = true;
 
           project.enable = true;
