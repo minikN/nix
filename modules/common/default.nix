@@ -108,6 +108,7 @@
           enablePolymode = true;
         };
         json.enable = true;
+        yaml.enable = true;
         javascript.enable = true;
         compile.enable = true;
 
