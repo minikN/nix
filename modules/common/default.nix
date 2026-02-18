@@ -146,6 +146,7 @@
             enable = true;
             autoShow = false;
           };
+          hideshow.enable = true;
           dired.enable = true;
           embark.enable = true;
           evil.enable = true;
