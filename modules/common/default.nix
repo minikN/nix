@@ -111,6 +111,26 @@
         yaml.enable = true;
         javascript.enable = true;
         compile.enable = true;
+        android = {
+          enable = true;
+          allowUnfreeAndAcceptLicenses = true;
+          activeSdkVersion = "36";
+          sdks = [
+            { platformVersion = "36"; }
+          ];
+          emulators = [
+            {
+              persistentData = true;
+              platformVersion = "36";
+              extraConfig = {
+                "hw.lcd.width" = "800";
+                "hw.lcd.density" = "300";
+                "hw.lcd.height" = "1624";
+                "hw.ramSize" = "4096";
+              };
+            }
+          ];
+        };
 
         emacs = {
           enable = true;
