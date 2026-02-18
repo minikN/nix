@@ -74,8 +74,8 @@
           enable = true;
           fonts.monospace = {
             size = 15;
-            name = "Iosevka";
-            package = pkgs.iosevka;
+            name = "Iosevka Nerd Font Mono";
+            package = pkgs.nerd-fonts.iosevka;
           };
           fonts.unicode = {
             name = "Noto Color Emoji";
