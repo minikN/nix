@@ -36,10 +36,7 @@
     ];
 
     ordenada.features = {
-      sway = {
-        enable = true;
-        extraKeybindings = { ... }: {};
-      };
+      sway = enable = true;
       waybar.enable = true;
       rofi.enable = true;
       pipewire.enable = true;
