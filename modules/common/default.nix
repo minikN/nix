@@ -66,6 +66,7 @@
 
         bash.enable = true;
         alacritty.enable = true;
+        ghostty.enable = true;
 
         networking.enable = true;
         keyboard.enable = true;
