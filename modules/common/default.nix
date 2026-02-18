@@ -60,6 +60,7 @@
 
         home = {
           enable = true;
+          primaryUser = true;
           autoStartWmOnTty = "/dev/tty1";
         };
 
